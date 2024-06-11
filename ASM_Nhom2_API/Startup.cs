@@ -1,4 +1,5 @@
 using ASM_Nhom2_API.Data;
+using ASM_Nhom2_API.Service.BillServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,12 +35,15 @@ namespace ASM_Nhom2_API
                 {
                     sqlOptions.CommandTimeout(180);
                 });
+
             });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ASM_Nhom2_API", Version = "v1" });
             });
+            services.AddScoped<IBillRepository,BillRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
