@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace ASM_Nhom2_API.Data
 {
@@ -57,9 +58,13 @@ namespace ASM_Nhom2_API.Data
                 .HasMaxLength(50);
 
             });
+               
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.ProductId);
+
+                entity.Property(p => p.ProductImages)
+               .HasColumnType("nvarchar(max)");
 
                 entity.HasOne(e => e.Category)
                 .WithMany(e => e.Products)
