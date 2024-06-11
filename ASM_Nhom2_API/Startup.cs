@@ -1,4 +1,5 @@
 using ASM_Nhom2_API.Data;
+using ASM_Nhom2_API.Service.BillServices;
 using ASM_Nhom2_API.Service.RoleServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,12 +36,14 @@ namespace ASM_Nhom2_API
                 {
                     sqlOptions.CommandTimeout(180);
                 });
+
             });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ASM_Nhom2_API", Version = "v1" });
             });
+            services.AddScoped<IBillRepository,BillRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
         }
 
