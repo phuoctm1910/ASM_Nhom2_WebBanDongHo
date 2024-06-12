@@ -15,7 +15,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         public BrandController() { }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Index()
         {
             List<BrandVM> categories = new List<BrandVM>();
             using (var httpClient = new HttpClient())
@@ -30,13 +30,13 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             return View(categories);
         }
 
-        public IActionResult AddBrandVM()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBrandVM(BrandVM sendBrandVM)
+        public async Task<IActionResult> Create(BrandVM sendBrandVM)
         {
             BrandVM receiveBrandVM = new BrandVM();
             using (var httpClient = new HttpClient())
@@ -52,10 +52,10 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, "Server error. Please contact the administrator.");
                 }
             }
-            return RedirectToAction("GetAll");
+            return RedirectToAction("Index");
         }
         [HttpGet]
-        public async Task<IActionResult> UpdateBrandVM(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             BrandVM category = new BrandVM();
             using (var httpClient = new HttpClient())
@@ -71,7 +71,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateBrandVM(BrandVM sendBrandVM, int id)
+        public async Task<IActionResult> Edit(BrandVM sendBrandVM, int id)
         {
             BrandVM receiveBrandVM = new BrandVM();
             using (var httpClient = new HttpClient())
@@ -87,7 +87,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, "Server error. Please contact the administrator.");
                 }
             }
-            return RedirectToAction("GetAll");
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -113,14 +113,14 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                 var response = await httpClient.DeleteAsync(url + "/" + id);
                 if (response.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("GetAll");
+                    return RedirectToAction("Index");
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Server error. Please contact the administrator.");
                 }
             }
-            return View("GetAll");
+            return View("Index");
         }
     }
 }
