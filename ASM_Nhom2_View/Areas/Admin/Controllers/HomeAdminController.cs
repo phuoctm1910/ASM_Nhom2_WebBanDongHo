@@ -7,7 +7,6 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
     [Area("Admin")]
     public class HomeAdminController : Controller
     {
-        [Route("HomeAdmin/Index")]
         public IActionResult Index()
         {
             return View();
