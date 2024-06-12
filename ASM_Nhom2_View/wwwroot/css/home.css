@@ -1,0 +1,182 @@
+﻿
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background: border-box;
+}
+
+.nav-home {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    position: relative;
+}
+
+    .nav-home:after {
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 2px;
+        left: 50%;
+        position: absolute;
+        background: #333;
+        transition: width 0.4s ease 0s, left 0.4s ease 0s;
+        width: 0;
+    }
+
+    .nav-home:hover:after {
+        width: 100%;
+        left: 0;
+    }
+
+.home-title {
+    padding: 11px 20px;
+    background: linear-gradient(-92deg, #262525 0%, #524e4e 100%) !important;
+    position: relative;
+    margin: 20px 0;
+    height: 55px;
+    display: inline-block;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+    .home-title::before {
+        position: absolute;
+        content: "";
+        border-top: 55px solid transparent;
+        border-left: 35px solid #262525;
+        right: -34px;
+        top: 0.6px;
+    }
+
+.card-link {
+    text-decoration: none;
+    /* Loại bỏ dấu gạch chân */
+    color: inherit;
+    /* Giữ nguyên màu chữ mặc định, không thay đổi khi là liên kết */
+}
+
+    .card-link:hover,
+    .card-link:visited {
+        text-decoration: none;
+        /* Loại bỏ dấu gạch chân khi di chuột và sau khi đã truy cập */
+    }
+.card {
+    position: relative;
+    width: 320px;
+    height: 480px;
+    background: #191919;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+    .card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        width: 100%;
+        height: 100%;
+        background: white;
+        transform: skewY(345deg);
+        transition: top 1s ease, transform 1s ease;
+    }
+
+    .card:hover::before {
+        top: -70%;
+        transform: skewY(390deg);
+    }
+
+    .card::after {
+        content: "CORSAIR";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-weight: 600;
+        font-size: 6em;
+        color: rgba(0, 0, 0, 0.1);
+    }
+
+    .card .imgBox {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 20px;
+        z-index: 1;
+    }
+    .card .contentBox {
+        position: relative;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 2;
+    }
+
+        .card .contentBox h3 {
+            font-size: 18px;
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card .contentBox .price {
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .card .contentBox .buy {
+            position: relative;
+            top: 100px;
+            opacity: 0;
+            padding: 10px 30px;
+            margin-top: 15px;
+            background: linear-gradient(-92deg, #262525 0%, #524e4e 100%) !important ;
+            text-decoration: none;
+            background: #ffce00;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 1s;
+        }
+        .card .contentBox a {
+            color: white;
+            font-weight: 700;
+        }
+
+    .card:hover .contentBox .buy {
+        top: 0;
+        opacity: 1;
+    }
+.btnList:has(button:hover) button:not(:hover) {
+    transition: filter 1s ease-in-out;
+    filter: blur(4px)
+}
+/* Khi button được focus */
+/* Khi chỉa vào button */
+.btnList button {
+    transition: transform 0.5s ease-in-out; /* Transition */
+}
+
+    .btnList button:hover {
+        transform: scale(1.5); /* Zoom ra */
+    }
+
+
