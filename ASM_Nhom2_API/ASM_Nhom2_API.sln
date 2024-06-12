@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASM_Nhom2_API", "ASM_Nhom2_API.csproj", "{59897311-B27A-40BF-A114-FE86367C518C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASM_Nhom2_View", "..\ASM_Nhom2_View\ASM_Nhom2_View.csproj", "{879D77FD-4C80-475D-B131-C3254592F610}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{59897311-B27A-40BF-A114-FE86367C518C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59897311-B27A-40BF-A114-FE86367C518C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59897311-B27A-40BF-A114-FE86367C518C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879D77FD-4C80-475D-B131-C3254592F610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879D77FD-4C80-475D-B131-C3254592F610}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879D77FD-4C80-475D-B131-C3254592F610}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879D77FD-4C80-475D-B131-C3254592F610}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
