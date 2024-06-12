@@ -128,24 +128,24 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Users" asp-action="Index" class="nav-link">
+                        <a asp-area="Admin" asp-controller="Brand" asp-action="GetAll" class="nav-link">
                             <i class="fas fa-id-card nav-icon"></i>
                             <p>
-                                Users
+                                Brand
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a asp-controller="Users" asp-action="Index" class="nav-link">
+                                <a asp-area="Admin" asp-controller="Brand" asp-action="GetAll" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>View Users</p>
+                                    <p>View Brand</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a asp-controller="Users" asp-action="Create" class="nav-link">
+                                <a asp-area="Admin" asp-controller="Brand" asp-action="AddBrandVM" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Users</p>
+                                    <p>Add Brand</p>
                                 </a>
                             </li>
                         </ul>
