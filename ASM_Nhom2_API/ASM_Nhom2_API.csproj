@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Service\BillServices\" />
     <Folder Include="Service\BrandServices\" />
-    <Folder Include="Service\ProductDetailServices\" />
     <Folder Include="Service\ProductServices\" />
     <Folder Include="Service\RoleServices\" />
     <Folder Include="Service\UserServices\" />
