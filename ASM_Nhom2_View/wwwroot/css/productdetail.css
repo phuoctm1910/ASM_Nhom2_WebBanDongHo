@@ -1,0 +1,81 @@
+﻿.magnifier {
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.big-img {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 20%;
+    border: 1px solid black;
+    z-index: 1;
+    display: none;
+}
+
+.small-img {
+    width: 200px;
+    display: block;
+}
+
+.question {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    right: 3px;
+}
+
+.ulList a:hover {
+    color: red !important;
+    cursor: pointer;
+}
+
+    .ulList a:hover .question svg path,
+    .ulList a:hover .question svg circle {
+        fill: red;
+    }
+
+.question svg {
+    vertical-align: top;
+}
+
+.carousel-wrap {
+    margin: 0 auto;
+    padding: 0 5%;
+    width: 80%;
+    position: relative;
+}
+
+/* fix blank or flashing items on carousel */
+.owl-carousel .item {
+    position: relative;
+    z-index: 100;
+    padding: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+    .owl-carousel .item.selected {
+        border: 2px solid #000;
+        /* Add border to selected item */
+    }
+
+.owl-stage {
+    margin: 0 auto !important;
+}
+
+.wrap_title_file_des {
+    padding: 2px;
+    border: 1px solid #000;
+    margin-bottom: 30px;
+}
+
+    .wrap_title_file_des .title-box-product {
+        text-align: center;
+        color: white;
+        background-color: black;
+        line-height: 36px;
+        box-sizing: border-box;
+    }
+
