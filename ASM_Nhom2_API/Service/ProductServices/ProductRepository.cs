@@ -2,6 +2,7 @@
 using ASM_Nhom2_API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace ASM_Nhom2_API.Service.ProductServices
                     ProductName = p.ProductName,
                     ProductStock = p.ProductStock,
                     ProductPrice = p.ProductPrice,
+                    ProductImages = p.ProductImages,
                     CategoryId = p.CategoryId,
                     CategoryName = p.Category.CategoryName
                 }).ToListAsync();
@@ -43,6 +45,7 @@ namespace ASM_Nhom2_API.Service.ProductServices
                     ProductName = p.ProductName,
                     ProductStock = p.ProductStock,
                     ProductPrice = p.ProductPrice,
+                    ProductImages = p.ProductImages,
                     CategoryId = p.CategoryId,
                     CategoryName = p.Category.CategoryName
                 }).FirstOrDefaultAsync();
@@ -50,12 +53,14 @@ namespace ASM_Nhom2_API.Service.ProductServices
 
         public async Task AddProductAsync(ProductVM productVM)
         {
+
             var product = new Product
             {
                 ProductCode = productVM.ProductCode,
                 ProductName = productVM.ProductName,
                 ProductStock = productVM.ProductStock,
                 ProductPrice = productVM.ProductPrice,
+                ProductImages = JsonConvert.SerializeObject(productVM.ProductImages),
                 CategoryId = productVM.CategoryId
             };
 
@@ -72,11 +77,13 @@ namespace ASM_Nhom2_API.Service.ProductServices
                 product.ProductName = productVM.ProductName;
                 product.ProductStock = productVM.ProductStock;
                 product.ProductPrice = productVM.ProductPrice;
+                product.ProductImages = JsonConvert.SerializeObject(productVM.ProductImageList);
                 product.CategoryId = productVM.CategoryId;
 
                 await _context.SaveChangesAsync();
             }
         }
+
 
         public async Task DeleteProductAsync(int productId)
         {
