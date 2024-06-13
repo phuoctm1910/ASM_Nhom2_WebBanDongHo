@@ -1,8 +1,10 @@
-﻿@model IEnumerable<ASM_Nhom2_API.Model.BrandVM>
+﻿@model IEnumerable<ASM_Nhom2_API.Model.RoleVM>
+
 @{
-    ViewData["Title"] = "List Brand";
+    ViewData["Title"] = "List Role";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -25,26 +27,26 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Brands</h3>
+                        <h3 class="card-title">Roles</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Brand ID</th>
-                                    <th>Brand Name</th>
+                                    <th>Role ID</th>
+                                    <th>Role Name</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@item.BrandId</td>
-                                        <td>@item.BrandName</td>
+                                        <td>@item.RoleId</td>
+                                        <td>@item.RoleName</td>
                                         <td>
-                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.BrandId">Edit</a>
-                                            <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.BrandId">Delete</a>
+                                            @*<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.RoleId">Edit</a>
+                                            <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.RoleId">Delete</a>*@
                                         </td>
                                     </tr>
                                 }

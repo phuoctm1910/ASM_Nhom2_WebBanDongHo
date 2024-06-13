@@ -1,4 +1,5 @@
-﻿using ASM_Nhom2_View.Data;
+﻿using ASM_Nhom2_API.Model;
+using ASM_Nhom2_View.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -9,33 +10,33 @@ using System.Threading.Tasks;
 
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
-
+    [Area("Admin")]
     public class RoleController : Controller
     {
-        private readonly string url = "https://localhost:44385/api/Role";
+        private string url = "https://localhost:44309/api/Role";
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Index()
         {
-            List<Role> categories = new List<Role>();
+            List<RoleVM> categories = new List<RoleVM>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    categories = JsonConvert.DeserializeObject<List<Role>>(apiResponse);
+                    categories = JsonConvert.DeserializeObject<List<RoleVM>>(apiResponse);
                 }
             }
             return View(categories);
         }
 
-        public IActionResult AddRole()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRole(Role category)
+        public async Task<IActionResult> Create(Role category)
         {
             Role category1 = new Role();
             using (var httpClient = new HttpClient())
@@ -49,7 +50,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             }
             if (category1 != null)
             {
-                return RedirectToAction(nameof(GetAll));
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -57,7 +58,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             }
         }
         [HttpGet]
-        public async Task<IActionResult> UpdateRole(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             Role category = new Role();
             using (var httpClient = new HttpClient())
@@ -73,7 +74,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateRole(Role sendCategory)
+        public async Task<IActionResult> Edit(Role sendCategory)
         {
             Role receiveCategory = new Role();
             using (var httpClient = new HttpClient())
@@ -89,7 +90,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, "Server error. Please contact the administrator.");
                 }
             }
-            return RedirectToAction("GetAll");
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -115,20 +116,16 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                 var response = await httpClient.DeleteAsync(url + "/" + id);
                 if (response.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("GetAll");
+                    return RedirectToAction("Index");
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Server error. Please contact the administrator.");
                 }
             }
-            return RedirectToAction("GetAll");
+            return RedirectToAction("Index");
         }
 
 
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }
