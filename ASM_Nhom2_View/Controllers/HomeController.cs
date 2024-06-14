@@ -1,4 +1,5 @@
-﻿using ASM_Nhom2_View.Models;
+﻿using ASM_Nhom2_View.Data;
+using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,12 @@ namespace ASM_Nhom2_View.Controllers
 {
     public class HomeController : Controller
     {
+        //private readonly AppDbContext _context;
+
+        //public HomeController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -20,6 +27,7 @@ namespace ASM_Nhom2_View.Controllers
 
         public IActionResult Index()
         {
+            //var pro = _context.Products.ToList();
             return View();
         }
 

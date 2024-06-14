@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    //[Area("Admin")]
     public class HomeAdminController : Controller
     {
-        [Microsoft.AspNetCore.Mvc.Route("/")]
+        //[Microsoft.AspNetCore.Mvc.Route("/")]
         public IActionResult Index()
         {
             return View();

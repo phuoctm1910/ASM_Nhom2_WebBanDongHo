@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<ASM_Nhom2_View.Data.Product>
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -131,6 +132,32 @@
                             </div>
                         </a>
                     </div>
+
+                      @*   @foreach (var item in Model)
+                          {
+                        <div class="col-xl-7">
+                            <a class="card-link" asp-controller="HomeUser" asp-action="Index">
+                                <div class="card border-0 hover-list-popular">
+                                    <div class="position-relative">
+                                        <img src="@Url.Content("~/images/" + item.ProductImages)" class="img-fluid" alt="Not Image">
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="fs-24 card-title fw-medium">
+                                            @item.ProductName
+                                        </p>
+                                        <div class="row card-text fs-12 color-9A9AB0">
+                                            <div class="col-xl-12">@item.ProductPrice.ToString("C")</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+
+                        } *@
+
+                    
+
                 </div>
             </div>
         </div>
