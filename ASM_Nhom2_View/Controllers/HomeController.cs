@@ -19,16 +19,16 @@ namespace ASM_Nhom2_View.Controllers
         {
             _context = context;
         }
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
         [Route("/")]
         public IActionResult Index()
         {
-            var Porduct = _context.Products.Include(p => p.Category).ToList();
+            var Porduct = _context.Products.Include(p => p.Category) .Include(p => p.Brand).ToList();
             return View(Porduct);
         }
 
