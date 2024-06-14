@@ -1,5 +1,7 @@
-﻿using ASM_Nhom2_View.Models;
+﻿using ASM_Nhom2_View.Data;
+using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,12 @@ namespace ASM_Nhom2_View.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -20,7 +28,8 @@ namespace ASM_Nhom2_View.Controllers
         [Route("/")]
         public IActionResult Index()
         {
-            return View();
+            var Porduct = _context.Products.Include(p => p.Category).ToList();
+            return View(Porduct);
         }
 
         public IActionResult Privacy()

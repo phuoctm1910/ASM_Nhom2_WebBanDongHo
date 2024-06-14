@@ -1,7 +1,4 @@
-﻿@{
-    Layout = null;
-}
-
+﻿@model IEnumerable<ASM_Nhom2_View.Data.Product>
 @{
     Layout = null;
 }
@@ -230,6 +227,23 @@
                                     </div>
                                 </a>
                             </div>
+@*                             @foreach (var item in Model)
+                            {
+                                <div class="col-md-3">
+                                    <a class="custom-link" asp-controller="Home" asp-action="Index" asp-route-id="@item.ProductId">
+                                        <div class="card border-0 hover-list-popular">
+                                            <div class="card-body">
+                                                <p class="fs-24 card-title fw-medium">
+                                                    @item.ProductName
+                                                </p>
+                                                <div class="row card-text fs-12 color-9A9AB0">
+                                                    <div class="col-xl-12">@item.ProductPrice.ToString("C")</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            } *@
                         </div>
                     </div>
                 </div>
