@@ -1,9 +1,8 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ASM_Nhom2_API.Model
+namespace ASM_Nhom2_View.Models
 {
     public class ProductVM
     {
@@ -34,6 +33,5 @@ namespace ASM_Nhom2_API.Model
                 ProductImages = JsonConvert.SerializeObject(value);
             }
         }
-
     }
 }

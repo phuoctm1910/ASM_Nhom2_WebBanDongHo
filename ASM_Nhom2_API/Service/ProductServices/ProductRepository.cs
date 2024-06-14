@@ -2,6 +2,8 @@
 using ASM_Nhom2_API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,75 +19,48 @@ namespace ASM_Nhom2_API.Service.ProductServices
             _context = context;
         }
 
-        public async Task<IEnumerable<ProductVM>> GetAllProductsAsync()
+        public async Task<IEnumerable<Product>> GetAllProductAsync()
         {
-            return await _context.Products
-                .Select(p => new ProductVM
-                {
-                    ProductId = p.ProductId,
-                    ProductCode = p.ProductCode,
-                    ProductName = p.ProductName,
-                    ProductStock = p.ProductStock,
-                    ProductPrice = p.ProductPrice,
-                    CategoryId = p.CategoryId,
-                    CategoryName = p.Category.CategoryName
-                }).ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
-        public async Task<ProductVM> GetProductByIdAsync(int productId)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _context.Products
-                .Where(p => p.ProductId == productId)
-                .Select(p => new ProductVM
-                {
-                    ProductId = p.ProductId,
-                    ProductCode = p.ProductCode,
-                    ProductName = p.ProductName,
-                    ProductStock = p.ProductStock,
-                    ProductPrice = p.ProductPrice,
-                    CategoryId = p.CategoryId,
-                    CategoryName = p.Category.CategoryName
-                }).FirstOrDefaultAsync();
+            return await _context.Products.FindAsync(id);
         }
 
-        public async Task AddProductAsync(ProductVM productVM)
+        public async Task<Product> AddProductAsync(Product product)
         {
-            var product = new Product
-            {
-                ProductCode = productVM.ProductCode,
-                ProductName = productVM.ProductName,
-                ProductStock = productVM.ProductStock,
-                ProductPrice = productVM.ProductPrice,
-                CategoryId = productVM.CategoryId
-            };
-
-            await _context.Products.AddAsync(product);
+            product.ProductImages = JsonConvert.SerializeObject(product.ProductImages);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
+            return product;
         }
 
-        public async Task UpdateProductAsync(int productId, ProductVM productVM)
+        public async Task<Product> UpdateProductAsync(int id, Product product)
         {
-            var product = await _context.Products.FindAsync(productId);
-            if (product != null)
-            {
-                product.ProductCode = productVM.ProductCode;
-                product.ProductName = productVM.ProductName;
-                product.ProductStock = productVM.ProductStock;
-                product.ProductPrice = productVM.ProductPrice;
-                product.CategoryId = productVM.CategoryId;
+            var existingProd = await _context.Products.FindAsync(id);
+            if (existingProd == null) return null;
 
-                await _context.SaveChangesAsync();
-            }
+            existingProd.ProductCode = product.ProductCode;
+            existingProd.ProductName = product.ProductName;
+            existingProd.ProductStock = product.ProductStock;
+            existingProd.ProductPrice = product.ProductPrice;
+            existingProd.CategoryId = product.CategoryId;
+            existingProd.ProductImages = JsonConvert.SerializeObject(product.ProductImages);
+
+            await _context.SaveChangesAsync();
+            return existingProd;
         }
 
-        public async Task DeleteProductAsync(int productId)
+        public async Task<bool> DeleteProductAsync(int id)
         {
-            var product = await _context.Products.FindAsync(productId);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return false;
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

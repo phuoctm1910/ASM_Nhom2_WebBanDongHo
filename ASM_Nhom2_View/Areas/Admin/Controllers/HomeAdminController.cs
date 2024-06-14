@@ -1,13 +1,13 @@
 ﻿using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
-    //[Area("Admin")]
+    [Area("Admin")]
     public class HomeAdminController : Controller
     {
-        //[Microsoft.AspNetCore.Mvc.Route("/")]
+        [Route("HomeAdmin/Index")]
         public IActionResult Index()
         {
             return View();
