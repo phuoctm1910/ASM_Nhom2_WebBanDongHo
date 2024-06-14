@@ -1,10 +1,10 @@
-using ASM_Nhom2_View.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ASM_Nhom2_View.Data;
 
 namespace ASM_Nhom2_View
 {
