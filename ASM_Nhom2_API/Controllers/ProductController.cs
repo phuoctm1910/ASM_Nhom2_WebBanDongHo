@@ -13,26 +13,22 @@ namespace ASM_Nhom2_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productService;
-        private readonly AppDbContext _context;
 
-        public ProductsController(IProductRepository productService, AppDbContext context)
+        public ProductController(IProductRepository productService)
         {
             _productService = productService;
-            _context = context;
         }
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductVM>>> GetProducts()
+        public async Task<IActionResult> GetAllProduct()
         {
-            var products = await _productService.GetAllProductsAsync();
-            return Ok(products);
+            var product = await _productService.GetAllProductAsync();
+            return Ok(product);
         }
-
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductVM>> GetProduct(int id)
+        public async Task<IActionResult> GetProductById(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
@@ -42,42 +38,32 @@ namespace ASM_Nhom2_API.Controllers
             return Ok(product);
         }
 
+        
+
         [HttpPost]
-        public async Task<ActionResult> AddProduct([FromBody] ProductVM productVM)
+        public async Task<IActionResult> AddProduct([FromBody] Product product)
         {
-            var category = await _context.Categories.FindAsync(productVM.CategoryId);
-            if (category == null)
+            if (product == null)
             {
-                return BadRequest("Invalid CategoryId.");
+                return BadRequest();
             }
-
-            var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.ProductCode == productVM.ProductCode);
-            if (existingProduct != null)
-            {
-                return BadRequest("Product with the same code already exists.");
-            }
-            else
-            {
-                await _productService.AddProductAsync(productVM);
-            }
-
-            return CreatedAtAction(nameof(GetProduct), new { id = productVM.ProductId }, productVM);
+            var createdProduct = await _productService.AddProductAsync(product);
+            return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.ProductId }, createdProduct);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null)
+            var result = await _productService.DeleteProductAsync(id);
+            if (!result)
             {
                 return NotFound();
             }
 
-            await _productService.DeleteProductAsync(product.ProductId);
             return NoContent();
         }
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchProduct(int id, [FromBody] JsonPatchDocument<ProductVM> patchDoc)
+        public async Task<IActionResult> PatchInformation(int id, [FromBody] JsonPatchDocument<Product> patchDoc)
         {
             if (patchDoc == null)
             {
@@ -91,19 +77,6 @@ namespace ASM_Nhom2_API.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(product.CategoryId);
-            if (category == null)
-            {
-                return BadRequest("Invalid CategoryId.");
-            }
-
-            var existingProduct = await _context.Products
-                .FirstOrDefaultAsync(p => p.ProductCode == product.ProductCode && p.ProductId != id);
-            if (existingProduct != null)
-            {
-                return BadRequest("Product with the same code already exists.");
-            }
-
             patchDoc.ApplyTo(product, ModelState);
 
             if (!TryValidateModel(product))
@@ -111,10 +84,12 @@ namespace ASM_Nhom2_API.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            await _productService.UpdateProductAsync(id, product);
+            var updatedInformation = await _productService.UpdateProductAsync(id, product);
 
-            return Ok(product);
+            return Ok(updatedInformation);
         }
+
+
 
     }
 }

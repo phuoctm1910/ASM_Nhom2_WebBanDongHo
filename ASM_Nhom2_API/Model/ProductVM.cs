@@ -12,6 +12,13 @@ namespace ASM_Nhom2_API.Model
         public int ProductStock { get; set; }
         public decimal ProductPrice { get; set; }
         public string ProductImages { get; set; }
+        public string Origin { get; set; }
+        public string MachineType { get; set; }
+        public int Diameter { get; set; }
+        public string ClockType { get; set; }
+        public int Insurrance { get; set; }
+        public string Color { get; set; }
+        public int BrandId { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
 

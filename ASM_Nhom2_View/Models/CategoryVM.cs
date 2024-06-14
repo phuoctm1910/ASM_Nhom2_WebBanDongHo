@@ -1,4 +1,4 @@
-﻿namespace ASM_Nhom2_API.Model
+﻿namespace ASM_Nhom2_View.Models
 {
     public class CategoryVM
     {
