@@ -42,7 +42,7 @@ namespace ASM_Nhom2_API.Controllers
         public async Task<ActionResult<Bill>> CreateBill(BillVM billVM)
         {
             var createdBill = await _billService.CreateBillAsync(billVM);
-            return CreatedAtAction(nameof(GetBill), new { id = createdBill.Id }, createdBill);
+            return CreatedAtAction(nameof(GetBill), new { id = createdBill.BillId }, createdBill);
         }
 
         [HttpPut("{id}")]

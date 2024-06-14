@@ -16,6 +16,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ASM_Nhom2_API.Service.ProductServices;
+using ASM_Nhom2_API.Service.CategoryServices;
+using Newtonsoft.Json.Serialization;
 
 namespace ASM_Nhom2_API
 {
@@ -39,7 +42,10 @@ namespace ASM_Nhom2_API
                 });
 
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ASM_Nhom2_API", Version = "v1" });
@@ -47,6 +53,8 @@ namespace ASM_Nhom2_API
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IBillRepository,BillRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
