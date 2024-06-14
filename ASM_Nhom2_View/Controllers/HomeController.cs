@@ -17,7 +17,7 @@ namespace ASM_Nhom2_View.Controllers
         {
             _logger = logger;
         }
-
+        [Route("/")]
         public IActionResult Index()
         {
             return View();

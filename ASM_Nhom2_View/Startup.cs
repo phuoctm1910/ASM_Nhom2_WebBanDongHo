@@ -51,7 +51,14 @@ namespace ASM_Nhom2_View
                         pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}"
                     );
 
+                    endpoints.MapControllerRoute(
+                    name: "default",
+                   pattern: "{controller=Home}/{action=Home}/{id?}");
+
+
                 });
+              
+
             });
         }
     }

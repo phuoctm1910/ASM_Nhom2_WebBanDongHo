@@ -48,12 +48,16 @@
                 <input type="text" id="password" name="password" required class="rounded-4">
             </div>
             <div class="input-group">
+                <label for="gender">Giới tính:</label>
+                <input type="text" name="gender" rows="4" required class="rounded-4"></input>
+            </div>
+            <div class="input-group">
                 <label for="password">Số điện thoại:</label>
                 <input type="number" id="phone" name="phone" required class="rounded-4">
             </div>
             <div class="input-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required class="rounded-4">
+                <label for="username">Tài khoản:</label>
+                <input type="text" id="username" name="username" required class="rounded-4">
             </div>
             <div class="input-group">
                 <label for="password">Mật khẩu:</label>
@@ -63,10 +67,7 @@
                 <label for="password">Năm Sinh:</label>
                 <input type="date" id="birth" name="birth" required class="rounded-4">
             </div>
-            <div class="input-group">
-                <label for="address">Địa Chỉ:</label>
-                <textarea id="address" name="address" rows="4" required class="rounded-4" style="width: 100%; padding: 10px; border: 1px solid #ccc;"></textarea>
-            </div>
+         
 
             <button class="login " type="submit">Đăng Ký</button>
             <a class="login " asp-controller="Home" asp-action="Login">Đăng Nhập</a>
