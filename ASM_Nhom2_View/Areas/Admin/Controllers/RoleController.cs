@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using ASM_Nhom2_View.Models;
 
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {

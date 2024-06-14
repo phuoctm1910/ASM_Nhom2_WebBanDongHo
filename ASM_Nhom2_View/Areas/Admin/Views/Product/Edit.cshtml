@@ -1,0 +1,166 @@
+﻿@model ASM_Nhom2_View.Models.ProductVM
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Edit Product</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Validation</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <h3 class="card-title">Please fill full fields</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ProductId" />
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="ProductCode" class="control-label">Mã Sản Phẩm:</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="ProductCode" type="text" class="form-control">
+                                    <span asp-validation-for="ProductCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProductName" class="control-label">Tên Sản Phâm:</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="ProductName" type="text" class="form-control">
+                                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProductImages" class="control-label">Ảnh Sản Phẩm:</label>
+                                <div class="input-group mb-3">
+                                    <input type="file" asp-for="ProductImages" multiple class="form-control" id="productImagesInput" />
+                                    <span asp-validation-for="ProductImages" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProductStock" class="control-label">Số lượng Sản Phẩm:</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="ProductStock" type="number" class="form-control">
+                                    <span asp-validation-for="ProductStock" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProductPrice" class="control-label">Giá Sản Phẩm:</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="ProductPrice" type="number" class="form-control">
+                                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CategoryId" class="control-label">Loại đồng hồ dành cho:</label>
+                                <div class="input-group mb-3">
+                                    <select asp-for="CategoryId" class="form-select form-control" placeholder="Chọn loại sản phẩm" asp-items="@(ViewData["CategoryId"] as SelectList)">
+                                        <option value="-1">Dành cho</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label>Selected Images</label>
+                                <ul id="selectedImagesList" style="list-style: none; padding: 0;"></ul>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Images (Choose to remove)</label>
+                                <ul id="imageList" style="list-style: none; padding: 0;">
+                                    @foreach (var image in Model.ProductImageList)
+                                    {
+                                        <li class="mx-3 my-2 p-2 text-center" style="display: inline-block;">
+                                            <input type="checkbox" class="image-checkbox" value="@image" />
+                                            <img src="~/uploads/@image" alt="@image" width="70" height="70" style="display: block;" />
+                                            <input type="hidden" name="imagesNotRemove" value="@image" />
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-outline-dark">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll(".image-checkbox");
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", function () {
+                    const hiddenInput = this.nextElementSibling.nextElementSibling;
+                    if (this.checked) {
+                        hiddenInput.name = "imagesToRemove";
+                    } else {
+                        hiddenInput.name = "imagesNotRemove";
+                    }
+                });
+            });
+
+            const productImagesInput = document.getElementById("productImagesInput");
+            const selectedImagesList = document.getElementById("selectedImagesList");
+
+            productImagesInput.addEventListener("change", function () {
+                selectedImagesList.innerHTML = "";
+                Array.from(this.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const li = document.createElement("li");
+                        li.className = "mx-3 my-2 p-2 text-center";
+                        li.style.display = "inline-block";
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.alt = file.name;
+                        img.width = 65;
+                        img.height = 70;
+                        img.style.display = "block";
+                        li.appendChild(img);
+                        selectedImagesList.appendChild(li);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        });
+    </script>
+}

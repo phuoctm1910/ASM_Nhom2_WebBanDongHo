@@ -21,10 +21,9 @@ namespace ASM_Nhom2_API.Service.BillServices
             var bill = new Bill
             {
                 UserID = billVM.UserID,
-                ProductID = billVM.ProductID,
                 Quantity = billVM.Quantity,
-                Sale = billVM.Sale,
-                Total = billVM.Total
+                TotalAmount = billVM.TotalAmount,
+                Status = "Pending"
             };
 
             _context.Bills.Add(bill);
@@ -37,16 +36,14 @@ namespace ASM_Nhom2_API.Service.BillServices
         {
             return await _context.Bills
                 .Include(b => b.User)
-                .Include(b => b.Product)
-                .FirstOrDefaultAsync(b => b.Id == id);
+                .FirstOrDefaultAsync(b => b.BillId == id);
         }
 
         public async Task<IEnumerable<Bill>> GetAllBillsAsync()
         {
             return await _context.Bills
                 .Include(b => b.User)
-                .Include(b => b.Product)
-                .OrderBy(b => b.Id)
+                .OrderBy(b => b.BillId)
                 .ToListAsync();
         }
 
@@ -60,10 +57,9 @@ namespace ASM_Nhom2_API.Service.BillServices
             }
 
             bill.UserID = billVM.UserID;
-            bill.ProductID = billVM.ProductID;
             bill.Quantity = billVM.Quantity;
-            bill.Sale = billVM.Sale;
-            bill.Total = billVM.Total;
+            bill.TotalAmount = billVM.TotalAmount;
+            bill.Status = billVM.Status ;
 
             _context.Bills.Update(bill);
             await _context.SaveChangesAsync();
