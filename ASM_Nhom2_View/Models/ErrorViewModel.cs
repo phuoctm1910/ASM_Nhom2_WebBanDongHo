@@ -1,6 +1,4 @@
-using System;
-
-namespace ASM_Nhom2_View.Models
+﻿namespace ASM_Nhom2_View.Models
 {
     public class ErrorViewModel
     {

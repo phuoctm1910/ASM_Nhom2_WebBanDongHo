@@ -6,6 +6,6 @@ namespace ASM_Nhom2_API.Data
     {
         public int BrandId { get; set; }
         public string BrandName { get; set; }
-        public virtual ICollection<ProductDetail> ProductDetail { get; set; } = new HashSet<ProductDetail>();
+        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
     }
 }
