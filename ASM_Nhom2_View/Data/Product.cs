@@ -9,26 +9,44 @@ namespace ASM_Nhom2_View.Data
     {
         [Key]
         public int ProductId { get; set; }
+
         [Required]
         public string ProductCode { get; set; }
+
         [Required]
         public string ProductName { get; set; }
+
         public int ProductStock { get; set; }
+
         [Required]
         public decimal ProductPrice { get; set; }
+
         public int CategoryId { get; set; }
+
         public string ProductImages { get; set; }
+
         public string Origin { get; set; }
 
         public string MachineType { get; set; }
+
         public int Diameter { get; set; }
+
         public string ClockType { get; set; }
+
         public int Insurrance { get; set; }
+
         public string Color { get; set; }
+
         public int BrandId { get; set; }
+
+        [ForeignKey("BrandId")]
         public virtual Brand Brand { get; set; }
+
+        [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
         public virtual ICollection<Bill> Bills { get; set; } = new HashSet<Bill>();
+
         public virtual ICollection<BillDetails> BillDetails { get; set; } = new HashSet<BillDetails>();
 
         [NotMapped]
@@ -49,6 +67,5 @@ namespace ASM_Nhom2_View.Data
                 ProductImages = JsonConvert.SerializeObject(value);
             }
         }
-
     }
 }

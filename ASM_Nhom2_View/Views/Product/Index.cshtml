@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<ASM_Nhom2_View.Data.Product>
 @{
     Layout = null;
 }
@@ -17,7 +17,6 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/product.css" asp-append-version="true" />
-
 </head>
 <body>
     <header>
@@ -308,7 +307,26 @@
                         </a>
                     </div>
 
-                </div>
+                    @foreach(var item in Model)
+                    {
+                        <div class="col-md-3 my-3">
+                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                <div class="card">
+                                    <div class="imgBox">
+                                        <img src="~/images/Product/1001.png" alt="watch corsair" class="watch">
+                                    </div>
+                                    <div class="contentBox">
+                                        <h3>@item.ProductImageList.First()</h3>
+                                        <h2 class="price">@item.ProductPrice</h2>
+                                        <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        
+                    }
+
                 <!--Tải thêm sản phẩm-->
                 <div class="row" style="margin: 20px auto;width: fit-content;">
                     <button class="btnMore fill">Xem thêm <i class="fa-solid fa-plus"></i></button>

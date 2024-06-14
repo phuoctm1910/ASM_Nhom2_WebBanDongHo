@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASM_Nhom2_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240611161112_create-database")]
-    partial class createdatabase
+    [Migration("20240614065634_ASM-C#5")]
+    partial class ASMC5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,33 +24,67 @@ namespace ASM_Nhom2_API.Migrations
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Bill", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BillId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProductID")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<float>("Sale")
-                        .HasColumnType("real");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Total")
+                    b.Property<float>("TotalAmount")
                         .HasColumnType("real");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("BillId");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserID");
 
                     b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("ASM_Nhom2_API.Data.BillDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BillId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
+                    b.Property<float>("UnitPrice")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("BillDetails");
                 });
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Brand", b =>
@@ -92,8 +126,29 @@ namespace ASM_Nhom2_API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ClockType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Diameter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Insurrance")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductCode")
                         .IsRequired()
@@ -114,50 +169,11 @@ namespace ASM_Nhom2_API.Migrations
 
                     b.HasKey("ProductId");
 
+                    b.HasIndex("BrandId");
+
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ASM_Nhom2_API.Data.ProductDetail", b =>
-                {
-                    b.Property<int>("ProductDetailID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaseSize")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Diameter")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Insurrance")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MachineryWatch")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Origin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SubstanceGlass")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProductDetailID");
-
-                    b.HasIndex("BrandId");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Role", b =>
@@ -191,7 +207,9 @@ namespace ASM_Nhom2_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit");
@@ -200,7 +218,9 @@ namespace ASM_Nhom2_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -209,7 +229,9 @@ namespace ASM_Nhom2_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("UserID");
 
@@ -220,50 +242,51 @@ namespace ASM_Nhom2_API.Migrations
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Bill", b =>
                 {
-                    b.HasOne("ASM_Nhom2_API.Data.Product", "Product")
+                    b.HasOne("ASM_Nhom2_API.Data.Product", null)
                         .WithMany("Bills")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("ASM_Nhom2_API.Data.User", "User")
                         .WithMany("Bills")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ASM_Nhom2_API.Data.BillDetails", b =>
+                {
+                    b.HasOne("ASM_Nhom2_API.Data.Bill", "Bill")
+                        .WithMany("BillDetails")
+                        .HasForeignKey("BillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ASM_Nhom2_API.Data.Product", "Product")
+                        .WithMany("BillDetails")
+                        .HasForeignKey("ProductId")
+                        .IsRequired();
+
+                    b.Navigation("Bill");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ASM_Nhom2_API.Data.Product", b =>
                 {
+                    b.HasOne("ASM_Nhom2_API.Data.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId")
+                        .IsRequired();
+
                     b.HasOne("ASM_Nhom2_API.Data.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .IsRequired();
 
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ASM_Nhom2_API.Data.ProductDetail", b =>
-                {
-                    b.HasOne("ASM_Nhom2_API.Data.Brand", "Brand")
-                        .WithMany("ProductDetail")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ASM_Nhom2_API.Data.Product", "Product")
-                        .WithOne("ProductDetail")
-                        .HasForeignKey("ASM_Nhom2_API.Data.ProductDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Brand");
 
-                    b.Navigation("Product");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.User", b =>
@@ -276,9 +299,14 @@ namespace ASM_Nhom2_API.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("ASM_Nhom2_API.Data.Bill", b =>
+                {
+                    b.Navigation("BillDetails");
+                });
+
             modelBuilder.Entity("ASM_Nhom2_API.Data.Brand", b =>
                 {
-                    b.Navigation("ProductDetail");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Category", b =>
@@ -288,9 +316,9 @@ namespace ASM_Nhom2_API.Migrations
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Product", b =>
                 {
-                    b.Navigation("Bills");
+                    b.Navigation("BillDetails");
 
-                    b.Navigation("ProductDetail");
+                    b.Navigation("Bills");
                 });
 
             modelBuilder.Entity("ASM_Nhom2_API.Data.Role", b =>
