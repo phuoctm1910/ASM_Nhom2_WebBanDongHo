@@ -1,4 +1,5 @@
-﻿
+﻿@model ASM_Nhom2_View.Data.User
+
 @{
     Layout = null;
 }
@@ -42,18 +43,25 @@
             </a>
         </div>
 
-        <form>
+        <form asp-controller="User" asp-action="Login" method="post">
             <div class="input-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required class="rounded-4" autocomplete="off">
+                <label for="UserName">Username:</label>
+                <div class="input-group mb-3">
+                    <input asp-for="UserName" type="text" class="form-control rounded-4" id="UserName" name="UserName" autocomplete="off">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
             </div>
             <div class="input-group">
                 <label for="password">Mật khẩu:</label>
-                <input type="password" id="password" name="password" required class="rounded-4" autocomplete="off">
+                <div class="input-group mb-3">
+                    <input asp-for="Password" type="password" class="form-control rounded-4" id="Password" name="Password" autocomplete="off">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
             </div>
-            <button class="login " type="submit">Đăng Nhập</button>
-            <a class="login " asp-controller="User" asp-action="Register">Đăng Ký</a>
+            <button class="login" type="submit">Đăng Nhập</button>
+            <a class="login" asp-controller="User" asp-action="Register">Đăng Ký</a>
         </form>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
