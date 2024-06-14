@@ -75,12 +75,12 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="User" asp-action="Register">Đăng ký</a></li>
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Login">Đăng nhập</a></li>
                                 <li><a class="dropdown-item" asp-controller="" asp-action="">Quên mật khẩu</a></li>
                                 <hr />
-                                <li><a class="dropdown-item" asp-controller="" asp-action="">Đổi thông tin</a></li>
-                                <li><a class="dropdown-item" asp-controller="" asp-action="">Đổi mật khẩu</a></li>
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Updateinfo">Đổi thông tin</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Changepassword">Đổi mật khẩu</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Đăng xuất</a></li>
                             </ul>
                             <hr />
 
@@ -88,7 +88,7 @@
 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-end position-relative nav-home" role="button" asp-controller="Home" asp-action="Cart">
+                            <a class="nav-link text-end position-relative nav-home" role="button" asp-controller="Cart" asp-action="Index">
                                 Giỏ hàng
                                 <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 7px; right: -19px;">
                                     3
