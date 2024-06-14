@@ -313,10 +313,11 @@
                             <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
                                 <div class="card">
                                     <div class="imgBox">
-                                        <img src="~/images/Product/1001.png" alt="watch corsair" class="watch">
+                                        <img src="~/images/Product/1009.png" alt="watch corsair" class="watch">
                                     </div>
                                     <div class="contentBox">
-                                        <h3>@item.ProductImageList.First()</h3>
+                                        <h3>@item.ProductName</h3>
+                                      @*   <h3>@item.ProductImageList.First()</h3> *@
                                         <h2 class="price">@item.ProductPrice</h2>
                                         <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
                                     </div>
