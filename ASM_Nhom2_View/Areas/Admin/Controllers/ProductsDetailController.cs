@@ -1,5 +1,5 @@
-﻿using ASM_Nhom2_API.Model;
-using ASM_Nhom2_View.Data;
+﻿using ASM_Nhom2_View.Data;
+using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -18,13 +18,13 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<ProductDetailVM> categories = new List<ProductDetailVM>();
+            List<ProductVM> categories = new List<ProductVM>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    categories = JsonConvert.DeserializeObject<List<ProductDetailVM>>(apiResponse);
+                    categories = JsonConvert.DeserializeObject<List<ProductVM>>(apiResponse);
                 }
             }
             return View(categories);
@@ -36,9 +36,9 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(ProductDetailVM category)
+        public async Task<IActionResult> Create(ProductVM category)
         {
-            ProductDetailVM categories = new ProductDetailVM();
+            ProductVM categories = new ProductVM();
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(category),
@@ -47,7 +47,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                 using (var response = await httpClient.PostAsync(url, content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    categories = JsonConvert.DeserializeObject<ProductDetailVM>(apiResponse);
+                    categories = JsonConvert.DeserializeObject<ProductVM>(apiResponse);
                 }
 
             }
@@ -61,29 +61,29 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            ProductDetailVM categories = new ProductDetailVM();
+            ProductVM categories = new ProductVM();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(url + "/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    categories = JsonConvert.DeserializeObject<ProductDetailVM>(apiResponse);
+                    categories = JsonConvert.DeserializeObject<ProductVM>(apiResponse);
                 }
             }
             return View(categories);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductDetailVM category)
+        public async Task<IActionResult> Edit(ProductVM category)
         {
-            ProductDetailVM categories = new ProductDetailVM();
+            ProductVM categories = new ProductVM();
             using (var httpClient = new HttpClient())
             {
 
-                using (var response = await httpClient.PutAsJsonAsync(url + "/" + category.ProductDetailId, category))
+                using (var response = await httpClient.PutAsJsonAsync(url + "/" + category.ProductId, category))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    categories = JsonConvert.DeserializeObject<ProductDetailVM>(apiResponse);
+                    categories = JsonConvert.DeserializeObject<ProductVM>(apiResponse);
                 }
             }
             return RedirectToAction("Index");
@@ -93,13 +93,13 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            ProductDetailVM categories = new ProductDetailVM();
+            ProductVM categories = new ProductVM();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(url + "/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    categories = JsonConvert.DeserializeObject<ProductDetailVM>(apiResponse);
+                    categories = JsonConvert.DeserializeObject<ProductVM>(apiResponse);
                 }
             }
             return View(categories);
@@ -107,11 +107,11 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteConfirm(ProductDetailVM category)
+        public async Task<IActionResult> DeleteConfirm(ProductVM category)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.DeleteAsync(url + "/" + category.ProductDetailId))
+                using (var response = await httpClient.DeleteAsync(url + "/" + category.ProductId))
                 {
                     if (response.IsSuccessStatusCode)
                     {
