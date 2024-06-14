@@ -1,5 +1,5 @@
 ﻿using ASM_Nhom2_View.Data;
-using ASM_Nhom2_View.Model;
+using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
