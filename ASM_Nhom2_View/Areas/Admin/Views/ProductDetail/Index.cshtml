@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ASM_Nhom2_API.Model.ProductDetailVM>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductDetailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubstanceGlass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MachineryWatch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Diameter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CaseSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Insurrance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Origin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BrandId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductDetailId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubstanceGlass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MachineryWatch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Diameter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Insurrance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Origin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BrandId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
