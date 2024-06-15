@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ASM_Nhom2_View.Controllers
@@ -30,6 +34,12 @@ namespace ASM_Nhom2_View.Controllers
         }
 
         [HttpGet]
+
+        public UserController(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Login()
         {
             if (HttpContext.Session.GetString("Email") == null)
@@ -78,6 +88,15 @@ namespace ASM_Nhom2_View.Controllers
 
         public IActionResult Register()
         {
+            var genderSelectList = new SelectList(new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Chọn giới tính", Value = "" },
+            new SelectListItem { Text = "Nam", Value = "true" },
+            new SelectListItem { Text = "Nữ", Value = "false" }
+        }, "Value", "Text");
+
+            ViewBag.GenderSelectList = genderSelectList;
+
             return View();
         }
 
@@ -162,9 +181,23 @@ namespace ASM_Nhom2_View.Controllers
 
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<IActionResult> Register([Bind("FullName,Gender,PhoneNumber,UserName,Password,BirthDate")] User user)
         {
             if (!ModelState.IsValid)
             {
+                var newUser = new User()
+                {
+                    FullName = user.FullName,
+                    Gender = user.Gender,
+                    PhoneNumber = user.PhoneNumber,
+                    UserName = user.UserName,
+                    Password = user.Password,
+                    BirthDate = user.BirthDate,
+                    RoleId = 2
+                };
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Login));
                 return View(model);
             }
 
@@ -231,12 +264,19 @@ namespace ASM_Nhom2_View.Controllers
                 return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
             }
 
+
+            return View(user);
+
+
             user.Password = newPassword;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             return Json(new { success = true, message = "Đổi mật khẩu thành công." });
         }
+
+        
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASM_Nhom2_View.Models
 {
@@ -6,6 +7,8 @@ namespace ASM_Nhom2_View.Models
     {
         public string FullName { get; set; }
         public bool? Gender { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Image { get; set; }
