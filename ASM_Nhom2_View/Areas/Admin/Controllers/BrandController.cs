@@ -1,4 +1,4 @@
-﻿using ASM_Nhom2_API.Model;
+﻿using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
