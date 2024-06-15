@@ -2,8 +2,8 @@
 @{
 
     Layout = null;
-    string username = Context.Session.GetString("UserName");
-    bool isLoggedIn = !string.IsNullOrEmpty(username);
+    string FullName = Context.Session.GetString("FullName");
+    bool isLoggedIn = !string.IsNullOrEmpty(FullName);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +61,7 @@
                             {
                                 <a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
                                    aria-expanded="false">
-                                    @username
+                                    Hello, @FullName
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-controller="User" asp-action="Chnageinfo">Đổi thông tin</a></li>

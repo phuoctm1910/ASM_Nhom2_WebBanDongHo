@@ -10,9 +10,7 @@
     <title>Title</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -29,15 +27,15 @@
         <h1>Đăng nhập</h1>
         <p>Đăng nhập để truy cập tài khoản và quản lý đơn hàng dễ dàng.</p>
         <div class="social-login">
-            <a href="#" class="link">
+            <a asp-controller="User" asp-action="GoogleLogin" class="link">
                 <img src="https://i.pinimg.com/originals/84/c7/00/84c7007eb6ac4374f77394d1e4954a96.png" alt="">
                 <h6>Google</h6>
             </a>
-            <a href="#" class="link">
+            <a asp-controller="Home" asp-action="FacebookLogin" class="link">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="">
                 <h6>Facebook</h6>
             </a>
-            <a href="#" class="link">
+            <a asp-controller="Home" asp-action="TwitterLogin" class="link">
                 <img src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?size=338&ext=jpg&ga=GA1.1.1369675164.1715558400&semt=ais_user" alt="">
                 <h6>Twitter</h6>
             </a>
@@ -65,10 +63,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"></script>
 </body>
 </html>
-

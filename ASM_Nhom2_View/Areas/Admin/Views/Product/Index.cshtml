@@ -218,6 +218,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 @section Scripts {
@@ -246,6 +247,7 @@
                         var uploadsPath = '@Url.Content("~/uploads/")';
                         $('#productImagesRow').append(`<div class="col-md-3"><img src="${uploadsPath}${image}" width="50" height="50" class="img-thumbnail"></div>`);
                     });
+
 
                     $('#productDetailsModal').modal('show');
                 },

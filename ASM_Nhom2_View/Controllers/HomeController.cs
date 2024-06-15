@@ -1,5 +1,6 @@
 ﻿using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace ASM_Nhom2_View.Controllers
         {
             _logger = logger;
         }
-
+        [Route("/")]
         public IActionResult Index()
         {
             return View();

@@ -1,75 +1,114 @@
 using ASM_Nhom2_View.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 
-namespace ASM_Nhom2_View
+public class Startup
 {
-    public class Startup
+    public IConfiguration Configuration { get; }
+
+    public Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; }
+        Configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllersWithViews();
 
-        public void ConfigureServices(IServiceCollection services)
+        services.AddDbContext<AppDbContext>(options =>
         {
-            services.AddControllersWithViews();
-            services.AddDbContext<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
-            services.AddSession(option =>
+            var connectionString = Configuration.GetConnectionString("DBConnection");
+            if (string.IsNullOrEmpty(connectionString))
             {
-                option.IdleTimeout = TimeSpan.FromSeconds(1000);
-                option.Cookie.HttpOnly = true;
-                option.Cookie.IsEssential = true;
-            });
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
-            services.AddHttpClient();
-            services.AddAuthentication()
-                    .AddGoogle(options =>
-                    {
-                        IConfigurationSection googleAuthNSection =
-                            Configuration.GetSection("Authentication:Google");
-
-                        options.ClientId = googleAuthNSection["ClientId"];
-                        options.ClientSecret = googleAuthNSection["ClientSecret"];
-                    });
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            // Configure the HTTP request pipeline.
-            if (!env.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                throw new InvalidOperationException("DBConnection is not configured.");
             }
+            options.UseSqlServer(connectionString);
+        });
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSession();
-            app.UseRouting();
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
 
-            app.UseAuthorization();
+        services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+        })
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        })
+        .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+        {
+            IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
+            options.ClientId = googleAuthNSection["ClientId"];
+            options.ClientSecret = googleAuthNSection["ClientSecret"];
+            options.CallbackPath = "/signin-google";
+            options.Scope.Add("email");
+            options.Scope.Add("profile");
+            options.SaveTokens = true;
+        });
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "areas",
-                    pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}"
-                );
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
-                );
-            });
+        services.AddHttpClient();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
+        else
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseSession();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.Use(async (context, next) =>
+        {
+            try
+            {
+                await next();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong: {ex}");
+                throw;
+            }
+        });
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+        });
     }
 }
