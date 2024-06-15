@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASM_Nhom2_API.Model
@@ -19,6 +20,7 @@ namespace ASM_Nhom2_API.Model
         public int Insurrance { get; set; }
         public string Color { get; set; }
         public int BrandId { get; set; }
+        public string BrandName { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
 
