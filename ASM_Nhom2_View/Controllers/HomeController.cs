@@ -1,5 +1,7 @@
 ﻿using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,6 +12,12 @@ using System.Threading.Tasks;
 
 namespace ASM_Nhom2_View.Controllers
 {
+    public class ViewModel
+    {
+        public IList<Product> Productfirst8 { get; set; }
+        public IList<Product> Productsecond8 { get; set; }
+       
+    }
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,9 +27,26 @@ namespace ASM_Nhom2_View.Controllers
             _logger = logger;
         }
         [Route("/")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var AppDbContextProductfirst8 = await _context.Products
+           .Include(d => d.Category)
+           .Include(d => d.Brand)
+           .Take(4)
+           .ToListAsync();
+            var AppDbContextProductsecond8 = await _context.Products
+          .Include(d => d.Category)
+          .Include(d => d.Brand)
+           .Skip(AppDbContextProductfirst8.Count)
+          .Take(8)
+          .ToListAsync();
+            
+            var viewModel = new ViewModel
+            {
+                Productfirst8 = AppDbContextProductfirst8,
+                Productsecond8 = AppDbContextProductsecond8,
+            };
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
