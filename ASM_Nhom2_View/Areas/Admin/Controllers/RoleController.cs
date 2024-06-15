@@ -57,6 +57,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
                 return View(category1);
             }
         }
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -92,6 +93,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+        [NonAction]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -107,7 +109,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             }
             return View(category);
         }
-
+        [NonAction]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

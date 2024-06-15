@@ -38,8 +38,6 @@ namespace ASM_Nhom2_API.Controllers
             return Ok(product);
         }
 
-        
-
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody] Product product)
         {
@@ -62,8 +60,9 @@ namespace ASM_Nhom2_API.Controllers
 
             return NoContent();
         }
+
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchInformation(int id, [FromBody] JsonPatchDocument<Product> patchDoc)
+        public async Task<IActionResult> PatchProduct(int id, [FromBody] JsonPatchDocument<Product> patchDoc)
         {
             if (patchDoc == null)
             {
@@ -89,7 +88,33 @@ namespace ASM_Nhom2_API.Controllers
             return Ok(updatedInformation);
         }
 
+        [HttpPatch("partial/{id}")]
+        public async Task<IActionResult> PatchProductPartial(int id, [FromBody] JsonPatchDocument<Product> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
 
+            var product = await _productService.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            // Apply the patch document to the product
+            patchDoc.ApplyTo(product, ModelState);
+
+            if (!TryValidateModel(product))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            var updatedInformation = await _productService.UpdateProductAsync(id, product);
+
+            return Ok(updatedInformation);
+        }
 
     }
 }
