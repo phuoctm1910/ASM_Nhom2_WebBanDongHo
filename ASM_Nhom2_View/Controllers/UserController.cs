@@ -185,5 +185,15 @@ namespace ASM_Nhom2_View.Controllers
             ViewBag.Message = "Mật khẩu mới đã được gửi qua email.";
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Changeinfo()
+        {
+            return View();
+        }
+
+
+
+
     }
 }
