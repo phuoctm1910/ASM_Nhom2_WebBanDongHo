@@ -109,7 +109,7 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
                     <li class="nav-item">
                         <a asp-controller="HomeAdmin" asp-action="Index" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
@@ -131,7 +131,7 @@
                         <a asp-controller="Brand" asp-action="Index" class="nav-link">
                             <i class="fas fa-id-card nav-icon"></i>
                             <p>
-                                Thương hiệu
+                                Thương Hiệu
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -154,7 +154,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
-                                Product
+                                Sản Phẩm
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -162,13 +162,13 @@
                             <li class="nav-item">
                                 <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>View Product</p>
+                                    <p>Danh Sách Sản Phẩm</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Product</p>
+                                    <p>Thêm Sản Phẩm</p>
                                 </a>
                             </li>
                         </ul>
@@ -177,44 +177,21 @@
                         <a href="#" class="nav-link">
                             <i class="fas fa-th-list nav-icon"></i>
                             <p>
-                                Categories
+                                Phân Loại
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a asp-controller="Categories" asp-action="Index" class="nav-link">
+                                <a asp-controller="Category" asp-action="Index" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>View Categories</p>
+                                    <p>Danh Sách Phân Loại</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a asp-controller="Categories" asp-action="Create" class="nav-link">
+                                <a asp-controller="Category" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Categories</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">
-                            <i class="fas fa-newspaper nav-icon"></i>
-                            <p>
-                                News
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a asp-controller="New" asp-action="Index" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>View News</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-controller="New" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Add News</p>
+                                    <p>Thêm Phân Loại</p>
                                 </a>
                             </li>
                         </ul>
@@ -223,7 +200,7 @@
                         <a asp-controller="Role" asp-action="Index" class="nav-link">
                             <i class="fas fa-tags nav-icon"></i>
                             <p>
-                                Roles
+                                Chức Vụ
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -231,68 +208,17 @@
                             <li class="nav-item">
                                 <a asp-controller="Role" asp-action="Index" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>View Role</p>
-                                </a>
-                            </li>
-                            @*<li class="nav-item">
-                    <a asp-controller="Tags" asp-action="Create" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Add Tags</p>
-                    </a>
-                </li>*@
-                        </ul>
-                    </li>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-book-reader nav-icon"></i>
-                            <p>
-                                Subjects
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a asp-controller="Subjects" asp-action="Index" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>View Subjects</p>
+                                    <p>Danh Sách Chức Vụ</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a asp-controller="Subjects" asp-action="Create" class="nav-link">
+                                <a asp-controller="Role" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Subjects</p>
+                                    <p>Thêm Chức Vụ</p>
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-comment-alt nav-icon"></i>
-                            <p>
-                                Comments
-                            </p>
-                            <i class="fas fa-angle-left right"></i>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li>
-                                <a asp-controller="CommentNews" asp-action="Index" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>View Comments</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-header">EXAMPLES</li>
-                    <li class="nav-item">
-                        <a href="pages/calendar.html" class="nav-link">
-                            <i class="nav-icon far fa-calendar-alt"></i>
-                            <p>
-                                Calendar
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>
+                    </li>               
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
