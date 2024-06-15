@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ASM_Nhom2_View.Data.Product>
+﻿@model ASM_Nhom2_View.Controllers.ViewModel
 @{
     Layout = null;
 }
@@ -106,7 +106,7 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="5000">
                         <div class="row">
-                            <div class="col-md-3">
+                            @* <div class="col-md-3">
                                 <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
                                     <div class="card">
                                         <div class="imgBox">
@@ -164,87 +164,116 @@
 
                                     </div>
                                 </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" data-bs-interval="5000">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                                    <div class="card">
-                                        <div class="imgBox">
-                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
-                                        </div>
-                                        <div class="contentBox">
-                                            <h3>Đồng hồ 1</h3>
-                                            <h2 class="price">5.585.000 ₫</h2>
-                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                        </div>
-
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-3">
-                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                                    <div class="card">
-                                        <div class="imgBox">
-                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
-                                        </div>
-                                        <div class="contentBox">
-                                            <h3>Đồng hồ 1</h3>
-                                            <h2 class="price">5.585.000 ₫</h2>
-                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                        </div>
-
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-3">
-                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                                    <div class="card">
-                                        <div class="imgBox">
-                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
-                                        </div>
-                                        <div class="contentBox">
-                                            <h3>Đồng hồ 1</h3>
-                                            <h2 class="price">5.585.000 ₫</h2>
-                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-3">
-                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                                    <div class="card">
-                                        <div class="imgBox">
-                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
-                                        </div>
-                                        <div class="contentBox">
-                                            <h3>Đồng hồ 1</h3>
-                                            <h2 class="price">5.585.000 ₫</h2>
-                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            @foreach (var item in Model)
+                            </div> *@
+                            @foreach (var item in Model.Productfirst8)
                             {
-                                <div class="col-md-3 my-3">
+                                <div class="col-md-3">
                                     <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
                                         <div class="card">
                                             <div class="imgBox">
-                                                <img src="~/images/Product/1001.png" alt="watch corsair" class="watch">
+                                                @if (item.ProductImageList.Any())
+                                                {
+                                                    <img src="~/uploads/@item.ProductImageList.First()" alt="@item.ProductName" class="watch" width="250" height="300">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/uploads/default.png" alt="default image" class="watch">
+                                                }
                                             </div>
                                             <div class="contentBox">
                                                 <h3>@item.ProductName</h3>
                                                 <h2 class="price">@item.ProductPrice</h2>
                                                 <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
                                             </div>
-
                                         </div>
                                     </a>
                                 </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <div class="row">
+                           @*  <div class="col-md-3">
+                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                    <div class="card">
+                                        <div class="imgBox">
+                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
+                                        </div>
+                                        <div class="contentBox">
+                                            <h3>Đồng hồ 1</h3>
+                                            <h2 class="price">5.585.000 ₫</h2>
+                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                        </div>
 
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                    <div class="card">
+                                        <div class="imgBox">
+                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
+                                        </div>
+                                        <div class="contentBox">
+                                            <h3>Đồng hồ 1</h3>
+                                            <h2 class="price">5.585.000 ₫</h2>
+                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                        </div>
+
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                    <div class="card">
+                                        <div class="imgBox">
+                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
+                                        </div>
+                                        <div class="contentBox">
+                                            <h3>Đồng hồ 1</h3>
+                                            <h2 class="price">5.585.000 ₫</h2>
+                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                    <div class="card">
+                                        <div class="imgBox">
+                                            <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
+                                        </div>
+                                        <div class="contentBox">
+                                            <h3>Đồng hồ 1</h3>
+                                            <h2 class="price">5.585.000 ₫</h2>
+                                            <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div> *@
+                            @foreach (var item in Model.Productfirst8)
+                            {
+                                <div class="col-md-3">
+                                    <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                        <div class="card">
+                                            <div class="imgBox">
+                                                @if (item.ProductImageList.Any())
+                                                {
+                                                    <img src="~/uploads/@item.ProductImageList.First()" alt="@item.ProductName" class="watch" width="250" height="300">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/uploads/default.png" alt="default image" class="watch">
+                                                }
+                                            </div>
+                                            <div class="contentBox">
+                                                <h3>@item.ProductName</h3>
+                                                <h2 class="price">@item.ProductPrice</h2>
+                                                <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
                             }
                         </div>
                     </div>
@@ -267,7 +296,31 @@
                     <h3>Sản Phẩm Khác</h3>
                 </div>
                 <div class="row">
-                    <div class="col-md-3 my-4">
+                    @foreach (var item in Model.Productsecond8)
+                    {
+                        <div class="col-md-3 my-4">
+                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                                <div class="card">
+                                    <div class="imgBox">
+                                        @if (item.ProductImageList.Any())
+                                        {
+                                            <img src="~/uploads/@item.ProductImageList.First()" alt="@item.ProductName" class="watch" width="250" height="300">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/uploads/default.png" alt="watch corsair" class="watch">
+                                        }
+                                    </div>
+                                    <div class="contentBox">
+                                        <h3>@item.ProductName</h3>
+                                        <h2 class="price">@item.ProductPrice</h2>
+                                        <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                   @*  <div class="col-md-3 my-4">
                         <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
                             <div class="card">
                                 <div class="imgBox">
@@ -364,24 +417,21 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
-                    <div class="col-md-3 my-4">
-                        <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                            <div class="card">
-                                <div class="imgBox">
-                                    <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
-                                </div>
-                                <div class="contentBox">
-                                    <h3>Đồng hồ 1</h3>
-                                    <h2 class="price">5.585.000 ₫</h2>
-                                    <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                    </div> *@
                 </div>
             </div>
         </div>
+
+
+        <div class="container my-5">
+            <div class="home-title text-white my-4">
+                <h3>Video Sản Phẩm</h3>
+            </div>
+            <div id="featuredProductsCarousel" class="carousel slide position-relative" data-bs-ride="carousel">
+
+            </div>
+        </div>
+
     </div>
     <footer>
         <div class="text-white" style="background-color: #393939;">
