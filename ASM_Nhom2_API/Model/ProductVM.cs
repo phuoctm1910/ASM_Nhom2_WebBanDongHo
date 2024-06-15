@@ -34,11 +34,28 @@ namespace ASM_Nhom2_API.Model
                     return new List<string>();
                 }
 
-                var cleanedProductImages = ProductImages.Replace("\\\"", "\"").Trim('\"');
-                return JsonConvert.DeserializeObject<List<string>>(cleanedProductImages);
+                try
+                {
+                    var cleanedProductImages = ProductImages;
+
+                    while (cleanedProductImages.Contains("\\"))
+                    {
+                        cleanedProductImages = cleanedProductImages.Replace("\\", string.Empty);
+                    }
+
+                    cleanedProductImages = cleanedProductImages.Trim('"');
+
+                    return JsonConvert.DeserializeObject<List<string>>(cleanedProductImages);
+                }
+                catch (JsonReaderException)
+                {
+                    // Return an empty list if deserialization fails
+                    return new List<string>();
+                }
             }
             set
             {
+                // Serialize the list to a JSON string
                 ProductImages = JsonConvert.SerializeObject(value);
             }
         }

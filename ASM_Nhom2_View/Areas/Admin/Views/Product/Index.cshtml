@@ -1,47 +1,324 @@
 ﻿@model IEnumerable<ASM_Nhom2_View.Models.ProductVM>
 
 @{
-    ViewData["Title"] = "Product List";
+    ViewData["Title"] = "Danh Sách Sản Phẩm";
+}
+<style>
+    table thead th{
+        vertical-align:middle!important;
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Sản Phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Sản Phẩm</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh Sách Sản Phẩm</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Tên sản phẩm</th>
+                                    <th>Mã sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá sản phẩm</th>
+                                    <th>Số lượng ảnh</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Dành cho</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model)
+                                {
+                                    <tr data-product-id="@product.ProductId" class="text-center align-middle">
+                                        <td>@product.ProductName</td>
+                                        <td>@product.ProductCode</td>
+                                        <td>@product.ProductStock</td>
+                                        <td>@product.ProductPrice</td>
+                                        <td>@product.ProductImageList.Count</td>
+                                        <td>@product.BrandName</td>
+                                        <td>@product.CategoryName</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn btn-info d-inline p-2" data-toggle="modal" data-target="#productDetailsModal" onclick="loadProductDetails(@product.ProductId)">Xem Chi Tiết</button>
+                                                <button class="btn btn-secondary dropdown-toggle d-inline p-2" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                    Chỉnh Sửa
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a href="@Url.Action("Edit", "Product", new { id = product.ProductId })" class="btn dropdown-item">Chỉnh sửa tất cả</a>
+                                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#productEditDetailsModal" onclick="loadProductEditDetails(@product.ProductId)">Chỉnh sửa một vài thông tin</button>
+                                                </div>
+                                            </div>
+                                            @*<a href="@Url.Action("Delete", "Product", new { id = product.ProductId })" class="btn btn-danger">Xóa</a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- Modal chi tiết sản phẩm -->
+<div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailsModalLabel">Chi tiết sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" style="width:100%">
+                    <tr>
+                        <th>Tên:</th>
+                        <td id="productName"></td>
+                    </tr>
+                    <tr>
+                        <th>Mã:</th>
+                        <td id="productCode"></td>
+                    </tr>
+                    <tr>
+                        <th>Số lượng:</th>
+                        <td id="productStock"></td>
+                    </tr>
+                    <tr>
+                        <th>Giá:</th>
+                        <td id="productPrice"></td>
+                    </tr>
+                    <tr>
+                        <th>Xuất xứ:</th>
+                        <td id="productOrigin"></td>
+                    </tr>
+                    <tr>
+                        <th>Loại máy:</th>
+                        <td id="productMachineType"></td>
+                    </tr>
+                    <tr>
+                        <th>Đường kính:</th>
+                        <td id="productDiameter"></td>
+                    </tr>
+                    <tr>
+                        <th>Loại đồng hồ:</th>
+                        <td id="productClockType"></td>
+                    </tr>
+                    <tr>
+                        <th>Bảo hành:</th>
+                        <td id="productInsurance"></td>
+                    </tr>
+                    <tr>
+                        <th>Màu:</th>
+                        <td id="productColor"></td>
+                    </tr>
+                    <tr>
+                        <th>Thương hiệu:</th>
+                        <td id="productBrand"></td>
+                    </tr>
+                    <tr>
+                        <th>Loại dành cho:</th>
+                        <td id="productCategory"></td>
+                    </tr>
+                    <tr>
+                        <th>Ảnh sản phẩm:</th>
+                        <td id="productImages">
+                            <div class="row" id="productImagesRow"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal chỉnh sửa sản phẩm -->
+<div class="modal fade" id="productEditDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productEditDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productEditDetailsModalLabel">Chỉnh sửa thông tin sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <div class="form-group">
+                        <label for="editProductOrigin" class="col-form-label">Xuất xứ:</label>
+                        <input type="text" class="form-control" id="editProductOrigin">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductInsurrance" class="col-form-label">Bảo hành:</label>
+                        <input type="text" class="form-control" id="editProductInsurrance">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductClockType" class="col-form-label">Loại kim đồng hồ:</label>
+                        <select class="form-control" id="editProductClockType">
+                            <option value="Dauphine">Dauphine</option>
+                            <option value="Baton">Baton</option>
+                            <option value="Leaf">Leaf</option>
+                            <option value="Alpha">Alpha</option>
+                            <option value="Stick">Stick</option>
+                            <option value="Arrow">Arrow</option>
+                            <option value="Sword">Sword</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProductMachineType" class="col-form-label">Loại máy đồng hồ:</label>
+                        <select class="form-control" id="editProductMachineType">
+                            <option value="Pin (Quartz)">Pin (Quartz)</option>
+                            <option value="Cơ tự động (Automatic)">Cơ tự động (Automatic)</option>
+                            <option value="Năng lượng ánh sáng (Eco-Drive)">Năng lượng ánh sáng (Eco-Drive)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductDiameter" class="col-form-label">Đường kính:</label>
+                        <input type="number" class="form-control" id="editProductDiameter">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductColor" class="col-form-label">Màu:</label>
+                        <input type="number" class="form-control" id="editProductColor">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button"
+                        class="btn btn-primary" onclick="saveProductDetails()" data-dismiss="modal">
+                    Lưu thay đổi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadProductDetails(productId) {
+            $.ajax({
+                url: '@Url.Action("Details", "Product")',
+                type: 'GET',
+                data: { id: productId },
+                success: function (product) {
+                    $('#productName').text(product.productName);
+                    $('#productCode').text(product.productCode);
+                    $('#productStock').text(product.productStock);
+                    $('#productPrice').text(product.productPrice);
+                    $('#productOrigin').text(product.origin);
+                    $('#productMachineType').text(product.machineType);
+                    $('#productDiameter').text(product.diameter);
+                    $('#productClockType').text(product.clockType);
+                    $('#productInsurance').text(product.insurrance);
+                    $('#productColor').text(product.color);
+                    $('#productBrand').text(product.brandName);
+                    $('#productCategory').text(product.categoryName);
+
+                    $('#productImagesRow').empty();
+                    product.productImageList.forEach(function (image) {
+                        var uploadsPath = '@Url.Content("~/uploads/")';
+                        $('#productImagesRow').append(`<div class="col-md-3"><img src="${uploadsPath}${image}" width="50" height="50" class="img-thumbnail"></div>`);
+                    });
+
+                    $('#productDetailsModal').modal('show');
+                },
+                error: function () {
+                    alert('Error loading product details');
+                }
+            });
+        }
+
+        function loadProductEditDetails(productId) {
+            // Clear the form fields first
+            $('#editProductForm').data('product-id', '');
+            $('#editProductOrigin').val('');
+            $('#editProductInsurrance').val('');
+            $('#editProductClockType').val('');
+            $('#editProductMachineType').val('');
+            $('#editProductDiameter').val('');
+            $('#editProductColor').val('');
+
+            // Load new product details
+            $.ajax({
+                url: '@Url.Action("Details", "Product")',
+                type: 'GET',
+                data: { id: productId },
+                success: function (product) {
+                    $('#editProductForm').data('product-id', product.productId);
+                    $('#editProductOrigin').val(product.origin);
+                    $('#editProductInsurrance').val(product.insurrance);
+                    $('#editProductClockType').val(product.clockType);
+                    $('#editProductMachineType').val(product.machineType);
+                    $('#editProductDiameter').val(product.diameter);
+                    $('#editProductColor').val(product.color);
+
+                    $('#productEditDetailsModal').modal('show');
+                },
+                error: function () {
+                    alert('Error loading product edit details');
+                }
+            });
+        }
+
+        // Function to save product details
+        function saveProductDetails() {
+            var productId = $('#editProductForm').data('product-id');
+            var productData = {
+                ProductId: productId,
+                Origin: $('#editProductOrigin').val(),
+                Insurrance: $('#editProductInsurrance').val(),
+                ClockType: $('#editProductClockType').val(),
+                MachineType: $('#editProductMachineType').val(),
+                Diameter: $('#editProductDiameter').val(),
+                Color: $('#editProductColor').val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("EditDetails", "Product")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(productData),
+                success: function (response) {
+                    if (response.success) {
+                        alert('Product details updated successfully');
+                        $('#productEditDetailsModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Error saving product details');
+                }
+            });
+        }
+    </script>
 }
 
-<h1>Product List</h1>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Product Code</th>
-            <th>Stock</th>
-            <th>Price</th>
-            <th>
-                Number of Images
-            </th>
-            <th>Category</th>
-
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.ProductName</td>
-                <td>@product.ProductCode</td>
-                <td>@product.ProductStock</td>
-                <td>@product.ProductPrice</td>
-
-                <td>
-                    @product.ProductImageList.Count
-                </td>
-                <td>@product.CategoryName</td>
-
-                <td>
-                    <a href="@Url.Action("Details", "Product", new { id = product.ProductId })" class="btn btn-info">Details</a>
-                    <a href="@Url.Action("Edit", "Product", new { id = product.ProductId })" class="btn btn-primary">Edit</a>
-                    <a href="@Url.Action("Delete", "Product", new { id = product.ProductId })" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

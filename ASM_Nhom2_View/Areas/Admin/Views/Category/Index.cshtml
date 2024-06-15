@@ -1,28 +1,24 @@
-﻿@model IEnumerable<ASM_Nhom2_View.Models.BrandVM>
+﻿@model IEnumerable<ASM_Nhom2_View.Data.Category>
+
 @{
-    ViewData["Title"] = "List Brand";
+    ViewData["Title"] = "Danh Sách Các Phân Loại";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
-<style>
-    table thead th {
-        vertical-align: middle !important;
-    }
-</style>
 
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thương Hiệu</h1>
+                <h1>Phân Loại</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li class="breadcrumb-item active">Xem Thương Hiệu</li>
+                    <li class="breadcrumb-item active">Danh Sách Các Phân Loại</li>
                 </ol>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
 <section class="content">
@@ -31,26 +27,28 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Danh Sách Thương Hiệu</h3>
+                        <h3 class="card-title">Bảng Phân Loại</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
-                            <thead class="text-center">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên Thương Hiệu</th>
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Id</th>
+                                    <th>Tên Phân Loại</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td>@item.BrandId</td>
-                                        <td>@item.BrandName</td>
+                                    <tr class="text-center align-middle">
                                         <td>
-                                            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.BrandId">Chỉnh sửa</a>
-                                            @*<a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.BrandId">Delete</a>*@
+                                            @Html.DisplayFor(modelItem => item.CategoryName)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" class="btn btn-secondary" asp-route-id="@item.CategoryId">Chỉnh sửa</a>
+                                            @*<a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>*@
                                         </td>
                                     </tr>
                                 }

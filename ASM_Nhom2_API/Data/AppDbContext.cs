@@ -77,6 +77,12 @@ namespace ASM_Nhom2_API.Data
                 entity.Property(e => e.ProductPrice)
                       .HasColumnType("decimal(18,2)");
 
+                entity.Property(e => e.ProductStock).IsRequired(false);
+
+                entity.Property(e => e.Insurrance).IsRequired(false);
+
+                entity.Property(e => e.Diameter).IsRequired(false);
+
                 entity.HasOne(e => e.Category)
                       .WithMany(e => e.Products)
                       .HasForeignKey(e => e.CategoryId)
@@ -87,6 +93,7 @@ namespace ASM_Nhom2_API.Data
                       .HasForeignKey(e => e.BrandId)
                       .OnDelete(DeleteBehavior.ClientSetNull);
             });
+
 
             modelBuilder.Entity<Brand>(entity =>
             {

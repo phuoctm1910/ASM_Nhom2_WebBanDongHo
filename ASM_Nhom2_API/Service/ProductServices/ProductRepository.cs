@@ -21,12 +21,18 @@ namespace ASM_Nhom2_API.Service.ProductServices
 
         public async Task<IEnumerable<Product>> GetAllProductAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+                .Include(b => b.Brand)
+                .Include(c => c.Category)
+                .ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products
+                .Include(b => b.Brand)
+                .Include(c => c.Category)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
         public async Task<Product> AddProductAsync(Product product)
@@ -48,7 +54,13 @@ namespace ASM_Nhom2_API.Service.ProductServices
             existingProd.ProductPrice = product.ProductPrice;
             existingProd.CategoryId = product.CategoryId;
             existingProd.ProductImages = JsonConvert.SerializeObject(product.ProductImages);
-
+            existingProd.Origin = product.Origin;
+            existingProd.BrandId = product.BrandId;
+            existingProd.ClockType = product.ClockType;
+            existingProd.Insurrance = product.Insurrance;
+            existingProd.Diameter = product.Diameter;
+            existingProd.Color = product.Color;
+            existingProd.MachineType = product.MachineType;
             await _context.SaveChangesAsync();
             return existingProd;
         }

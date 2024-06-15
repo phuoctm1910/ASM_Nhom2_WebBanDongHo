@@ -1,7 +1,7 @@
 ﻿@model ASM_Nhom2_View.Models.ProductVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Sửa Sản Phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -10,12 +10,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Edit Product</h1>
+                <h1>Sản Phẩm</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Validation</li>
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Sửa Sản Phẩm</li>
                 </ol>
             </div>
         </div>
@@ -31,65 +31,76 @@
                 <!-- jquery validation -->
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Please fill full fields</h3>
+                        <h3 class="card-title">Điền đầy đủ thông tin</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form asp-action="Edit" method="post" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="ProductId" />
-
                         <div class="card-body">
                             <div class="form-group">
                                 <label asp-for="ProductCode" class="control-label">Mã Sản Phẩm:</label>
                                 <div class="input-group mb-3">
-                                    <input asp-for="ProductCode" type="text" class="form-control">
+                                    <input asp-for="ProductCode" type="text" class="form-control" required pattern="^[a-zA-Z0-9]{8}$">
                                     <span asp-validation-for="ProductCode" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ProductName" class="control-label">Tên Sản Phâm:</label>
                                 <div class="input-group mb-3">
-                                    <input asp-for="ProductName" type="text" class="form-control">
+                                    <input asp-for="ProductName" type="text" class="form-control" required pattern="^[a-zA-Z0-9]+$">
                                     <span asp-validation-for="ProductName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ProductImages" class="control-label">Ảnh Sản Phẩm:</label>
                                 <div class="input-group mb-3">
-                                    <input type="file" asp-for="ProductImages" multiple class="form-control" id="productImagesInput" />
+                                    <input type="file" asp-for="ProductImages" multiple class="form-control" id="productImagesInput" required />
                                     <span asp-validation-for="ProductImages" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ProductStock" class="control-label">Số lượng Sản Phẩm:</label>
                                 <div class="input-group mb-3">
-                                    <input asp-for="ProductStock" type="number" class="form-control">
+                                    <input asp-for="ProductStock" type="number" class="form-control" required>
                                     <span asp-validation-for="ProductStock" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ProductPrice" class="control-label">Giá Sản Phẩm:</label>
                                 <div class="input-group mb-3">
-                                    <input asp-for="ProductPrice" type="number" class="form-control">
+                                    <input asp-for="ProductPrice" type="number" class="form-control" required>
                                     <span asp-validation-for="ProductPrice" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="CategoryId" class="control-label">Loại đồng hồ dành cho:</label>
                                 <div class="input-group mb-3">
-                                    <select asp-for="CategoryId" class="form-select form-control" placeholder="Chọn loại sản phẩm" asp-items="@(ViewData["CategoryId"] as SelectList)">
+                                    <select asp-for="CategoryId" class="form-select form-control" placeholder="Chọn loại sản phẩm" asp-items="@(ViewData["CategoryId"] as SelectList)" required>
                                         <option value="-1">Dành cho</option>
                                     </select>
                                 </div>
-
                             </div>
                             <div class="form-group">
-                                <label>Selected Images</label>
+                                <label asp-for="BrandId" class="control-label">Thương hiệu đồng hồ:</label>
+                                <div class="input-group mb-3">
+                                    <select asp-for="BrandId" class="form-select form-control" placeholder="Chọn thương hiệu sản phẩm" asp-items="@(ViewData["BrandId"] as SelectList)" required>
+                                        <option value="-1">Chọn thương hiệu</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModal">
+                                    Sửa thông tin chi tiết
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>Ảnh đã chọn</label>
                                 <ul id="selectedImagesList" style="list-style: none; padding: 0;"></ul>
                             </div>
                             <div class="form-group">
-                                <label>Current Images (Choose to remove)</label>
+                                <label>Ảnh hiện tại (Chọn ảnh để xóa)</label>
                                 <ul id="imageList" style="list-style: none; padding: 0;">
                                     @foreach (var image in Model.ProductImageList)
                                     {
@@ -104,8 +115,62 @@
                         </div>
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-outline-dark">Submit</button>
+                            <button type="submit" class="btn btn-outline-dark">Xác nhận</button>
                         </div>
+                        <!-- Modal included within the form -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin chi tiết</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="Origin" class="col-form-label">Xuất xứ:</label>
+                                            <input asp-for="Origin" type="text" class="form-control" id="Origin">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="MachineType" class="col-form-label">Loại máy:</label>
+                                            <select class="form-control" asp-for="MachineType" id="MachineType">
+                                                <option value="Pin (Quartz)">Pin (Quartz)</option>
+                                                <option value="Cơ tự động (Automatic)">Cơ tự động (Automatic)</option>
+                                                <option value="Năng lượng ánh sáng (Eco-Drive)">Năng lượng ánh sáng (Eco-Drive)</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Diameter" class="col-form-label">Đường kính:</label>
+                                            <input asp-for="Diameter" type="number" class="form-control" id="Diameter">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ClockType" class="col-form-label">Loại đồng hồ:</label>
+                                            <select class="form-control" asp-for="ClockType" id="ClockType">
+                                                <option value="Dauphine">Dauphine</option>
+                                                <option value="Baton">Baton</option>
+                                                <option value="Leaf">Leaf</option>
+                                                <option value="Alpha">Alpha</option>
+                                                <option value="Stick">Stick</option>
+                                                <option value="Arrow">Arrow</option>
+                                                <option value="Sword">Sword</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Insurrance" class="col-form-label">Bảo hành:</label>
+                                            <input asp-for="Insurrance" type="number" class="form-control" id="Insurrance">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Color" class="col-form-label">Màu mặt số:</label>
+                                            <input asp-for="Color" type="text" class="form-control" id="Color">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
 
