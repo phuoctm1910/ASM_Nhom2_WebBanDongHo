@@ -1,4 +1,4 @@
-﻿using ASM_Nhom2_API.Model;
+﻿using ASM_Nhom2_View.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -54,6 +54,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -89,6 +90,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+        [NonAction]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -105,6 +107,7 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
             return View(category);
         }
 
+        [NonAction]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

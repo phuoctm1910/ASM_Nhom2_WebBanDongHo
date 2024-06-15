@@ -13,17 +13,17 @@ namespace ASM_Nhom2_API.Data
         public string ProductCode { get; set; }
         [Required]
         public string ProductName { get; set; }
-        public int ProductStock { get; set; }
+        public int? ProductStock { get; set; }
         [Required]
         public decimal ProductPrice { get; set; }
         public int CategoryId { get; set; }
-        public string ProductImages { get; set; }
-        public string Origin { get; set; }
-        public string MachineType { get; set; }
-        public int Diameter { get; set; }
-        public string ClockType { get; set; }
-        public int Insurrance { get; set; }
-        public string Color { get; set; }
+        public string? ProductImages { get; set; }
+        public string? Origin { get; set; }
+        public string? MachineType { get; set; }
+        public int? Diameter { get; set; }
+        public string? ClockType { get; set; }
+        public int? Insurrance { get; set; }
+        public string? Color { get; set; }
         public int BrandId { get; set; }
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
@@ -40,14 +40,33 @@ namespace ASM_Nhom2_API.Data
                     return new List<string>();
                 }
 
-                var cleanedProductImages = ProductImages.Replace("\\\"", "\"").Trim('\"');
-                return JsonConvert.DeserializeObject<List<string>>(cleanedProductImages);
+                try
+                {
+                    var cleanedProductImages = ProductImages;
+
+                    // Loop to remove all backslashes until none are left
+                    while (cleanedProductImages.Contains("\\"))
+                    {
+                        cleanedProductImages = cleanedProductImages.Replace("\\", string.Empty);
+                    }
+
+                    // Trim any leading or trailing quotes
+                    cleanedProductImages = cleanedProductImages.Trim('"');
+
+                    // Deserialize the cleaned string to a list
+                    return JsonConvert.DeserializeObject<List<string>>(cleanedProductImages);
+                }
+                catch (JsonReaderException)
+                {
+                    // Return an empty list if deserialization fails
+                    return new List<string>();
+                }
             }
             set
             {
+                // Serialize the list to a JSON string
                 ProductImages = JsonConvert.SerializeObject(value);
             }
         }
-
     }
 }

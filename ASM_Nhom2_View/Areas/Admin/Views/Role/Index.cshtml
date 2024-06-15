@@ -1,24 +1,29 @@
 ﻿@model IEnumerable<ASM_Nhom2_View.Models.RoleVM>
 
 @{
-    ViewData["Title"] = "List Role";
+    ViewData["Title"] = "Danh Sách Vai Trò";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<style>
+    table thead th {
+        vertical-align: middle !important;
+    }
+</style>
 
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>DataTables</h1>
+                <h1>Vai Trò</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">DataTables</li>
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Xem Vai Trò</li>
                 </ol>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
 <section class="content">
@@ -27,26 +32,26 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Roles</h3>
+                        <h3 class="card-title">Bảng Vai Trò</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
-                                <tr>
-                                    <th>Role ID</th>
-                                    <th>Role Name</th>
+                                <tr class="text-center">
+                                    <th>Id</th>
+                                    <th>Tên Vai Trò</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
+                                    <tr class="text-center align-middle">
                                         <td>@item.RoleId</td>
                                         <td>@item.RoleName</td>
                                         <td>
-                                            @*<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.RoleId">Edit</a>
-                                            <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.RoleId">Delete</a>*@
+                                            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.RoleId">Edit</a>
+                                            @*<a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.RoleId">Delete</a>*@
                                         </td>
                                     </tr>
                                 }

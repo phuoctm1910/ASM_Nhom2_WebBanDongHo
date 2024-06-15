@@ -38,7 +38,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="~/images/logo.png" alt="AdminLTELogo" height="70" width="70">
         </div>
 
         <!-- Navbar -->
@@ -102,9 +102,9 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index.html" class="brand-link">
-                <img src="~/images/logouser.png" alt="Doc Logo" class="brand-image img-circle elevation-3"
+                <img src="~/images/logo.png" alt="Doc Logo" class="brand-image img-circle elevation-3"
                      style="opacity: .8">
-                <span class="brand-text font-weight-light">Document Share</span>
+                <span class="brand-text font-weight-light">Watch Five</span>
             </a>
 
             <!-- Sidebar Menu -->
@@ -123,7 +123,7 @@
                         <a asp-controller="HomeAdmin" asp-action="Index" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <p>
-                                Charts
+                                Biểu Đồ
                             </p>
                         </a>
                     </li>
@@ -131,7 +131,7 @@
                         <a asp-controller="Brand" asp-action="Index" class="nav-link">
                             <i class="fas fa-id-card nav-icon"></i>
                             <p>
-                                Brand
+                                Thương hiệu
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -139,13 +139,13 @@
                             <li class="nav-item">
                                 <a asp-controller="Brand" asp-action="Index" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>View Brand</p>
+                                    <p>Danh Sách Thương Hiệu</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a asp-controller="Brand" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Brand</p>
+                                    <p>Thêm Thương Hiệu</p>
                                 </a>
                             </li>
                         </ul>
@@ -235,11 +235,11 @@
                                 </a>
                             </li>
                             @*<li class="nav-item">
-                                <a asp-controller="Tags" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Add Tags</p>
-                                </a>
-                            </li>*@
+                    <a asp-controller="Tags" asp-action="Create" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Add Tags</p>
+                    </a>
+                </li>*@
                         </ul>
                     </li>
                     </li>
@@ -358,9 +358,8 @@
     <script src="~/Admin/dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yEx1q6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script>$(function () {
             //Initialize Select2 Elements

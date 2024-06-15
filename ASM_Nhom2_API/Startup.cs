@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using ASM_Nhom2_API.Service.ProductServices;
 using ASM_Nhom2_API.Service.CategoryServices;
 using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace ASM_Nhom2_API
 {
@@ -45,6 +46,7 @@ namespace ASM_Nhom2_API
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddSwaggerGen(c =>
             {
