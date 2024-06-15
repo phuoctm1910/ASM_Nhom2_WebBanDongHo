@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASM_Nhom2_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240614065634_ASM-C#5")]
-    partial class ASMC5
+    [Migration("20240615065941_create-db")]
+    partial class createdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,10 +138,10 @@ namespace ASM_Nhom2_API.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Diameter")
+                    b.Property<int?>("Diameter")
                         .HasColumnType("int");
 
-                    b.Property<int>("Insurrance")
+                    b.Property<int?>("Insurrance")
                         .HasColumnType("int");
 
                     b.Property<string>("MachineType")
@@ -164,7 +164,7 @@ namespace ASM_Nhom2_API.Migrations
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductStock")
+                    b.Property<int?>("ProductStock")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");

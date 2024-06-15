@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ASM_Nhom2_View.Data.Product>
+﻿@* @model IEnumerable<ASM_Nhom2_View.Data.Product> *@
+    @model List<ASM_Nhom2_View.Data.Product>
 @{
     Layout = null;
 }
@@ -54,7 +55,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 position-absolute text-black" style="left: 90px;top: -20px;">
                         <li class="nav-item dropdown d-flex nav-home">
                             @*@if (isLoggedIn)
-                                {*@
+                            {*@
                             <!--<a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">-->
                             @*@username*@
@@ -63,8 +64,8 @@
 
                             </ul>-->
                             @*}
-                                else
-                                {*@
+                            else
+                            {*@
                             <a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
                                 Tài khoản
@@ -307,32 +308,57 @@
                         </a>
                     </div>
 
-                    @foreach(var item in Model)
+                    @*   @foreach(var item in Model)
+                    {
+                    <div class="col-md-3 my-3">
+                    <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                    <div class="card">
+                    <div class="imgBox">
+                    <img src="~/images/Product/1009.png" alt="watch corsair" class="watch">
+                    </div>
+                    <div class="contentBox">
+                    <h3>@item.ProductName</h3>
+                    <h3>@item.ProductImageList.First()</h3>
+                    <h2 class="price">@item.ProductPrice</h2>
+                    <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                    </div>
+
+                    </div>
+                    </a>
+                    </div>
+
+                    } *@
+
+                    @foreach (var item in Model)
                     {
                         <div class="col-md-3 my-3">
                             <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
                                 <div class="card">
                                     <div class="imgBox">
-                                        <img src="~/images/Product/1009.png" alt="watch corsair" class="watch">
+                                        @if (item.ProductImageList.Any())
+                                        {
+                                            <img src="~/images/Product/@item.ProductImageList.First()" alt="@item.ProductName" class="watch">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/Product/default.png" alt="default image" class="watch">
+                                        }
                                     </div>
                                     <div class="contentBox">
                                         <h3>@item.ProductName</h3>
-                                      @*   <h3>@item.ProductImageList.First()</h3> *@
                                         <h2 class="price">@item.ProductPrice</h2>
                                         <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
                                     </div>
-
                                 </div>
                             </a>
                         </div>
-                        
                     }
 
-                <!--Tải thêm sản phẩm-->
-                <div class="row" style="margin: 20px auto;width: fit-content;">
-                    <button class="btnMore fill">Xem thêm <i class="fa-solid fa-plus"></i></button>
+                    <!--Tải thêm sản phẩm-->
+                    <div class="row" style="margin: 20px auto;width: fit-content;">
+                        <button class="btnMore fill">Xem thêm <i class="fa-solid fa-plus"></i></button>
+                    </div>
                 </div>
-            </div>
         </main>
     </div>
     <footer>

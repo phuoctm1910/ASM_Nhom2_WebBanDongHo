@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASM_Nhom2_API.Migrations
 {
-    public partial class ASMC5 : Migration
+    public partial class createdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,15 +54,15 @@ namespace ASM_Nhom2_API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductStock = table.Column<int>(type: "int", nullable: false),
+                    ProductStock = table.Column<int>(type: "int", nullable: true),
                     ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     ProductImages = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MachineType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Diameter = table.Column<int>(type: "int", nullable: false),
+                    Diameter = table.Column<int>(type: "int", nullable: true),
                     ClockType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Insurrance = table.Column<int>(type: "int", nullable: false),
+                    Insurrance = table.Column<int>(type: "int", nullable: true),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BrandId = table.Column<int>(type: "int", nullable: false)
                 },

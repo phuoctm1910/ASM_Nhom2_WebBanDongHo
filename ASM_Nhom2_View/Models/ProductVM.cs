@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASM_Nhom2_View.Models
@@ -9,14 +10,14 @@ namespace ASM_Nhom2_View.Models
         public int ProductId { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
-        public int ProductStock { get; set; }
+        public int? ProductStock { get; set; }
         public decimal ProductPrice { get; set; }
         public string ProductImages { get; set; }
         public string Origin { get; set; }
         public string MachineType { get; set; }
-        public int Diameter { get; set; }
+        public int? Diameter { get; set; }
         public string ClockType { get; set; }
-        public int Insurrance { get; set; }
+        public int? Insurrance { get; set; }
         public string Color { get; set; }
         public int BrandId { get; set; }
         public string BrandName { get; set; }

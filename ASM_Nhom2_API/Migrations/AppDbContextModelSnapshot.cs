@@ -136,10 +136,10 @@ namespace ASM_Nhom2_API.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Diameter")
+                    b.Property<int?>("Diameter")
                         .HasColumnType("int");
 
-                    b.Property<int>("Insurrance")
+                    b.Property<int?>("Insurrance")
                         .HasColumnType("int");
 
                     b.Property<string>("MachineType")
@@ -162,7 +162,7 @@ namespace ASM_Nhom2_API.Migrations
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductStock")
+                    b.Property<int?>("ProductStock")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
