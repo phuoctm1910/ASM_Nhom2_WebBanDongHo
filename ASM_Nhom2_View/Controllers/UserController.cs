@@ -76,6 +76,16 @@ namespace ASM_Nhom2_View.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Changeinfo()
+        {
+            return View();
+        }
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> Register([Bind("FullName,Gender,PhoneNumber,UserName,Password,BirthDate")] User user)
         {
