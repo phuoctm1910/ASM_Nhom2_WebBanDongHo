@@ -189,7 +189,77 @@
                 </div>
                 <!--Sản phẩm-->
                 <div class="row my-3" id="productContainer">
+
+
+
+
+
+
+
+                    @*    <div class="col-md-3 my-3">
+                    <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                    <div class="card">
+                    <div class="imgBox">
+                    <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
+                    </div>
+                    <div class="contentBox">
+                    <h3>Đồng hồ 1</h3>
+                    <h2 class="price">5.585.000 ₫</h2>
+                    <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                    </div>
+
+                    </div>
+                    </a>
+                    </div> *@
+
+                    @*   @foreach(var item in Model)
+                    {
+                    <div class="col-md-3 my-3">
+                    <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                    <div class="card">
+                    <div class="imgBox">
+                    <img src="~/images/Product/1009.png" alt="watch corsair" class="watch">
+                    </div>
+                    <div class="contentBox">
+                    <h3>@item.ProductName</h3>
+                    <h3>@item.ProductImageList.First()</h3>
+                    <h2 class="price">@item.ProductPrice</h2>
+                    <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                    </div>
+
+                    </div>
+                    </a>
+                    </div>
+
+                    } *@
+
                     @foreach (var item in Model)
+                    {
+                        <div class="col-md-3 my-3 product">
+                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
+                                <div class="card">
+                                    <div class="imgBox">
+                                        @if (item.ProductImageList.Any())
+                                        {
+                                            <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch" width="250" height="300">
+                                        }
+                                        else
+                                        {
+                                            <img src="@Url.Content("~/uploads/default.png")" alt="default image" class="watch">
+                                        }
+                                    </div>
+                                    <div class="contentBox">
+                                        <h3>@item.ProductName</h3>
+                                        <h2 class="price">@item.ProductPrice</h2>
+                                        <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+
+                 @*    @foreach (var item in Model)
                     {
                         <div class="col-md-3 my-3 product">
                             <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
@@ -212,12 +282,15 @@
                                 </div>
                             </a>
                         </div>
-                    }
+                    } *@
+
+
                 </div>
                 @if (Model.Count > 8)
                 {
                     <div class="row" style="margin: 20px auto;width: fit-content;">
-                        <button class="btnMore fill">Xem thêm <i class="fa-solid fa-plus"></i></button>
+                        <button class="btnMore fill" id="btnShowMore">Xem Thêm <i class="fa-solid fa-plus"></i></button>
+                        <button class="btnMore fill" id="btnShowLess" style="display:none;">Ẩn Bớt <i class="fa-solid fa-minus"></i></button>
                     </div>
                 }
             </div>

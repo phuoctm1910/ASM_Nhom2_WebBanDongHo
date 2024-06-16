@@ -116,7 +116,23 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="row">
+
                         <div class="col-md-7">
+                            <div class="magnifier" style="text-align: center;">
+                                <div class="big-img"></div>
+                                <img id="main-image" src="@Url.Content("~/uploads/" + (Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "default.png"))" alt="@Model.ProductName" class="small-img" />
+                            </div>
+                            <div class="carousel-wrap my-5">
+                                <div class="owl-carousel" style="margin: 0 auto;">
+                                    @foreach (var image in Model.ProductImageList)
+                                    {
+                                        <div class="item"><img src="@Url.Content("~/uploads/" + image)" alt="thumbnail image"></div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                       @*  <div class="col-md-7">
 
                             <div class="magnifier" style="text-align: center;">
                                 <div class="big-img"></div>
@@ -130,9 +146,8 @@
                                     }
                                 </div>
                             </div>
+                        </div> *@
 
-
-                        </div>
                         <div class="col-md-5">
                             <div>
                                 <div class="name-prodct">
@@ -192,6 +207,7 @@
                 </div>
 
             </div>
+            <br/> <br/> <br/>
             <div class="row">
                 <div class="col-md-12">
                     <div class="product_tab_content" id="tabs">
