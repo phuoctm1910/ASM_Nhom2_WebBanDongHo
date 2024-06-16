@@ -231,8 +231,33 @@
 
                     } *@
 
-
                     @foreach (var item in Model)
+                    {
+                        <div class="col-md-3 my-3 product">
+                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
+                                <div class="card">
+                                    <div class="imgBox">
+                                        @if (item.ProductImageList.Any())
+                                        {
+                                            <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch" width="250" height="300">
+                                        }
+                                        else
+                                        {
+                                            <img src="@Url.Content("~/uploads/default.png")" alt="default image" class="watch">
+                                        }
+                                    </div>
+                                    <div class="contentBox">
+                                        <h3>@item.ProductName</h3>
+                                        <h2 class="price">@item.ProductPrice</h2>
+                                        <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+
+                 @*    @foreach (var item in Model)
                     {
                         <div class="col-md-3 my-3 product">
                             <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
@@ -255,7 +280,7 @@
                                 </div>
                             </a>
                         </div>
-                    }
+                    } *@
 
 
                 </div>
