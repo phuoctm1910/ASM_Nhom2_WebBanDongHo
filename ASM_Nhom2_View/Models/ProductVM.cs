@@ -20,7 +20,7 @@ namespace ASM_Nhom2_View.Models
         public int Insurrance { get; set; }
         public string Color { get; set; }
         public int BrandId { get; set; }
-        public string BrandName { get; set; }
+        public string BrandName { get; set; } // Add BrandName property
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
 
@@ -62,6 +62,5 @@ namespace ASM_Nhom2_View.Models
                 ProductImages = JsonConvert.SerializeObject(value);
             }
         }
-
     }
 }

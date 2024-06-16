@@ -17,20 +17,22 @@ namespace ASM_Nhom2_View.Data
         [Required]
         public decimal ProductPrice { get; set; }
         public int CategoryId { get; set; }
-        public string ProductImages { get; set; }
-        public string Origin { get; set; }
-
-        public string MachineType { get; set; }
-        public int Diameter { get; set; }
-        public string ClockType { get; set; }
-        public int Insurrance { get; set; }
-        public string Color { get; set; }
+        public string? ProductImages { get; set; } // Chỉnh sửa thành string để lưu chuỗi JSON hình ảnh
+        public string? Origin { get; set; }
+        public string? MachineType { get; set; }
+        public int? Diameter { get; set; }
+        public string? ClockType { get; set; }
+        public int? Insurrance { get; set; }
+        public string? Color { get; set; }
         public int BrandId { get; set; }
+
+     
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<Bill> Bills { get; set; } = new HashSet<Bill>();
         public virtual ICollection<BillDetails> BillDetails { get; set; } = new HashSet<BillDetails>();
 
+        // Property để deserialize danh sách hình ảnh từ chuỗi JSON
         [NotMapped]
         public List<string> ProductImageList
         {
@@ -49,6 +51,5 @@ namespace ASM_Nhom2_View.Data
                 ProductImages = JsonConvert.SerializeObject(value);
             }
         }
-
     }
 }
