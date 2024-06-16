@@ -1,0 +1,157 @@
+﻿@model IEnumerable<ASM_Nhom2_View.Data.Bill>
+
+@{
+    ViewData["Title"] = "Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    table thead th {
+        vertical-align: middle !important;
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Đơn Hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Xem Đơn Hàng</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh Sách Đơn Hàng</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên Khách Hàng</th>
+                                    <th>Số Lượng Trong Đơn Hàng</th>
+                                    <th>Tổng Tiền Đơn Hàng</th>
+                                    <th>Trạng Thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr data-product-id="@item.BillId" class="text-center align-middle">
+                                        <td>@item.BillId</td>
+                                        <td>@item.User.FullName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.TotalAmount</td>
+                                        <td>@item.Status</td>
+                                        <td>
+                                            <button type="button" class="btn btn-info d-inline p-2" data-toggle="modal" data-target="#billDetailsModal" onclick="loadBillDetails(@item.BillId)">Xem Chi Tiết</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Modal chi tiết sản phẩm -->
+<div class="modal fade" id="billDetailsModal" tabindex="-1" role="dialog" aria-labelledby="billDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailsModalLabel">Chi tiết sản phẩm có trong hóa đơn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion" id="accordionExample">
+                    <!-- Product details will be appended here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadBillDetails(billId) {
+            $.ajax({
+                url: '@Url.Action("Details", "Bill")',
+                type: 'GET',
+                data: { id: billId },
+                success: function (bill) {
+                    var totalProducts = bill.Products.length;
+                    var productsHtml = '';
+
+                    bill.Products.forEach(function (product, index) {
+                        productsHtml += `
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading${index}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
+                                        Sản Phẩm ${index + 1}
+                                    </button>
+                                </h2>
+                                <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <table class="table table-bordered" style="width:100%">
+                                            <tr><th>Tên:</th><td>${product.ProductName}</td></tr>
+                                            <tr><th>Mã:</th><td>${product.ProductCode}</td></tr>
+                                            <tr><th>Số lượng:</th><td>${product.ProductStock}</td></tr>
+                                            <tr><th>Giá:</th><td>${product.ProductPrice}</td></tr>
+                                            <tr><th>Xuất xứ:</th><td>${product.Origin}</td></tr>
+                                            <tr><th>Loại máy:</th><td>${product.MachineType}</td></tr>
+                                            <tr><th>Đường kính:</th><td>${product.Diameter}</td></tr>
+                                            <tr><th>Loại đồng hồ:</th><td>${product.ClockType}</td></tr>
+                                            <tr><th>Bảo hành:</th><td>${product.Insurrance}</td></tr>
+                                            <tr><th>Màu:</th><td>${product.Color}</td></tr>
+                                            <tr><th>Thương hiệu:</th><td>${product.BrandName}</td></tr>
+                                            <tr><th>Loại dành cho:</th><td>${product.CategoryName}</td></tr>
+                                            <tr>
+                                                <th>Ảnh sản phẩm:</th>
+                                                <td>
+                                                    <div class="row" id="productImagesRow${index}">
+                                                        ${product.ProductImageList.map(image => `<div class="col-md-3"><img src="@Url.Content("~/uploads/")${image}" width="50" height="50" class="img-thumbnail"></div>`).join('')}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+
+                    $('#accordionExample').html(productsHtml);
+                    $('#billDetailsModal').modal('show');
+                },
+                error: function () {
+                    alert('Error loading bill details');
+                }
+            });
+        }
+    </script>
+}
+
+
+

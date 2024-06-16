@@ -161,7 +161,7 @@ namespace ASM_Nhom2_View.Controllers
 
             string newPassword = PasswordHelper.GeneratePassword(8);
             user.Password = PasswordHelper.GetMd5Hash(newPassword);
-            _context.Update(user);
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             await _emailService.SendEmailAsync(user.Email, "Quên mật khẩu", $"Mật khẩu mới của bạn là: {newPassword}");

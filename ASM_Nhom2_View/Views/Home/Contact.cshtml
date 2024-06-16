@@ -1,6 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
 @{
+
     Layout = null;
+    string FullName = Context.Session.GetString("FullName");
+    string Email = Context.Session.GetString("Email");
+    bool isLoggedIn = !string.IsNullOrEmpty(Email);
 }
 
 <!DOCTYPE html>
@@ -134,17 +138,17 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 position-absolute text-black" style="left: 90px;top: -20px;">
                         <li class="nav-item dropdown d-flex nav-home">
                             @*@if (isLoggedIn)
-                            {*@
+                                {*@
                             <!--<a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">-->
+                            aria-expanded="false">-->
                             @*@username*@
                             <!--</a>
-                        <ul class="dropdown-menu">
+                            <ul class="dropdown-menu">
 
-                        </ul>-->
+                            </ul>-->
                             @*}
-                            else
-                            {*@
+                                else
+                                {*@
                             <a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
                                 Tài khoản

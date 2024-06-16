@@ -197,7 +197,25 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Role" asp-action="Index" class="nav-link">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-th-list nav-icon"></i>
+                            <p>
+                                Đơn Hàng
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Bill" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Xem Đơn Hàng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-tags nav-icon"></i>
                             <p>
                                 Chức Vụ
@@ -218,7 +236,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>               
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

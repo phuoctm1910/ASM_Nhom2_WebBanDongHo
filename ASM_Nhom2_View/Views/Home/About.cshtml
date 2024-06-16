@@ -1,6 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
 @{
+
     Layout = null;
+    string FullName = Context.Session.GetString("FullName");
+    string Email = Context.Session.GetString("Email");
+    bool isLoggedIn = !string.IsNullOrEmpty(Email);
 }
 
 <!DOCTYPE html>

@@ -8,5 +8,6 @@ namespace ASM_Nhom2_View.Controllers
         {
             return View();
         }
+
     }
 }

@@ -8,6 +8,5 @@
         public int Quantity { get; set; }
         public float UnitPrice { get; set; }
         public float TotalPrice { get; set; }
-        public string Status { get; set; }
     }
 }
