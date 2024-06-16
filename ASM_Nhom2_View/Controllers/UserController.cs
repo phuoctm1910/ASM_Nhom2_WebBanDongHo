@@ -76,6 +76,13 @@ namespace ASM_Nhom2_View.Controllers
 
 
 
+        [HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+
 
     }
 }
