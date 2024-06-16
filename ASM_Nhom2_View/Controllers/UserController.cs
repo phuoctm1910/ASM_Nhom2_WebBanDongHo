@@ -1,4 +1,5 @@
 ﻿using ASM_Nhom2_View.Data;
+using ASM_Nhom2_View.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -11,19 +12,26 @@ using System.Threading.Tasks;
 
 namespace ASM_Nhom2_View.Controllers
 {
+
+    public class ForgotPasswordViewModel
+    {
+        public string Email { get; set; }
+    }
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly EmailService _emailService;
 
-        public UserController(AppDbContext context)
+        public UserController(AppDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            if (HttpContext.Session.GetString("UserName") == null)
+            if (HttpContext.Session.GetString("Email") == null)
             {
                 return View();
             }
@@ -37,13 +45,14 @@ namespace ASM_Nhom2_View.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(User user)
         {
-            if (HttpContext.Session.GetString("UserName") == null)
+            if (HttpContext.Session.GetString("Email") == null)
             {
-                var u = _context.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName) && x.Password.Equals(user.Password));
+                var hashPassBeforeCheck = PasswordHelper.GetMd5Hash(user.Password);
+                var u = _context.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName) && x.Password.Equals(hashPassBeforeCheck) || x.Email.Equals(user.Email) && x.Password.Equals(hashPassBeforeCheck));
                 if (u != null)
                 {
                     HttpContext.Session.SetString("UserName", u.UserName);
-                    HttpContext.Session.SetString("Password", u.Password);
+                    HttpContext.Session.SetString("Email", u.Email);
                     HttpContext.Session.SetString("FullName", u.FullName);
                     if (u.RoleId == 2)
                     {
@@ -127,6 +136,38 @@ namespace ASM_Nhom2_View.Controllers
                 Parameters = { { "prompt", "select_account" } }
             };
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "Email không tồn tại.";
+                return View(model);
+            }
+
+            string newPassword = PasswordHelper.GeneratePassword(8);
+            user.Password = PasswordHelper.GetMd5Hash(newPassword);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(user.Email, "Quên mật khẩu", $"Mật khẩu mới của bạn là: {newPassword}");
+
+            ViewBag.Message = "Mật khẩu mới đã được gửi qua email.";
+            return View();
         }
     }
 }

@@ -1,4 +1,6 @@
 using ASM_Nhom2_View.Data;
+using ASM_Nhom2_View.Models;
+using ASM_Nhom2_View.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
@@ -62,7 +64,8 @@ public class Startup
             options.Scope.Add("profile");
             options.SaveTokens = true;
         });
-
+        services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+        services.AddTransient<EmailService>();
         services.AddHttpClient();
     }
 

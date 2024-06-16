@@ -3,7 +3,8 @@
 
     Layout = null;
     string FullName = Context.Session.GetString("FullName");
-    bool isLoggedIn = !string.IsNullOrEmpty(FullName);
+    string Email = Context.Session.GetString("Email");
+    bool isLoggedIn = !string.IsNullOrEmpty(Email);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +79,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-controller="User" asp-action="Register">Đăng ký</a></li>
                                     <li><a class="dropdown-item" asp-controller="User" asp-action="Login">Đăng nhập</a></li>
-                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Forgetpassword">Quên mật khẩu</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="ForgotPassword">Quên mật khẩu</a></li>
                                 </ul>
                             }
 
