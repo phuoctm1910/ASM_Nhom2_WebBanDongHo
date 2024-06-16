@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -80,12 +81,36 @@ namespace ASM_Nhom2_View.Controllers
             return View();
         }
 
-        [HttpGet("/signin-google")]
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            var redirectUrl = Url.Action("GoogleResponse", "User");
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl,
+                Parameters = { { "prompt", "select_account" } },
+                AllowRefresh = true
+            };
+
+            // Log the properties items
+            foreach (var item in properties.Items)
+            {
+                Console.WriteLine($"Key: {item.Key}, Value: {item.Value}");
+            }
+
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> GoogleResponse()
         {
             var authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             if (!authenticateResult.Succeeded)
                 return BadRequest("Google authentication failed");
+
+            var state = Request.Query["state"];
+            Console.WriteLine($"State parameter after redirect: {state}");
 
             var claims = authenticateResult.Principal.Identities.FirstOrDefault()?.Claims.Select(claim => new
             {
@@ -126,17 +151,9 @@ namespace ASM_Nhom2_View.Controllers
 
             return RedirectToAction("Login", "User");
         }
-        [HttpGet]
-        public IActionResult GoogleLogin()
-        {
-            var redirectUrl = Url.Action("GoogleResponse", "User");
-            var properties = new AuthenticationProperties
-            {
-                RedirectUri = redirectUrl,
-                Parameters = { { "prompt", "select_account" } }
-            };
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        }
+
+        
+
 
         [HttpGet]
         public IActionResult ForgotPassword()

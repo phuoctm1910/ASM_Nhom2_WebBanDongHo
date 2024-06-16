@@ -13,105 +13,116 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 
-public class Startup
+namespace ASM_Nhom2_View 
 {
-    public IConfiguration Configuration { get; }
-
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-        Configuration = configuration;
-    }
+        public IConfiguration Configuration { get; }
 
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddControllersWithViews();
-
-        services.AddDbContext<AppDbContext>(options =>
+        public Startup(IConfiguration configuration)
         {
-            var connectionString = Configuration.GetConnectionString("DBConnection");
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new InvalidOperationException("DBConnection is not configured.");
-            }
-            options.UseSqlServer(connectionString);
-        });
-
-        services.AddSession(options =>
-        {
-            options.IdleTimeout = TimeSpan.FromMinutes(30);
-            options.Cookie.HttpOnly = true;
-            options.Cookie.IsEssential = true;
-        });
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-        })
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-        {
-            options.Cookie.SameSite = SameSiteMode.None;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        })
-        .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
-        {
-            IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
-            options.ClientId = googleAuthNSection["ClientId"];
-            options.ClientSecret = googleAuthNSection["ClientSecret"];
-            options.CallbackPath = "/signin-google";
-            options.Scope.Add("email");
-            options.Scope.Add("profile");
-            options.SaveTokens = true;
-        });
-        services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
-        services.AddTransient<EmailService>();
-        services.AddHttpClient();
-    }
-
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
-    {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Home/Error");
-            app.UseHsts();
+            Configuration = configuration;
         }
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-
-        app.UseRouting();
-
-        app.UseSession();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-        app.Use(async (context, next) =>
+        public void ConfigureServices(IServiceCollection services)
         {
-            try
+            services.AddAuthentication(options =>
             {
-                await next();
-            }
-            catch (Exception ex)
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
-                logger.LogError($"Something went wrong: {ex}");
-                throw;
-            }
-        });
+                options.Cookie.SameSite = SameSiteMode.None; // Adjust this if needed
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            }).AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+                options.CallbackPath = "/signin-google";
+                options.Scope.Add("email");
+                options.Scope.Add("profile");
+                options.SaveTokens = true;
+            });
 
-        app.UseEndpoints(endpoints =>
+            services.AddControllersWithViews();
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                var connectionString = Configuration.GetConnectionString("DBConnection");
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("DBConnection is not configured.");
+                }
+                options.UseSqlServer(connectionString);
+            });
+
+            services.AddRazorPages();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.None; // Adjust this if needed
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
+
+           
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.AddTransient<EmailService>();
+
+            services.AddHttpClient();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            endpoints.MapControllerRoute(
-                name: "areas",
-                pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-        });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseSession(); 
+
+
+            app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"Something went wrong: {ex}");
+                    throw;
+                }
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
     }
 }
