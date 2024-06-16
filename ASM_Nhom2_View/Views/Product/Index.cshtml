@@ -235,7 +235,7 @@
                     @foreach (var item in Model)
                     {
                         <div class="col-md-3 my-3 product">
-                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
+                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
                                 <div class="card">
                                     <div class="imgBox">
                                         @if (item.ProductImageList.Any())
@@ -256,8 +256,9 @@
                             </a>
                         </div>
                     }
-                </div>
 
+
+                </div>
                 <!-- Tải thêm sản phẩm -->
                 @if (Model.Count > 8)
                 {
