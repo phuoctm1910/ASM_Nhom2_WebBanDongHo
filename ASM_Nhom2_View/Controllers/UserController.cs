@@ -84,5 +84,45 @@ namespace ASM_Nhom2_View.Controllers
 
 
 
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmNewPassword)
+        {
+            if (newPassword != confirmNewPassword)
+            {
+                return Json(new { success = false, message = "Mật khẩu mới và xác nhận mật khẩu không khớp." });
+            }
+
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Json(new { success = false, message = "Người dùng chưa đăng nhập." });
+            }
+
+            var user = _context.Users
+                .Where(u => u.UserName.Equals(userName) && u.Password.Equals(currentPassword))
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
+            }
+
+            user.Password = newPassword;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Đổi mật khẩu thành công." });
+        }
+
+
+
+
+
     }
 }
