@@ -110,14 +110,13 @@
     </header>
 
     <main style="background-color: #f0efef;">
-
-        <div class="container">
-            <div class="text-center"><h1>THÔNG TIN CHI TIẾT SẢN PHẨM</h1></div> <hr style="max-width"> <br />
+        <div class="text-center"><h1>CHI TIẾT SẢN PHẨM</h1></div> <hr /> <br />
+        <div class="container" style="background-color: white;width: calc(100% - 300px) !important;">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-9 py-5" style="background-color: white;">
                     <div class="row">
 
-                        <div class="col-md-7">
+                     @*    <div class="col-md-7">
                             <div class="magnifier" style="text-align: center;">
                                 <div class="big-img"></div>
                                 <img id="main-image" src="@Url.Content("~/uploads/" + (Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "default.png"))" alt="@Model.ProductName" class="small-img" />
@@ -130,64 +129,347 @@
                                     }
                                 </div>
                             </div>
-                        </div>
-
-                       @*  <div class="col-md-7">
-
-                            <div class="magnifier" style="text-align: center;">
-                                <div class="big-img"></div>
-                                <img id="main-image" src="~/images/Product/@(Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "")" alt="@Model.ProductName" class="small-img" />
-                            </div>
-                            <div class="carousel-wrap my-5">
-                                <div class="owl-carousel" style="margin: 0 auto;">
-                                    @foreach (var image in Model.ProductImageList)
-                                    {
-                                        <div class="item"><img src="~/uploads/@image" alt="thumbnail image"></div>
-                                    }
-                                </div>
-                            </div>
                         </div> *@
 
-                        <div class="col-md-5">
-                            <div>
-                                <div class="name-prodct">
-                                    <span style="font-weight: bold; font-size: 30px;">
-                                        @Model.ProductName
-                                    </span>
+                        @*  <div class="col-md-7">
+
+                        <div class="magnifier" style="text-align: center;">
+                        <div class="big-img"></div>
+                        <img id="main-image" src="~/images/Product/@(Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "")" alt="@Model.ProductName" class="small-img" />
+                        </div>
+                        <div class="carousel-wrap my-5">
+                        <div class="owl-carousel" style="margin: 0 auto;">
+                        @foreach (var image in Model.ProductImageList)
+                        {
+                        <div class="item"><img src="~/uploads/@image" alt="thumbnail image"></div>
+                        }
+                        </div>
+                        </div>
+                        </div> *@
+
+                      
+                        @*     <div class="row">
+                        <div class="col-md-12 py-5" style="border-bottom: 6px solid #f0efef;">
+                        <h4>THÔNG SỐ SẢN PHẨM</h4>
+                        <table class="table table-striped">
+                        <tr>
+                        <td>Thương hiệu:</td>
+                        <td>@Model.Brand?.BrandName</td>
+                        </tr>
+                        <tr>
+                        <td>Mã sản phẩm:</td>
+                        <td>@Model.ProductCode</td>
+                        </tr>
+                        <!-- Các thông số khác của sản phẩm -->
+                        </table>
+                        </div>
+                        </div> *@
+                        <div class="row">
+
+                            <div class="col-md-7">
+                                <div class="magnifier" style="text-align: center;">
+                                    <div class="big-img"></div>
+                                    <img id="main-image" src="@Url.Content("~/uploads/" + (Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "default.png"))" alt="@Model.ProductName" class="small-img" />
                                 </div>
-                                <div class="default-detail">
-                                    <div id="productCode">
-                                        Mã sản phẩm: @Model.ProductCode
-                                    </div>
-                                    @*  <div id="forGender">
-                                    Giới tính: @Model.Gender
-                                    </div>
-                                    <div id="machinery">
-                                    Bộ máy: @Model.Machinery
-                                    </div> *@
-                                    <div id="diameter">
-                                        Đường kính: @Model.Diameter
+                                <div class="carousel-wrap my-5">
+                                    <div class="owl-carousel" style="margin: 0 auto;">
+                                        @foreach (var image in Model.ProductImageList)
+                                        {
+                                            <div class="item"><img src="@Url.Content("~/uploads/" + image)" alt="thumbnail image"></div>
+                                        }
                                     </div>
                                 </div>
-                                <div class="price-quantity" style="display: inline-block;">
-                                    <span class="text-danger" id="price" style="font-size: 30px; font-weight: bold;">@Model.ProductPrice</span>
-                                    @*  <span id="quantity">(Chỉ còn <span class="text-danger">@Model.Quantity</span> sản phẩm)</span> *@
-                                </div>
-                                <div class="btnListProduct">
-                                    <button style="width: 100%; height: 40px; font-weight: bold;"
-                                            class="btn btn-outline-dark btn-fill my-2">
-                                        THÊM VÀO GIỎ HÀNG
-                                    </button>
-                                    <button style="width: 100%; height: 40px; font-weight: bold;"
-                                            class="btn btn-dark btn-fill my-2">
-                                        LIÊN HỆ XEM HÀNG
-                                    </button>
+                            </div>
+
+                            @*  <div class="col-md-7">
+
+                            <div class="magnifier" style="text-align: center;">
+                            <div class="big-img"></div>
+                            <img id="main-image" src="~/images/Product/@(Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "")" alt="@Model.ProductName" class="small-img" />
+                            </div>
+                            <div class="carousel-wrap my-5">
+                            <div class="owl-carousel" style="margin: 0 auto;">
+                            @foreach (var image in Model.ProductImageList)
+                            {
+                            <div class="item"><img src="~/uploads/@image" alt="thumbnail image"></div>
+                            }
+                            </div>
+                            </div>
+                            </div> *@
+
+                            <div class="col-md-5">
+                                <div>
+                                    <div class="name-prodct">
+                                        <span style="font-weight: bold; font-size: 30px;">
+                                            @Model.ProductName
+                                        </span>
+                                    </div>
+                                    <div class="default-detail">
+                                        <div id="productCode">
+                                            Mã sản phẩm: @Model.ProductCode
+                                        </div>
+                                        @*  <div id="forGender">
+                                        Giới tính: @Model.Gender
+                                        </div>
+                                        <div id="machinery">
+                                        Bộ máy: @Model.Machinery
+                                        </div> *@
+
+                                        <div id="MachineType">
+                                            Loại máy: @Model.MachineType
+                                        </div>
+                                        <div id="diameter">
+                                            Đường kính: @Model.Diameter
+                                        </div>
+                                    </div>
+                                    <div class="price-quantity" style="display: inline-block;">
+                                        <span class="text-danger" id="price" style="font-size: 30px; font-weight: bold;">
+                                            @(Model.ProductPrice.ToString("#,##0").Replace(",", ".") + " ₫")
+                                        </span>
+
+
+                                        @*  <span id="quantity">(Chỉ còn <span class="text-danger">@Model.Quantity</span> sản phẩm)</span> *@
+                                    </div>
+                                    <div class="btnListProduct">
+                                        <button style="width: 100%; height: 40px; font-weight: bold;"
+                                                class="btn btn-outline-dark btn-fill my-2">
+                                            THÊM VÀO GIỎ HÀNG
+                                        </button>
+                                        <button style="width: 100%; height: 40px; font-weight: bold;"
+                                                class="btn btn-dark btn-fill my-2">
+                                            LIÊN HỆ XEM HÀNG
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="wrap_title_file_des ">
+                                    <div class="title-box-product fw-semibold">Bảo Hành &amp; Hậu Mãi</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="product_tab_content" id="tabs">
+                                    <div id="prodetails_tab2" class="description prodetails_tab ">
+                                        <div>
+                                            <p style="text-align:center">
+                                                <span style="font-size:22px">
+                                                    <strong>
+                                                        CHÍNH SÁCH
+                                                        BẢO HÀNH &amp; HẬU MÃI TẠI TÂN
+                                                        TÂN WATCH
+                                                    </strong>
+                                                </span>
+                                            </p>
+
+                                            <p>
+                                                Tất cả&nbsp;các nhãn hiệu đồng hồ mua tại Watch Fives Watch đều được bảo
+                                                hành
+                                                theo hai chính sách, đó là
+                                                chính sách bảo hành Quốc Tế và chính sách bảo hành tại Watch Fives kể từ
+                                                ngày mua trong điều kiện cho phép
+                                                bảo hành.
+                                            </p>
+
+                                            <ul>
+                                                <li>
+                                                    <strong>Với bảo hành Quốc Tế:</strong>&nbsp;thời hạn bảo hành từ 1
+                                                    đến 2 năm theo chính sách của
+                                                    Hãng (tuỳ thuộc vào từng Hãng quy định).
+                                                </li>
+                                                <li>
+                                                    <strong>Với bảo hành tại Watch Fives:</strong>&nbsp;thời hạn bảo
+                                                    hành
+                                                    được cộng thêm từ 2 đến 3&nbsp;năm
+                                                    về máy (tuỳ từng Hãng đồng hồ khác nhau), và miễn phí thay pin chính
+                                                    hãng trọn đời đối với đồng hồ
+                                                    pin
+                                                </li>
+                                            </ul>
+
+                                            <p>
+                                                <em>
+                                                    Watch Fives Watch xin lưu ý thêm về chất lượng dịch vụ hậu mãi, tuỳ
+                                                    các
+                                                    Công ty khác nhau sẽ có dịch vụ
+                                                    hậu mãi khác nhau. Tại Watch Fives, đội ngũ kỹ thuật được hướng dẫn
+                                                    và
+                                                    đào tạo chính hãng và Watch Fives
+                                                    cũng là Trung Tâm Bảo Hành được Citizen, Bulova, Movado Group uỷ
+                                                    quyền tại Việt Nam, do đó đồng hồ
+                                                    mua tại Watch Fives Watch bảo hành 1 lần sẽ an tâm sử dụng từ 5 đến
+                                                    10
+                                                    năm thậm chí lên đến 20 năm tuỳ
+                                                    theo quá trình sử dụng của mỗi người. Bạn chỉ cần lau dầu, vệ sinh
+                                                    máy hoặc thay pin định kỳ là có
+                                                    thể sử dụng thêm 1 thời gian dài.
+                                                </em>
+                                            </p>
+
+                                            <h3><u>ĐIỀU KIỆN ĐƯỢC BẢO HÀNH</u></h3>
+
+                                            <ul>
+                                                <li>
+                                                    Bảo hành chỉ có giá trị khi đồng hồ có Phiếu bảo hành của hãng, có
+                                                    đóng mộc của Watch Fives Watch hoặc
+                                                    biên nhận của Watch Fives Watch được&nbsp;điền chính xác, đầy đủ các
+                                                    thông tin.
+                                                </li>
+                                                <li>
+                                                    Phiếu bảo hành phải còn nguyên vẹn, không rách, chấp vá, hoen ố, mờ
+                                                    nhạt.
+                                                </li>
+                                                <li>
+                                                    Đồng hồ còn trong thời gian bảo hành. Thời gian bảo hành được tính
+                                                    từ ngày mua có ghi trên Phiếu Bảo
+                                                    Hành.
+                                                </li>
+                                                <li>
+                                                    Chỉ bảo hành thay thế mới cho những linh kiện, phụ tùng bị hỏng –
+                                                    không thay thế bằng một chiếc đồng
+                                                    hồ khác.
+                                                </li>
+                                            </ul>
+
+                                            <p><u>TRƯỜNG HỢP KHÔNG BẢO HÀNH</u></p>
+
+                                            <ul>
+                                                <li>
+                                                    Hư hỏng do&nbsp;bảo quản không đúng cách, tai nạn, mang và rách
+                                                    thông thường.
+                                                </li>
+                                                <li>
+                                                    Hư hỏng do nước nếu không được cảnh báo là loại đồng hồ chống vô
+                                                    nước.
+                                                </li>
+                                                <li>Phiếu bảo hành không còn nguyên vẹn, rách, chấp vá, hoen mờ.</li>
+                                                <li>
+                                                    Tự ý thay đổi máy móc bên trong, mở ra can thiệp sửa chữa trong thời
+                                                    gian còn bảo hành tại những nơi
+                                                    không phải là trung tâm của hãng.
+                                                </li>
+                                            </ul>
+
+                                            <h3><em>LƯU Ý</em></h3>
+
+                                            <p>
+                                                <em>
+                                                    Trong thời gian bảo hành, chỉ bảo hành&nbsp;bộ&nbsp;máy bên trong.
+                                                    Một bộ phận được bảo hành sẽ được
+                                                    sửa chữa hoặc được thay thế mới nếu chứng minh được đó là lỗi từ
+                                                    chất liệu hoặc kỹ thuật trong điều
+                                                    kiện sử dụng bình thường.
+                                                </em>
+                                            </p>
+
+                                            <p>
+                                                <em>
+                                                    Trong trường hợp thay thế đồng hồ khác (một số trường hợp nhất
+                                                    định)&nbsp;Watch Fives Watch không đảm bảo
+                                                    khách hàng sẽ nhận được cùng mẫu mã&nbsp;như đồng hồ đã bị lỗi. Nếu
+                                                    mẫu mã&nbsp;đó không có, thì sẽ
+                                                    được thay thế đồng hồ khác có giá trị tương đương hoặc loại tương tự
+                                                    như đồng hồ trước đây. Thời
+                                                    gian bảo hành cho đồng hồ thay thế cũng kéo
+                                                    dài&nbsp;2&nbsp;năm&nbsp;kể từ ngày khách hàng nhận đồng
+                                                    hồ thay thế.
+                                                </em>
+                                            </p>
+
+                                            <h3><u>LIÊN HỆ BẢO HÀNH VÀ SỮA CHỮA</u></h3>
+
+                                            <p>
+                                                Khách hàng ở xa khi có yêu cầu bảo hành, vui lòng gửi đồng hồ, bản photo
+                                                hóa đơn mua hàng hoặc sách bảo
+                                                hành có đóng dấu của đơn vị bán và bản mô tả vấn đề của đồng hồ cho
+                                                trung tâm dịch vụ bảo hành quốc tế
+                                                hợp pháp gần nhất (xem danh sách địa chỉ trong sổ bảo hành).
+                                            </p>
+
+                                            <p>
+                                                Với những dịch vụ không thuộc điều kiện bảo hành, trung tâm dịch vụ sẽ
+                                                thực hiện những dịch vụ mà khách
+                                                hàng yêu cầu với mức phí tùy theo loại đồng hồ và loại dịch vụ yêu cầu.
+                                                Những mức phí sẽ không cố định.
+                                            </p>
+
+                                            <p>
+                                                Đừng gửi bao bì gốc vì nó sẽ không được trả lại, Watch Fives Watch khuyến
+                                                cáo
+                                                khách hàng bảo đảm gói hàng và
+                                                đồng hồ được bảo vệ đầy đủ trong suốt quá trình vận chuyển.&nbsp;Đồng Hồ
+                                                Watch Fives&nbsp;sẽ không chịu
+                                                trách nhiệm cho sản phẩm bị thất lạc hoặc hư hỏng do vận chuyển.
+                                            </p>
+
+                                            <h3>
+                                                <u>
+                                                    TRUNG TÂM BẢO HÀNH SỬA CHỮA ĐƯỢC UỶ QUYỀN BỞI CITIZEN, BULOVA, MOVADO
+                                                    GROUP
+                                                </u>
+                                            </h3>
+
+                                            <p>1. Địa Chỉ: 123 Trần Hưng Đạo, Quận 1, HCM</p>
+
+                                            <ul>
+                                                <li>
+                                                    Hotline:&nbsp;<span style="color: blue;">
+                                                        <u>
+                                                            0987 654
+                                                            321
+                                                        </u>
+                                                    </span>
+                                                </li>
+                                                <li>Thời gian nhận sửa:&nbsp;Từ 9h đến 18h mỗi ngày</li>
+                                            </ul>
+
+                                            <p>2.&nbsp;Địa Chỉ: 123 Trần Hưng Đạo, Quận 1, HCM</p>
+
+                                            <ul>
+                                                <li>
+                                                    Hotline:&nbsp;<span style="color: blue;">
+                                                        <u>
+                                                            0987 654
+                                                            321
+                                                        </u>
+                                                    </span>
+                                                </li>
+                                                <li>Thời gian nhận sửa:&nbsp;Từ 9h đến 18h mỗi ngày</li>
+                                            </ul>
+
+                                            <hr>
+                                            <p>
+                                                Ngoài là Trung Tâm nhận bảo hành, Watch Fives Watch còn chuyên sửa chữa
+                                                theo
+                                                tiêu chuẩn Thuỵ Sĩ các dòng đồng
+                                                hồ: OMEGA – LONGINES – RADO –GUCCI – RAYMOND WEIL – MIDO – TISSOT –
+                                                MOVADO – CITIZEN – BULOVA – ALFEX và
+                                                những thương hiệu nổi tiếng khác.
+                                            </p>
+
+                                            <p>
+                                                Vui lòng gọi <span style="color: blue;">
+                                                    <u>
+                                                        0987 654
+                                                        321
+                                                    </u>
+                                                </span>&nbsp;để được tư vấn chi tiết.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" style="background-color: white; border-left: 6px solid #f0efef;">
                     <div class="row">
                         <div class="col-md-12 py-5" style="border-bottom: 6px solid #f0efef;">
                             <h4>THÔNG SỐ SẢN PHẨM</h4>
@@ -197,229 +479,52 @@
                                     <td>@Model.Brand?.BrandName</td>
                                 </tr>
                                 <tr>
-                                    <td>Mã sản phẩm:</td>
+                                    <td>Tên sản phẩm:</td>
+                                    <td>@Model.ProductName</td>
+                                </tr>
+                                 <tr>
+                                    <td>Mã sản phẩm :</td>
                                     <td>@Model.ProductCode</td>
                                 </tr>
-                                <!-- Các thông số khác của sản phẩm -->
+                                <tr>
+                                    <td>Đường kính :</td>
+                                    <td>@Model.Diameter</td>
+                                </tr>
+                                <tr>
+                                    <td>Tồn Kho:</td>
+                                    <td>@Model.ProductStock</td>
+                                </tr>
+                                <tr>
+                                    <td>Màu sắc:</td>
+                                    <td>@Model.Color</td>
+                                </tr>
+                                <tr>
+                                    <td>Loại máy:</td>
+                                    <td>@Model.MachineType</td>
+                                </tr>                         
+                                <tr>
+                                    <td>Loại kim đồng hồ:</td>
+                                    <td>@Model.ClockType</td>
+                                </tr>
+                                <tr>
+                                    <td>Xuất xứ:</td>
+                                    <td>@Model.Origin</td>
+                                 
+                                </tr>
+                                <tr>
+                                    <td>Giá:</td>
+                                    <td>@Model.ProductPrice.ToString("#,##0").Replace(",", ".") ₫</td>
+                                </tr>
+                                <tr>
+                                    <td>Bảo hành :</td>
+                                    <td>@Model.Insurrance</td>
+                                </tr>
                             </table>
                         </div>
                     </div>
+
                 </div>
 
-            </div>
-            <br/> <br/> <br/>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="product_tab_content" id="tabs">
-                        <div id="prodetails_tab2" class="description prodetails_tab ">
-                            <div>
-                                <p style="text-align:center">
-                                    <span style="font-size:22px">
-                                        <strong>
-                                            CHÍNH SÁCH
-                                            BẢO HÀNH &amp; HẬU MÃI TẠI TÂN
-                                            TÂN WATCH
-                                        </strong>
-                                    </span>
-                                </p>
-
-                                <p>
-                                    Tất cả&nbsp;các nhãn hiệu đồng hồ mua tại Watch Fives Watch đều được bảo
-                                    hành
-                                    theo hai chính sách, đó là
-                                    chính sách bảo hành Quốc Tế và chính sách bảo hành tại Watch Fives kể từ
-                                    ngày mua trong điều kiện cho phép
-                                    bảo hành.
-                                </p>
-
-                                <ul>
-                                    <li>
-                                        <strong>Với bảo hành Quốc Tế:</strong>&nbsp;thời hạn bảo hành từ 1
-                                        đến 2 năm theo chính sách của
-                                        Hãng (tuỳ thuộc vào từng Hãng quy định).
-                                    </li>
-                                    <li>
-                                        <strong>Với bảo hành tại Watch Fives:</strong>&nbsp;thời hạn bảo
-                                        hành
-                                        được cộng thêm từ 2 đến 3&nbsp;năm
-                                        về máy (tuỳ từng Hãng đồng hồ khác nhau), và miễn phí thay pin chính
-                                        hãng trọn đời đối với đồng hồ
-                                        pin
-                                    </li>
-                                </ul>
-
-                                <p>
-                                    <em>
-                                        Watch Fives Watch xin lưu ý thêm về chất lượng dịch vụ hậu mãi, tuỳ
-                                        các
-                                        Công ty khác nhau sẽ có dịch vụ
-                                        hậu mãi khác nhau. Tại Watch Fives, đội ngũ kỹ thuật được hướng dẫn
-                                        và
-                                        đào tạo chính hãng và Watch Fives
-                                        cũng là Trung Tâm Bảo Hành được Citizen, Bulova, Movado Group uỷ
-                                        quyền tại Việt Nam, do đó đồng hồ
-                                        mua tại Watch Fives Watch bảo hành 1 lần sẽ an tâm sử dụng từ 5 đến
-                                        10
-                                        năm thậm chí lên đến 20 năm tuỳ
-                                        theo quá trình sử dụng của mỗi người. Bạn chỉ cần lau dầu, vệ sinh
-                                        máy hoặc thay pin định kỳ là có
-                                        thể sử dụng thêm 1 thời gian dài.
-                                    </em>
-                                </p>
-
-                                <h3><u>ĐIỀU KIỆN ĐƯỢC BẢO HÀNH</u></h3>
-
-                                <ul>
-                                    <li>
-                                        Bảo hành chỉ có giá trị khi đồng hồ có Phiếu bảo hành của hãng, có
-                                        đóng mộc của Watch Fives Watch hoặc
-                                        biên nhận của Watch Fives Watch được&nbsp;điền chính xác, đầy đủ các
-                                        thông tin.
-                                    </li>
-                                    <li>
-                                        Phiếu bảo hành phải còn nguyên vẹn, không rách, chấp vá, hoen ố, mờ
-                                        nhạt.
-                                    </li>
-                                    <li>
-                                        Đồng hồ còn trong thời gian bảo hành. Thời gian bảo hành được tính
-                                        từ ngày mua có ghi trên Phiếu Bảo
-                                        Hành.
-                                    </li>
-                                    <li>
-                                        Chỉ bảo hành thay thế mới cho những linh kiện, phụ tùng bị hỏng –
-                                        không thay thế bằng một chiếc đồng
-                                        hồ khác.
-                                    </li>
-                                </ul>
-
-                                <p><u>TRƯỜNG HỢP KHÔNG BẢO HÀNH</u></p>
-
-                                <ul>
-                                    <li>
-                                        Hư hỏng do&nbsp;bảo quản không đúng cách, tai nạn, mang và rách
-                                        thông thường.
-                                    </li>
-                                    <li>
-                                        Hư hỏng do nước nếu không được cảnh báo là loại đồng hồ chống vô
-                                        nước.
-                                    </li>
-                                    <li>Phiếu bảo hành không còn nguyên vẹn, rách, chấp vá, hoen mờ.</li>
-                                    <li>
-                                        Tự ý thay đổi máy móc bên trong, mở ra can thiệp sửa chữa trong thời
-                                        gian còn bảo hành tại những nơi
-                                        không phải là trung tâm của hãng.
-                                    </li>
-                                </ul>
-
-                                <h3><em>LƯU Ý</em></h3>
-
-                                <p>
-                                    <em>
-                                        Trong thời gian bảo hành, chỉ bảo hành&nbsp;bộ&nbsp;máy bên trong.
-                                        Một bộ phận được bảo hành sẽ được
-                                        sửa chữa hoặc được thay thế mới nếu chứng minh được đó là lỗi từ
-                                        chất liệu hoặc kỹ thuật trong điều
-                                        kiện sử dụng bình thường.
-                                    </em>
-                                </p>
-
-                                <p>
-                                    <em>
-                                        Trong trường hợp thay thế đồng hồ khác (một số trường hợp nhất
-                                        định)&nbsp;Watch Fives Watch không đảm bảo
-                                        khách hàng sẽ nhận được cùng mẫu mã&nbsp;như đồng hồ đã bị lỗi. Nếu
-                                        mẫu mã&nbsp;đó không có, thì sẽ
-                                        được thay thế đồng hồ khác có giá trị tương đương hoặc loại tương tự
-                                        như đồng hồ trước đây. Thời
-                                        gian bảo hành cho đồng hồ thay thế cũng kéo
-                                        dài&nbsp;2&nbsp;năm&nbsp;kể từ ngày khách hàng nhận đồng
-                                        hồ thay thế.
-                                    </em>
-                                </p>
-
-                                <h3><u>LIÊN HỆ BẢO HÀNH VÀ SỮA CHỮA</u></h3>
-
-                                <p>
-                                    Khách hàng ở xa khi có yêu cầu bảo hành, vui lòng gửi đồng hồ, bản photo
-                                    hóa đơn mua hàng hoặc sách bảo
-                                    hành có đóng dấu của đơn vị bán và bản mô tả vấn đề của đồng hồ cho
-                                    trung tâm dịch vụ bảo hành quốc tế
-                                    hợp pháp gần nhất (xem danh sách địa chỉ trong sổ bảo hành).
-                                </p>
-
-                                <p>
-                                    Với những dịch vụ không thuộc điều kiện bảo hành, trung tâm dịch vụ sẽ
-                                    thực hiện những dịch vụ mà khách
-                                    hàng yêu cầu với mức phí tùy theo loại đồng hồ và loại dịch vụ yêu cầu.
-                                    Những mức phí sẽ không cố định.
-                                </p>
-
-                                <p>
-                                    Đừng gửi bao bì gốc vì nó sẽ không được trả lại, Watch Fives Watch khuyến
-                                    cáo
-                                    khách hàng bảo đảm gói hàng và
-                                    đồng hồ được bảo vệ đầy đủ trong suốt quá trình vận chuyển.&nbsp;Đồng Hồ
-                                    Watch Fives&nbsp;sẽ không chịu
-                                    trách nhiệm cho sản phẩm bị thất lạc hoặc hư hỏng do vận chuyển.
-                                </p>
-
-                                <h3>
-                                    <u>
-                                        TRUNG TÂM BẢO HÀNH SỬA CHỮA ĐƯỢC UỶ QUYỀN BỞI CITIZEN, BULOVA, MOVADO
-                                        GROUP
-                                    </u>
-                                </h3>
-
-                                <p>1. Địa Chỉ: 123 Trần Hưng Đạo, Quận 1, HCM</p>
-
-                                <ul>
-                                    <li>
-                                        Hotline:&nbsp;<span style="color: blue;">
-                                            <u>
-                                                0987 654
-                                                321
-                                            </u>
-                                        </span>
-                                    </li>
-                                    <li>Thời gian nhận sửa:&nbsp;Từ 9h đến 18h mỗi ngày</li>
-                                </ul>
-
-                                <p>2.&nbsp;Địa Chỉ: 123 Trần Hưng Đạo, Quận 1, HCM</p>
-
-                                <ul>
-                                    <li>
-                                        Hotline:&nbsp;<span style="color: blue;">
-                                            <u>
-                                                0987 654
-                                                321
-                                            </u>
-                                        </span>
-                                    </li>
-                                    <li>Thời gian nhận sửa:&nbsp;Từ 9h đến 18h mỗi ngày</li>
-                                </ul>
-
-                                <hr>
-                                <p>
-                                    Ngoài là Trung Tâm nhận bảo hành, Watch Fives Watch còn chuyên sửa chữa
-                                    theo
-                                    tiêu chuẩn Thuỵ Sĩ các dòng đồng
-                                    hồ: OMEGA – LONGINES – RADO –GUCCI – RAYMOND WEIL – MIDO – TISSOT –
-                                    MOVADO – CITIZEN – BULOVA – ALFEX và
-                                    những thương hiệu nổi tiếng khác.
-                                </p>
-
-                                <p>
-                                    Vui lòng gọi <span style="color: blue;">
-                                        <u>
-                                            0987 654
-                                            321
-                                        </u>
-                                    </span>&nbsp;để được tư vấn chi tiết.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -512,5 +617,7 @@
 </body>
 
 </html>
+
+
 
 

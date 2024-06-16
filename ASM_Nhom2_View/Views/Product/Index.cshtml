@@ -162,7 +162,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="productCount">
                             <span>
-                                Tổng Sản Phẩm : 10.
+                                Tổng Sản Phẩm : <span id="totalProductCount">@Model.Count</span>
                             </span>
                         </div>
                         <div class="productfilter d-flex align-items-center">
@@ -250,9 +250,19 @@
                                     </div>
                                     <div class="contentBox">
                                         <h3>@item.ProductName</h3>
-                                        <h2 class="price">@item.ProductPrice</h2>
+                                        <h2 class="price">@item.ProductPrice.ToString("#,##0").Replace(",", ".") ₫</h2>
                                         <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
+                                       @*  <li class="nav-item">
+                                            <a class="nav-link text-end position-relative nav-home" role="button" asp-controller="Home" asp-action="Cart">
+                                                Giỏ hàng
+                                                <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 7px; right: -19px;">
+                                                    <!-- This will be dynamically updated with the cart item count -->
+                                                 
+                                                </span>
+                                            </a>
+                                        </li> *@
                                     </div>
+
                                 </div>
                             </a>
                         </div>
