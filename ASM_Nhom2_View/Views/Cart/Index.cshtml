@@ -168,7 +168,7 @@
                             </div>
                             @foreach (var item in Model.BillDetails)
                             {
-                                <div class="row border-top border-bottom">
+                                <div class="row border-top border-bottom" id="billDetail-@item.Id">
                                     <div class="row main align-items-center">
                                         <div class="col-2">
                                             @{
@@ -179,22 +179,20 @@
                                         </div>
                                         <div class="col">
                                             <div class="row text-muted">@item.Product.ProductName</div>
-                                            @*<div class="row">@item.Product.Description</div>*@
                                         </div>
                                         <div class="col productCount">
-                                            <a href="#">-</a>
-                                            <a href="#" class="border">@item.Quantity</a>
-                                            <a href="#">+</a>
+                                            <button class="btn btn-outline-secondary decreaseQuantity" data-billdetail-id="@item.Id">-</button>
+                                            <span class="quantity" data-quantity-id="@item.Id">@item.Quantity</span>
+                                            <button class="btn btn-outline-secondary increaseQuantity" data-billdetail-id="@item.Id">+</button>
                                         </div>
-                                        <div class="col">@item.UnitPrice.ToString("C")</div>
+                                        <div class="col price" data-price-id="@item.Id">@item.UnitPrice.ToString("C")</div>
                                         <div class="col">
-                                            <form asp-action="RemoveFromCart" asp-controller="Cart" method="post">
-                                                <input type="hidden" name="billDetailId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-danger">X</button>
-                                            </form>
+                                            <button class="btn btn-danger deleteProductBtn" data-billdetail-id="@item.Id">X</button>
                                         </div>
                                     </div>
                                 </div>
+
+
                             }
                         }
                     </div>
@@ -206,22 +204,28 @@
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col text-center" style="padding-left:0;">Tổng @Model.Quantity sản phẩm</div>
+                                <div class="col text-center" style="padding-left:0;">Tổng <span id="totalQuantity">@Model.Quantity</span> sản phẩm</div>
                             </div>
                             <form class="formCart">
                                 <p>Vận chuyển</p>
-                                <select>
-                                    <option class="text-muted">Vận chuyển chậm - 15.000 ₫</option>
-                                    <option class="text-muted">Vận chuyển nhanh - 25.000 ₫</option>
+                                <select id="shippingOption">
+                                    <option value="15000">Vận chuyển chậm - 15.000 ₫</option>
+                                    <option value="25000">Vận chuyển nhanh - 25.000 ₫</option>
                                 </select>
                                 <p>Mã khuyến mãi</p>
                                 <input class="input" id="code" placeholder="Nhập mã khuyến mãi">
                             </form>
                             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                <div class="col">Tổng giá:</div>
-                                <div class="col text-right">@Model.TotalAmount.ToString("C")</div>
+                                <div class="col">Tổng giá sản phẩm:</div>
+                                <div class="col text-right"><span id="subtotalAmount"></span></div>
                             </div>
-                            <button class="btnCart">Đặt hàng</button>
+                            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                <div class="col">Tổng giá:</div>
+                                <div class="col text-right"><span id="totalAmount"></span></div>
+                            </div>
+                            <a asp-controller="Checkout" asp-action="Index" class="btnCart">Đặt hàng</a>
+
+
                         }
                         else
                         {
@@ -235,8 +239,8 @@
                             <form class="formCart">
                                 <p>Vận chuyển</p>
                                 <select>
-                                    <option class="text-muted">Vận chuyển chậm - 15.000 ₫</option>
-                                    <option class="text-muted">Vận chuyển nhanh - 25.000 ₫</option>
+                                    <option class="text-muted">Vận chuyển chậm -  <span id="deli-slow">15.000</span>₫ </option>
+                                    <option class="text-muted">Vận chuyển nhanh - <span id="deli-fast">25.000</span>₫</option>
                                 </select>
                                 <p>Mã khuyến mãi</p>
                                 <input class="input" id="code" placeholder="Nhập mã khuyến mãi">
@@ -297,19 +301,121 @@
         </div>
 
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        $(document).ready(function () {
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 50) {
-                    $('.navbar').removeClass('sticky-top').addClass('fixed-top');
-                } else {
-                    $('.navbar').removeClass('fixed-top').addClass('sticky-top');
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                $('.navbar').removeClass('sticky-top').addClass('fixed-top');
+            } else {
+                $('.navbar').removeClass('fixed-top').addClass('sticky-top');
+            }
+        });
+
+        // Attach click event handler for delete buttons
+        $('.deleteProductBtn').click(function () {
+            var billDetailId = $(this).data('billdetail-id');
+            removeProductFromBill(billDetailId);
+        });
+
+        // Attach click event handler for increase and decrease quantity buttons
+        $('.increaseQuantity').click(function () {
+            var billDetailId = $(this).data('billdetail-id');
+            changeProductQuantity(billDetailId, 1);
+        });
+
+        $('.decreaseQuantity').click(function () {
+            var billDetailId = $(this).data('billdetail-id');
+            changeProductQuantity(billDetailId, -1);
+        });
+
+        // Event listener for shipping option change
+        $('#shippingOption').change(function () {
+            updateTotalAmount();
+        });
+
+        function removeProductFromBill(billDetailId) {
+            $.ajax({
+                url: '@Url.Action("RemoveFromCart", "Cart")',
+                type: 'POST',
+                data: { billDetailId: billDetailId },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        $(`#billDetail-${billDetailId}`).remove();
+                        updateQuantityAndTotal();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while removing the product from the bill.');
                 }
             });
-        });
+        }
+
+        function changeProductQuantity(billDetailId, change) {
+            $.ajax({
+                url: '@Url.Action("ChangeProductQuantity", "Cart")',
+                type: 'POST',
+                data: { billDetailId: billDetailId, change: change },
+                success: function (response) {
+                    if (response.success) {
+                        var quantityElement = $(`#billDetail-${billDetailId} .quantity`);
+                        var newQuantity = parseInt(quantityElement.text()) + change;
+                        if (newQuantity > 0) {
+                            quantityElement.text(newQuantity);
+                            updateQuantityAndTotal();
+                        } else {
+                            $(`#billDetail-${billDetailId}`).remove();
+                            updateQuantityAndTotal();
+                        }
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while changing the product quantity.');
+                }
+            });
+        }
+
+        function updateQuantityAndTotal() {
+            var totalQuantity = 0;
+            var totalAmount = 0;
+
+            $('.productCount').each(function () {
+                var quantity = parseInt($(this).find('.quantity').text());
+                var price = parseFloat($(this).siblings('.price').text().replace(/[^\d.-]/g, ''));
+                totalQuantity += quantity;
+                totalAmount += quantity * price;
+            });
+
+            $('#totalQuantity').text(totalQuantity);
+            $('#subtotalAmount').text(totalAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ₫');
+
+            updateTotalAmount(totalAmount);
+        }
+
+        function updateTotalAmount(subtotal) {
+            var shippingCost = parseFloat($('#shippingOption').val());
+            var finalAmount = subtotal + shippingCost;
+
+            $('#totalAmount').text(finalAmount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ₫');
+
+            if ($('#totalQuantity').text() == '0') {
+                $('#totalAmount').parent().hide();
+            } else {
+                $('#totalAmount').parent().show();
+            }
+        }
+
+        updateQuantityAndTotal();
+    });
     </script>
+
+
 </body>
 </html>
 

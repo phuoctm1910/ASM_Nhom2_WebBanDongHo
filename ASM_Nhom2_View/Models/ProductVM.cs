@@ -11,13 +11,13 @@ namespace ASM_Nhom2_View.Models
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public int ProductStock { get; set; }
-        public decimal ProductPrice { get; set; }
+        public float ProductPrice { get; set; }
         public string ProductImages { get; set; }
         public string? Origin { get; set; }
         public string MachineType { get; set; }
-        public int Diameter { get; set; }
+        public int? Diameter { get; set; }
         public string ClockType { get; set; }
-        public int Insurrance { get; set; }
+        public int? Insurrance { get; set; }
         public string Color { get; set; }
         public int BrandId { get; set; }
         public string BrandName { get; set; } // Add BrandName property

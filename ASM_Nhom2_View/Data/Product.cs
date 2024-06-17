@@ -15,7 +15,7 @@ namespace ASM_Nhom2_View.Data
         public string ProductName { get; set; }
         public int ProductStock { get; set; }
         [Required]
-        public decimal ProductPrice { get; set; }
+        public float ProductPrice { get; set; }
         public int CategoryId { get; set; }
         public string? ProductImages { get; set; } // Chỉnh sửa thành string để lưu chuỗi JSON hình ảnh
         public string? Origin { get; set; }
