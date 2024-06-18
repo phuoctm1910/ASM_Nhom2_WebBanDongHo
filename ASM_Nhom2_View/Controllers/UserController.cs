@@ -1,25 +1,19 @@
-﻿using ASM_Nhom2_View.Models;
-using ASM_Nhom2_View.Data;
+﻿using ASM_Nhom2_View.Data;
 using ASM_Nhom2_View.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Hosting;
-
+using System.IO;
 
 namespace ASM_Nhom2_View.Controllers
 {
@@ -94,7 +88,7 @@ namespace ASM_Nhom2_View.Controllers
             var genderSelectList = new SelectList(new List<SelectListItem>
             {
                 new SelectListItem { Text = "Chọn giới tính", Value = "" },
-                new SelectListItem { Text = "Nam", Value = "true" },
+new SelectListItem { Text = "Nam", Value = "true" },
                 new SelectListItem { Text = "Nữ", Value = "false" }
             }, "Value", "Text");
 
@@ -210,11 +204,50 @@ namespace ASM_Nhom2_View.Controllers
                 return View(model);
             }
 
+            string newPassword = PasswordHelper.GeneratePassword(8);
+            user.Password = PasswordHelper.GetMd5Hash(newPassword);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
 
-            return View(user);
+            await _emailService.SendEmailAsync(user.Email, "Quên mật khẩu", $"Mật khẩu mới của bạn là: {newPassword}");
 
+            ViewBag.Message = "Mật khẩu mới đã được gửi qua email.";
+            return View();
         }
 
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmNewPassword)
+        {
+            if (newPassword != confirmNewPassword)
+            {
+                return Json(new { success = false, message = "Mật khẩu mới và xác nhận mật khẩu không khớp." });
+            }
+
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Json(new { success = false, message = "Người dùng chưa đăng nhập." });
+            }
+
+            var user = _context.Users
+                .Where(u => u.UserName.Equals(userName) && u.Password.Equals(currentPassword))
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
+            }
+            user.Password = newPassword;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Đổi mật khẩu thành công." });
+        }
         [HttpGet]
         public async Task<IActionResult> Changeinfo()
         {
@@ -232,18 +265,9 @@ namespace ASM_Nhom2_View.Controllers
             {
                 return NotFound();
             }
-            string newPassword = PasswordHelper.GeneratePassword(8);
-            user.Password = PasswordHelper.GetMd5Hash(newPassword);
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-
-            await _emailService.SendEmailAsync(user.Email, "Quên mật khẩu", $"Mật khẩu mới của bạn là: {newPassword}");
 
             // Pass the user data to the view
             return View(user);
-            ViewBag.Message = "Mật khẩu mới đã được gửi qua email.";
-            return View();
-        }
         }
 
         [HttpPost]
@@ -297,22 +321,8 @@ namespace ASM_Nhom2_View.Controllers
                 ModelState.AddModelError(string.Empty, "Cập nhật tài khoản thất bại");
             }
 
+            return View(change);
         }
 
-        
-
-            var user = _context.Users
-                .Where(u => u.UserName.Equals(userName) && u.Password.Equals(currentPassword))
-                .FirstOrDefault();
-
-            if (user == null)
-            {
-                return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
-            }
-            user.Password = newPassword;
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-            return Json(new { success = true, message = "Đổi mật khẩu thành công." });
-        }
     }
 }
