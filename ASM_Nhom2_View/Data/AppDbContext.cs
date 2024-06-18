@@ -17,7 +17,6 @@ namespace ASM_Nhom2_View.Data
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Bill> Bills { get; set; }
         public virtual DbSet<BillDetails> BillDetails { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

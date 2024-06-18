@@ -15,7 +15,7 @@ namespace ASM_Nhom2_API.Data
         public string ProductName { get; set; }
         public int? ProductStock { get; set; }
         [Required]
-        public decimal ProductPrice { get; set; }
+        public float ProductPrice { get; set; }
         public int CategoryId { get; set; }
         public string? ProductImages { get; set; }
         public string? Origin { get; set; }
@@ -27,7 +27,6 @@ namespace ASM_Nhom2_API.Data
         public int BrandId { get; set; }
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
-        public virtual ICollection<Bill> Bills { get; set; } = new HashSet<Bill>();
         public virtual ICollection<BillDetails> BillDetails { get; set; } = new HashSet<BillDetails>();
 
         [NotMapped]

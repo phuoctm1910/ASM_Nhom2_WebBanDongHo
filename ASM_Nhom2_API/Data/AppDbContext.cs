@@ -17,8 +17,6 @@ namespace ASM_Nhom2_API.Data
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Bill> Bills { get; set; }
         public virtual DbSet<BillDetails> BillDetails { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -97,7 +95,6 @@ namespace ASM_Nhom2_API.Data
             modelBuilder.Entity<Bill>(entity =>
             {
                 entity.HasKey(e => e.BillId);
-
                 entity.HasOne(e => e.User)
                       .WithMany(e => e.Bills)
                       .HasForeignKey(e => e.UserID)

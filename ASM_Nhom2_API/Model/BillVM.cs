@@ -7,5 +7,8 @@
         public int Quantity { get; set; }
         public float TotalAmount { get; set; }
         public string Status { get; set; }
+        public string? RecipientName { get; set; }
+        public string? RecipientPhoneNumber { get; set; }
+        public string? RecipientAddress { get; set; }
     }
 }

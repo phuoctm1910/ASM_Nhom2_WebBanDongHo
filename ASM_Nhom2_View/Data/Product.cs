@@ -29,7 +29,6 @@ namespace ASM_Nhom2_View.Data
      
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
-        public virtual ICollection<Bill> Bills { get; set; } = new HashSet<Bill>();
         public virtual ICollection<BillDetails> BillDetails { get; set; } = new HashSet<BillDetails>();
 
         // Property để deserialize danh sách hình ảnh từ chuỗi JSON

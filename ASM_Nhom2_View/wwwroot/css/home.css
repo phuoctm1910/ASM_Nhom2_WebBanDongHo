@@ -148,13 +148,15 @@ body {
             opacity: 0;
             padding: 10px 30px;
             margin-top: 15px;
-            background: linear-gradient(-92deg, #262525 0%, #524e4e 100%) !important ;
+            background: linear-gradient(-92deg, #262525 0%, #524e4e 100%) !important;
             text-decoration: none;
             background: #ffce00;
             border-radius: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: 1s;
+            color: white;
+            font-weight: 700;
         }
         .card .contentBox a {
             color: white;

@@ -20,7 +20,15 @@
     <!--Icon-->
     <script src="https://kit.fontawesome.com/b4d3d14cb1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
-
+    <style>
+        .disable-link{
+            pointer-events: none;
+            color: white;
+            cursor:not-allowed;
+            background-color:gray;
+            opacity:0.7;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -223,9 +231,6 @@
                                 <div class="col">Tổng giá:</div>
                                 <div class="col text-right"><span id="totalAmount"></span></div>
                             </div>
-                            <a asp-controller="Checkout" asp-action="Index" class="btnCart">Đặt hàng</a>
-
-
                         }
                         else
                         {
@@ -249,7 +254,15 @@
                                 <div class="col">Tổng giá:</div>
                                 <div class="col text-right"></div>
                             </div>
-                            <button class="btnCart">Đặt hàng</button>
+                        }
+
+                        @if (Model != null && Model.BillDetails != null && Model.BillDetails.Count > 0)
+                        {
+                            <a @*asp-controller="Checkout" asp-action="Index"*@ data-bill-id="@Model.BillId" class="checkout btn btnCart">Đặt hàng</a>
+                        }
+                        else
+                        {
+                            <a href="#" class="disable-link">Đặt hàng</a>
                         }
                     </div>
                 </div>
@@ -303,8 +316,11 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+
     <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
         $(window).scroll(function () {
             if ($(this).scrollTop() > 50) {
                 $('.navbar').removeClass('sticky-top').addClass('fixed-top');
@@ -331,8 +347,27 @@
         });
 
         // Event listener for shipping option change
-        $('#shippingOption').change(function () {
-            updateTotalAmount();
+            $('#shippingOption').change(function () {
+                var subtotalAmountString = $('#subtotalAmount').text();
+                var cleanString = subtotalAmountString.replace(/\./g, '');
+                var subtotalAmountNumber = parseInt(cleanString, 10);
+                updateTotalAmount(subtotalAmountNumber);
+            });
+
+        $('.checkout').click(function () {
+            var billId = $(this).data('bill-id');
+            // Lấy chuỗi văn bản từ phần tử có id là 'totalAmount'
+            var totalText = $('#totalAmount').text();
+
+            // Loại bỏ dấu chấm phân cách hàng nghìn từ chuỗi văn bản
+            var cleanNumber = totalText.replace(/\./g, '');
+
+            // Chuyển đổi chuỗi thành số
+            var totalNumber = parseFloat(cleanNumber);
+
+            // Áp dụng phương thức toFixed(0) để làm tròn số
+            var lastTotal = totalNumber.toFixed(0);
+            UpdateLastTotalAmount(billId, lastTotal);
         });
 
         function removeProductFromBill(billDetailId) {
@@ -409,6 +444,28 @@
             } else {
                 $('#totalAmount').parent().show();
             }
+        }
+
+        function UpdateLastTotalAmount(billId, lastTotalAmount) {
+            $.ajax({
+                url: '@Url.Action("UpdateTotalAmount", "Cart")',
+                type: 'POST',
+                data: { billId: billId, lastTotalAmount: lastTotalAmount },
+                success: function (response) {
+                    if (response.success)
+                    {
+                        console.log(response.message)
+
+                        window.location.href = '@Url.Action("Index", "Checkout")';
+                    }
+                    else {
+                        console.log(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while changing the product quantity.');
+                }
+            });
         }
 
         updateQuantityAndTotal();

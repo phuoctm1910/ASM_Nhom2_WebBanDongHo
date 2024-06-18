@@ -120,7 +120,6 @@ namespace ASM_Nhom2_View.Controllers
 
             var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var fullName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-
             if (email != null)
             {
                 var user = _context.Users.FirstOrDefault(u => u.Email == email);

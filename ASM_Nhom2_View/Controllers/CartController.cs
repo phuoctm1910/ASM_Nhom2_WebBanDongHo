@@ -51,19 +51,9 @@ namespace ASM_Nhom2_View.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromCart(int billDetailId)
         {
-            var email = HttpContext.Session.GetString("Email");
-            if (string.IsNullOrEmpty(email))
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
 
-            var findUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
-            if (findUser == null)
-            {
-                return Json(new { success = false, message = "User not found" });
-            }
+            var billDetail = await _context.BillDetails.FirstOrDefaultAsync(bd => bd.Id == billDetailId);
 
-            var billDetail = await _context.BillDetails.FirstOrDefaultAsync(bd => bd.Id == billDetailId && bd.Bill.UserID == findUser.UserID);
             if (billDetail == null)
             {
                 return Json(new { success = false, message = "Bill detail not found" });
@@ -96,7 +86,17 @@ namespace ASM_Nhom2_View.Controllers
                 return Json(new { success = false, message = "Product not found in the bill" });
             }
 
+            // Define your limit here
+            var product = _context.Products.FirstOrDefault(c => c.ProductId == billDetail.ProductId);
+            int maxAllowedQuantity = product.ProductStock;  // Adjust this limit as per your requirement
+
+            if (change < 0 ||  change > maxAllowedQuantity)
+            {
+                return Json(new { success = false, message = $"Cannot decrease quantity or exceed maximum of {maxAllowedQuantity}" });
+            }
+
             billDetail.Quantity += change;
+
             if (billDetail.Quantity <= 0)
             {
                 _context.BillDetails.Remove(billDetail);
@@ -127,6 +127,29 @@ namespace ASM_Nhom2_View.Controllers
 
             return Json(new { success = true, message = "Product quantity updated successfully" });
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateTotalAmount(int billId, float lastTotalAmount)
+        {
+            var billUpdateTotalAmount = await _context.Bills.FirstOrDefaultAsync(b => b.BillId == billId);
+            if (billUpdateTotalAmount == null)
+            {
+                return Json(new { success = false, message = "Bill Was Not Found" });
+            }
 
+            billUpdateTotalAmount.TotalAmount += lastTotalAmount - billUpdateTotalAmount.TotalAmount;
+
+            if (billUpdateTotalAmount.TotalAmount < lastTotalAmount)
+            {
+                return Json(new { success = false, message = "Fail To Update Last Total Amount On Bill" });
+
+            }
+            else
+            {
+                _context.Bills.Update(billUpdateTotalAmount);
+                await _context.SaveChangesAsync();
+
+            }
+            return Json(new { success = true, message = "Last Total Amount On Bill Was Update" });
+        }
     }
 }

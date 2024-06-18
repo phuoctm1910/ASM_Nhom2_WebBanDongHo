@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using System.Collections.Generic
+@model List<ASM_Nhom2_View.Data.Product>
 @{
 
     Layout = null;
@@ -189,112 +191,33 @@
                 </div>
                 <!--Sản phẩm-->
                 <div class="row my-3" id="productContainer">
-
-
-
-
-
-
-
-                    @*    <div class="col-md-3 my-3">
-                    <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                    <div class="card">
-                    <div class="imgBox">
-                    <img src="~/images/Product/1004.png" alt="watch corsair" class="watch">
-                    </div>
-                    <div class="contentBox">
-                    <h3>Đồng hồ 1</h3>
-                    <h2 class="price">5.585.000 ₫</h2>
-                    <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                    </div>
-
-                    </div>
-                    </a>
-                    </div> *@
-
-                    @*   @foreach(var item in Model)
-                    {
-                    <div class="col-md-3 my-3">
-                    <a class="card-link" asp-controller="ProductDetail" asp-action="Index">
-                    <div class="card">
-                    <div class="imgBox">
-                    <img src="~/images/Product/1009.png" alt="watch corsair" class="watch">
-                    </div>
-                    <div class="contentBox">
-                    <h3>@item.ProductName</h3>
-                    <h3>@item.ProductImageList.First()</h3>
-                    <h2 class="price">@item.ProductPrice</h2>
-                    <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                    </div>
-
-                    </div>
-                    </a>
-                    </div>
-
-                    } *@
-
                     @foreach (var item in Model)
                     {
                         <div class="col-md-3 my-3 product">
-                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
+                            <div>
                                 <div class="card">
                                     <div class="imgBox">
-                                        @if (item.ProductImageList.Any())
-                                        {
-                                            <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch" width="250" height="300">
-                                        }
-                                        else
-                                        {
-                                            <img src="@Url.Content("~/uploads/default.png")" alt="default image" class="watch">
-                                        }
+                                        <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
+                                            @if (item.ProductImageList.Any())
+                                            {
+                                                <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch">
+                                            }
+                                            else
+                                            {
+                                                <img src="@Url.Content("~/uploads/default.png")" alt="default image" class="watch">
+                                            }
+                                        </a>
                                     </div>
                                     <div class="contentBox">
                                         <h3>@item.ProductName</h3>
                                         <h2 class="price">@item.ProductPrice.ToString("#,##0").Replace(",", ".") ₫</h2>
-                                        <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                       @*  <li class="nav-item">
-                                            <a class="nav-link text-end position-relative nav-home" role="button" asp-controller="Home" asp-action="Cart">
-                                                Giỏ hàng
-                                                <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 7px; right: -19px;">
-                                                    <!-- This will be dynamically updated with the cart item count -->
-                                                 
-                                                </span>
-                                            </a>
-                                        </li> *@
+                                        <button class="buy bg-btn addProduct" data-product-id="@item.ProductId">Thêm vào giỏ hàng</button>
                                     </div>
 
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     }
-
-
-                 @*    @foreach (var item in Model)
-                    {
-                        <div class="col-md-3 my-3 product">
-                            <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
-                                <div class="card">
-                                    <div class="imgBox">
-                                        @if (item.ProductImageList.Any())
-                                        {
-                                            <img src="~/images/Product/@item.ProductImageList.First()" alt="@item.ProductName" class="watch">
-                                        }
-                                        else
-                                        {
-                                            <img src="~/images/Product/default.png" alt="default image" class="watch">
-                                        }
-                                    </div>
-                                    <div class="contentBox">
-                                        <h3>@item.ProductName</h3>
-                                        <h2 class="price">@item.ProductPrice</h2>
-                                        <a href="#" class="buy bg-btn">Thêm vào giỏ hàng</a>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    } *@
-
-
                 </div>
                 @if (Model.Count > 8)
                 {
@@ -417,7 +340,38 @@
             $('#btnShowLess').click(function () {
                 showLess();
             });
+
+
+
+            $('.addProduct').click(function () {
+                var productId = $(this).data('product-id');
+                addProductToBill(productId);
+            })
+
+            function addProductToBill(productId) {
+                $.ajax({
+                    url: '@Url.Action("CreateBill", "Bill")',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            // Optionally, update UI to reflect the added product
+                        } else {
+                            console.log(response.message);
+                        }
+                    },
+                    error: function (respone) {
+                        alert('An error occurred while adding the product to the bill.');
+                        console.log(respone.message);
+                    }
+                });
+            }
         });
+
+    </script>
+    <script>
+
     </script>
 </body>
 </html>

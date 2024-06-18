@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using ASM_Nhom2_View.Models;
 
 namespace ASM_Nhom2_View.Controllers
 {
@@ -49,20 +50,20 @@ namespace ASM_Nhom2_View.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompletePurchase(string fullName, string phone, string email, string address, string paymentMethod)
+        [Authentication]
+        public async Task<IActionResult> CompletePurchase(string fullName, string phone,  string address, string paymentMethod)
         {
-            // Get user email from session
+            // Xử lý thông tin nhận hàng và lưu vào cơ sở dữ liệu
+            // Ví dụ:
             var sessionEmail = HttpContext.Session.GetString("Email");
             if (string.IsNullOrEmpty(sessionEmail))
             {
                 return RedirectToAction("Login", "User");
             }
 
-            // Retrieve user from database
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == sessionEmail);
             if (user == null)
             {
-                // Redirect to login if user not found
                 return RedirectToAction("Login", "User");
             }
 
@@ -75,28 +76,20 @@ namespace ASM_Nhom2_View.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Create a new order
-            var order = new Order
-            {
-                UserID = user.UserID,
-                FullName = fullName,
-                Phone = phone,
-                Email = email,
-                Address = address,
-                PaymentMethod = paymentMethod,
-                OrderDate = DateTime.Now,
-                TotalAmount = pendingBill.TotalAmount
-            };
-
-            // Save the order to the database
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            // Update bill details
-            pendingBill.Status = "Completed"; // Mark bill as completed
+            // Cập nhật thông tin nhận hàng
+            pendingBill.RecipientName = fullName;
+            pendingBill.RecipientPhoneNumber = phone;
+            pendingBill.RecipientAddress = address;
+            pendingBill.PaymentMethod = paymentMethod;
+            // Lưu thay đổi vào cơ sở dữ liệu
             _context.Bills.Update(pendingBill);
             await _context.SaveChangesAsync();
 
+            // Cập nhật trạng thái đơn hàng thành "Completed"
+            pendingBill.Status = "Completed";
+            await _context.SaveChangesAsync();
+
+            // Chuyển hướng về trang chủ hoặc trang cảm ơn
             return RedirectToAction("Index", "Home");
         }
     }
