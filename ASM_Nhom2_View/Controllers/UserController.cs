@@ -1,18 +1,25 @@
-﻿using ASM_Nhom2_View.Data;
+﻿using ASM_Nhom2_View.Models;
+using ASM_Nhom2_View.Data;
 using ASM_Nhom2_View.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Hosting;
+
 
 namespace ASM_Nhom2_View.Controllers
 {
@@ -203,6 +210,28 @@ namespace ASM_Nhom2_View.Controllers
                 return View(model);
             }
 
+
+            return View(user);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Changeinfo()
+        {
+            var userName = HttpContext.Session.GetString("UserName");
+
+            if (userName == null)
+            {
+                return View();
+            }
+
+            // Retrieve the user from the database
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
             string newPassword = PasswordHelper.GeneratePassword(8);
             user.Password = PasswordHelper.GetMd5Hash(newPassword);
             _context.Users.Update(user);
@@ -210,29 +239,67 @@ namespace ASM_Nhom2_View.Controllers
 
             await _emailService.SendEmailAsync(user.Email, "Quên mật khẩu", $"Mật khẩu mới của bạn là: {newPassword}");
 
+            // Pass the user data to the view
+            return View(user);
             ViewBag.Message = "Mật khẩu mới đã được gửi qua email.";
             return View();
         }
-
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmNewPassword)
+        public async Task<IActionResult> Changeinfo(User change, IFormFile file)
         {
-            if (newPassword != confirmNewPassword)
+            if (ModelState.IsValid)
             {
-                return Json(new { success = false, message = "Mật khẩu mới và xác nhận mật khẩu không khớp." });
+                var userName = HttpContext.Session.GetString("UserName");
+
+                if (userName == null)
+                {
+                    return View();
+                }
+
+                var userToUpdateInfo = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+                if (userToUpdateInfo == null)
+                {
+                    return NotFound();
+                }
+
+                userToUpdateInfo.UserName = change.UserName;
+                userToUpdateInfo.FullName = change.FullName;
+                userToUpdateInfo.PhoneNumber = change.PhoneNumber;
+                userToUpdateInfo.Email = change.Email;
+                userToUpdateInfo.Gender = change.Gender;
+                userToUpdateInfo.BirthDate = change.BirthDate;
+                if (file != null && file.Length > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var filePath = Path.Combine(_web.WebRootPath, "uploads", fileName);
+
+                    if (!System.IO.File.Exists(filePath))
+                    {
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                    }
+                    userToUpdateInfo.Image = fileName;
+                }
+                _context.Users.Update(userToUpdateInfo);
+                await _context.SaveChangesAsync();
+
+                HttpContext.Session.SetString("FullName", userToUpdateInfo.FullName);
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Cập nhật tài khoản thất bại");
             }
 
-            var userName = HttpContext.Session.GetString("UserName");
-            if (string.IsNullOrEmpty(userName))
-            {
-                return Json(new { success = false, message = "Người dùng chưa đăng nhập." });
-            }
+        }
+
+        
 
             var user = _context.Users
                 .Where(u => u.UserName.Equals(userName) && u.Password.Equals(currentPassword))
