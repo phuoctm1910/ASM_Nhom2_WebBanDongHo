@@ -45,7 +45,7 @@
         <form method="post" asp-action="Register">
             <div class="input-group">
                 <label for="fullName">Họ và Tên:</label>
-                @Html.EditorFor(m => m.FullName, new { htmlAttributes = new { @class = "form-control rounded-4", required = "required", pattern = "[a-zA-Z\s]+", title = "Chỉ được nhập các ký tự chữ cái và dấu cách" } })
+                @Html.EditorFor(m => m.FullName, new { htmlAttributes = new { @class = "form-control rounded-4", required = "required", pattern = "^[a-zA-Z\\s]+$", title = "Chỉ được nhập các ký tự chữ cái và dấu cách" } })
                 @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger rounded-4" })
             </div>
             <div class="input-group">
