@@ -33,7 +33,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label asp-for="CategoryName" class="control-label">Tên Phân Loại</label>
-                                <input asp-for="CategoryName" class="form-control" required pattern="^[a-zA-Z0-9]+$"/>
+                                <input asp-for="CategoryName" class="form-control" required pattern="^[A-Za-z\s]+$" title="Chỉ được điền chữ cái và dấu cách" />
                                 <span asp-validation-for="CategoryName" class="text-danger"></span>
                             </div>
                         </div>

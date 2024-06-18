@@ -4,8 +4,8 @@
     ViewData["Title"] = "Danh Sách Sản Phẩm";
 }
 <style>
-    table thead th{
-        vertical-align:middle!important;
+    table thead th {
+        vertical-align: middle !important;
     }
 </style>
 <section class="content-header">
@@ -160,27 +160,39 @@
 
 <!-- Modal chỉnh sửa sản phẩm -->
 <div class="modal fade" id="productEditDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productEditDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="productEditDetailsModalLabel">Chỉnh sửa thông tin sản phẩm</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h1 class="modal-title fs-5" id="productEditDetailsModalLabel">Chỉnh sửa thông tin sản phẩm</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editProductForm">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="editProductOrigin" class="col-form-label">Xuất xứ:</label>
-                        <input type="text" class="form-control" id="editProductOrigin">
+                        <input type="text" class="form-control" id="editProductOrigin" required pattern="^[A-Za-z\s]+$" title="Chỉ được điền chữ cái và dấu cách">
+                        <span class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="editProductInsurrance" class="col-form-label">Bảo hành:</label>
-                        <input type="text" class="form-control" id="editProductInsurrance">
+                    <div class="mb-3">
+                        <label for="editProductMachineType" class="col-form-label">Loại máy:</label>
+                        <select class="form-control" id="editProductMachineType" required>
+                            <option value="Pin (Quartz)">Pin (Quartz)</option>
+                            <option value="Cơ tự động (Automatic)">Cơ tự động (Automatic)</option>
+                            <option value="Năng lượng ánh sáng (Eco-Drive)">Năng lượng ánh sáng (Eco-Drive)</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="editProductClockType" class="col-form-label">Loại kim đồng hồ:</label>
-                        <select class="form-control" id="editProductClockType">
+                    <div class="mb-3">
+                        <label for="editProductDiameter" class="col-form-label">Đường kính:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="editProductDiameter" aria-describedby="diameter-addon">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="diameter-addon">mm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductClockType" class="col-form-label">Loại đồng hồ:</label>
+                        <select class="form-control" id="editProductClockType" required>
                             <option value="Dauphine">Dauphine</option>
                             <option value="Baton">Baton</option>
                             <option value="Leaf">Leaf</option>
@@ -190,39 +202,49 @@
                             <option value="Sword">Sword</option>
                         </select>
                     </div>
-
-                    <div class="form-group">
-                        <label for="editProductMachineType" class="col-form-label">Loại máy đồng hồ:</label>
-                        <select class="form-control" id="editProductMachineType">
-                            <option value="Pin (Quartz)">Pin (Quartz)</option>
-                            <option value="Cơ tự động (Automatic)">Cơ tự động (Automatic)</option>
-                            <option value="Năng lượng ánh sáng (Eco-Drive)">Năng lượng ánh sáng (Eco-Drive)</option>
-                        </select>
+                    <div class="mb-3">
+                        <label for="editProductInsurrance" class="col-form-label">Bảo hành:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="editProductInsurrance" aria-describedby="insurrance-addon">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="insurrance-addon">năm</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editProductDiameter" class="col-form-label">Đường kính:</label>
-                        <input type="number" class="form-control" id="editProductDiameter">
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductColor" class="col-form-label">Màu:</label>
-                        <input type="number" class="form-control" id="editProductColor">
+                    <div class="mb-3">
+                        <label for="editProductColor" class="col-form-label">Màu mặt số:</label>
+                        <input type="text" class="form-control" id="editProductColor" list="colorList" required data-toggle="tooltip" title="Chỉ được nhập các màu: Red, Green, Blue, Yellow, Black, White, Orange, Purple, Pink, Brown, Gray">
+                        <datalist id="colorList">
+                            <option value="Red">
+                            <option value="Green">
+                            <option value="Blue">
+                            <option value="Yellow">
+                            <option value="Black">
+                            <option value="White">
+                            <option value="Orange">
+                            <option value="Purple">
+                            <option value="Pink">
+                            <option value="Brown">
+                            <option value="Gray">
+                        </datalist>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button"
-                        class="btn btn-primary" onclick="saveProductDetails()" data-dismiss="modal">
-                    Lưu thay đổi
-                </button>
+                <button type="button" class="btn btn-primary" onclick="saveProductDetails()" data-dismiss="modal">Lưu thay đổi</button>
             </div>
         </div>
     </div>
-
 </div>
 
 @section Scripts {
     <script>
+
+        function formatPrice(price) {
+            // Chuyển đổi số thành định dạng #,##0 và thay dấu phẩy bằng dấu chấm
+            return price.toLocaleString('de-DE').replace(/,/g, '.') + ' ₫';
+        }
         function loadProductDetails(productId) {
             $.ajax({
                 url: '@Url.Action("Details", "Product")',
@@ -232,12 +254,12 @@
                     $('#productName').text(product.productName);
                     $('#productCode').text(product.productCode);
                     $('#productStock').text(product.productStock);
-                    $('#productPrice').text(product.productPrice);
+                    $('#productPrice').text(formatPrice(productPrice));
                     $('#productOrigin').text(product.origin);
                     $('#productMachineType').text(product.machineType);
-                    $('#productDiameter').text(product.diameter);
+                    $('#productDiameter').text(product.diameter + "mm");
                     $('#productClockType').text(product.clockType);
-                    $('#productInsurance').text(product.insurrance);
+                    $('#productInsurance').text(product.insurrance + "năm");
                     $('#productColor').text(product.color);
                     $('#productBrand').text(product.brandName);
                     $('#productCategory').text(product.categoryName);
@@ -252,7 +274,7 @@
                     $('#productDetailsModal').modal('show');
                 },
                 error: function () {
-                    alert('Error loading product details');
+                    alert('Có lỗi khi load chi tiết sản phẩm');
                 }
             });
         }
@@ -284,7 +306,7 @@
                     $('#productEditDetailsModal').modal('show');
                 },
                 error: function () {
-                    alert('Error loading product edit details');
+                    alert('Có lỗi khi load chi tiết sản phẩm');
                 }
             });
         }
@@ -309,15 +331,15 @@
                 data: JSON.stringify(productData),
                 success: function (response) {
                     if (response.success) {
-                        alert('Product details updated successfully');
+                        alert('Đã cập nhật thông tin chi tiết sản phẩm thành công');
                         $('#productEditDetailsModal').modal('hide');
                         location.reload();
                     } else {
-                        alert('Error: ' + response.message);
+                        console.log(response.message);
                     }
                 },
                 error: function () {
-                    alert('Error saving product details');
+                    alert('Có lỗi khi lưu thay đổi chi tiết sản phẩm');
                 }
             });
         }

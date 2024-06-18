@@ -24,13 +24,13 @@ namespace ASM_Nhom2_View.Controllers
                 var email = HttpContext.Session.GetString("Email");
                 if (string.IsNullOrEmpty(email))
                 {
-                    return Json(new { success = false, message = "User not logged in" });
+                    return Json(new { success = false, message = "Bạn chưa đăng nhập" });
                 }
 
                 var findUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
                 if (findUser == null)
                 {
-                    return Json(new { success = false, message = "User not found" });
+                    return Json(new { success = false, message = "Không tìm thấy tài khoản của bạn" });
                 }
 
                 var findCurrentBill = await _context.Bills.FirstOrDefaultAsync(x => x.UserID == findUser.UserID && x.Status == "Pending");
@@ -50,7 +50,7 @@ namespace ASM_Nhom2_View.Controllers
                 var productInBillDetails = await _context.Products.FindAsync(productId);
                 if (productInBillDetails == null)
                 {
-                    return Json(new { success = false, message = "Product not found" });
+                    return Json(new { success = false, message = "Không tìm thấy sản phẩm" });
                 }
 
                 var billDetail = await _context.BillDetails
@@ -83,7 +83,7 @@ namespace ASM_Nhom2_View.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Json(new { success = true, message = "Product added to bill" });
+                return Json(new { success = true, message = "Đã thêm sản phẩm vào giỏ hàng của bạn" });
             }
             catch (Exception ex)
             {

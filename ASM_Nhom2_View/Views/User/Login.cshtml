@@ -7,7 +7,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Title</title>
+    <title>Đăng Nhập</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -25,7 +25,6 @@
             <a class="backHome" style="color:" asp-controller="Home" asp-action="Index"> <i class="fa-solid fa-house"></i> Trở về trang chủ</a>
         </div>
         <h1>Đăng nhập</h1>
-        <p>Đăng nhập để truy cập tài khoản và quản lý đơn hàng dễ dàng.</p>
         <div class="social-login">
             <a asp-controller="User" asp-action="GoogleLogin" class="link">
                 <img src="https://i.pinimg.com/originals/84/c7/00/84c7007eb6ac4374f77394d1e4954a96.png" alt="">
@@ -43,16 +42,18 @@
 
         <form asp-controller="User" asp-action="Login" method="post">
             <div class="input-group">
-                <label for="UserName">Username:</label>
+                <label for="UserName">Email hoặc Username:</label>
                 <div class="input-group mb-3">
-                    <input asp-for="UserName" type="text" class="form-control rounded-4" id="UserName" name="UserName" autocomplete="off">
+                    <input asp-for="UserName" type="text" class="form-control rounded-4" id="UserName" name="UserName"  required autocomplete="off">
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
             </div>
             <div class="input-group">
                 <label for="password">Mật khẩu:</label>
                 <div class="input-group mb-3">
-                    <input asp-for="Password" type="password" class="form-control rounded-4" id="Password" name="Password" autocomplete="off">
+                    <input asp-for="Password" type="password" class="form-control rounded-4" id="Password" name="Password" required autocomplete="off"                        
+                           pattern="^\S+$"
+                           title="Không được chứa dấu cách">
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>

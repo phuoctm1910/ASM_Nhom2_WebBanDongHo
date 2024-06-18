@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASM_Nhom2_View.Data;
+using ASM_Nhom2_View.Models;
+
 
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authentication]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;

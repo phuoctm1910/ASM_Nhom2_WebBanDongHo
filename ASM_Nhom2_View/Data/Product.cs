@@ -13,7 +13,7 @@ namespace ASM_Nhom2_View.Data
         public string ProductCode { get; set; }
         [Required]
         public string ProductName { get; set; }
-        public int? ProductStock { get; set; }
+        public int ProductStock { get; set; }
         [Required]
         public float ProductPrice { get; set; }
         public int CategoryId { get; set; }

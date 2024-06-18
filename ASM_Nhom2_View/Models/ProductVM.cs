@@ -10,7 +10,7 @@ namespace ASM_Nhom2_View.Models
         public int ProductId { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
-        public int ProductStock { get; set; }
+        public int? ProductStock { get; set; }
         public float ProductPrice { get; set; }
         public string ProductImages { get; set; }
         public string? Origin { get; set; }

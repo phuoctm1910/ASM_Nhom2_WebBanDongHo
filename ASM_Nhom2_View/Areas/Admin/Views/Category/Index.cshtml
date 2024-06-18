@@ -42,6 +42,7 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr class="text-center align-middle">
+                                        <td>@Html.DisplayFor(modelItem => item.CategoryId)</td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.CategoryName)
                                         </td>

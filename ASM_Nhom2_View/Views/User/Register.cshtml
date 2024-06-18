@@ -28,9 +28,8 @@
             <a class="backHome" style="color:" asp-controller="Home" asp-action="Index"> <i class="fa-solid fa-house"></i> Trở về trang chủ</a>
         </div>
         <h1>Đăng ký</h1>
-        <p>Đăng ký tài khoản</p>
         <div class="social-login">
-            <a href="#" class="link">
+            <a asp-controller="User" asp-action="GoogleLogin" class="link">
                 <img src="https://i.pinimg.com/originals/84/c7/00/84c7007eb6ac4374f77394d1e4954a96.png" alt="">
                 <h6>Google</h6>
             </a>
@@ -46,43 +45,41 @@
         <form method="post" asp-action="Register">
             <div class="input-group">
                 <label for="fullName">Họ và Tên:</label>
-                @Html.EditorFor(m => m.FullName, "", new { htmlAttributes = new { @class = "rounded-4" } })
-                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "rounded-4" })
+                @Html.EditorFor(m => m.FullName, new { htmlAttributes = new { @class = "form-control rounded-4", required = "required", pattern = "[a-zA-Z\s]+", title = "Chỉ được nhập các ký tự chữ cái và dấu cách" } })
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger rounded-4" })
             </div>
             <div class="input-group">
                 <label for="gender">Giới tính:</label>
-                <div class="input-group" style="height: 45px;">
-                    @Html.DropDownListFor(m => m.Gender, (SelectList)ViewBag.GenderSelectList, new { @class = "rounded-4" })
-                    @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "rounded-4" })
-                </div>
+                @Html.DropDownListFor(m => m.Gender, (SelectList)ViewBag.GenderSelectList, "Chọn giới tính", new { @class = "form-control rounded-4", required = "required" })
+                @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger rounded-4" })
             </div>
             <div class="input-group">
                 <label for="phone">Số điện thoại:</label>
-                @Html.EditorFor(m => m.PhoneNumber, "", new { htmlAttributes = new { @class = "rounded-4" } })
-                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "rounded-4" })
+                @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control rounded-4", required = "required", pattern = "^(03|05|07|08|09)[0-9]{8}$" } })
+                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger rounded-4" })
+                <small id="phoneHelp" class="form-text text-muted">Ví dụ: Số điện thoại bắt đầu từ 03, 05, 07, 08, 09 và có tổng cộng 10 chữ số.</small>
             </div>
             <div class="input-group">
                 <label for="username">Tài khoản:</label>
-                @Html.EditorFor(m => m.UserName, "", new { htmlAttributes = new { @class = "rounded-4" } })
-                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "rounded-4" })
+                @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control rounded-4", required = "required" } })
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger rounded-4" })
             </div>
             <div class="input-group">
                 <label for="password">Mật khẩu:</label>
-                @Html.EditorFor(m => m.Password, "", new { htmlAttributes = new { @class = "rounded-4", @type = "password" } })
-                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "rounded-4" })
-            </div>
-            <div class="input-group">
-                <label for="birthDate">Ngày Sinh:</label>
-                @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "rounded-4", @type = "date", @placeholder = "Chọn năm sinh" } })
-                @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "rounded-4" })
+                @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control rounded-4", type = "password", required = "required", pattern = @"^\S+$", title = "Không được chứa dấu cách" } })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger rounded-4" })
             </div>
 
-            <button class="login" type="submit">Đăng Ký</button>
-            <a class="login" asp-controller="Home" asp-action="Login">Đăng Nhập</a>
+            <div class="input-group">
+                <label for="birthDate">Ngày Sinh:</label>
+                @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "form-control rounded-4", type = "date", placeholder = "Chọn năm sinh", required = "required" } })
+                @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "text-danger rounded-4" })
+            </div>x
+            <button class="btn btn-primary" type="submit">Đăng Ký</button>
+            <a class="btn btn-link" asp-controller="Home" asp-action="Login">Đăng Nhập</a>
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </form>
-
         
 
     </div>

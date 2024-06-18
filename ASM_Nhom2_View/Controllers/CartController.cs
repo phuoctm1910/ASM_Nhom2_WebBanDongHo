@@ -56,13 +56,13 @@ namespace ASM_Nhom2_View.Controllers
 
             if (billDetail == null)
             {
-                return Json(new { success = false, message = "Bill detail not found" });
+                return Json(new { success = false, message = "Không thấy giỏ hàng của bạn" });
             }
 
             var bill = await _context.Bills.FirstOrDefaultAsync(b => b.BillId == billDetail.BillId);
             if (bill == null)
             {
-                return Json(new { success = false, message = "Bill not found" });
+                return Json(new { success = false, message = "Không tìm thấy hóa đơn của bạn" });
             }
 
             // Update total quantity and total amount of Bill
@@ -75,7 +75,7 @@ namespace ASM_Nhom2_View.Controllers
             // Save changes
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true, message = "Product removed from bill" });
+            return Json(new { success = true, message = "Đã xóa sản phẩm khỏi giỏ hàng của bạn" });
         }
         [HttpPost]
         public async Task<IActionResult> ChangeProductQuantity(int billDetailId, int change)
@@ -83,7 +83,7 @@ namespace ASM_Nhom2_View.Controllers
             var billDetail = await _context.BillDetails.FirstOrDefaultAsync(b => b.Id == billDetailId);
             if (billDetail == null)
             {
-                return Json(new { success = false, message = "Product not found in the bill" });
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm đó trong giỏ hàng của bạn" });
             }
 
             // Define your limit here
@@ -92,7 +92,7 @@ namespace ASM_Nhom2_View.Controllers
 
             if (change < 0 ||  change > maxAllowedQuantity)
             {
-                return Json(new { success = false, message = $"Cannot decrease quantity or exceed maximum of {maxAllowedQuantity}" });
+                return Json(new { success = false, message = $"Không thể giảm số lượng bé hơn 0 và lớn hơn số lượng sản phẩm có trong cửa hàng {maxAllowedQuantity}" });
             }
 
             billDetail.Quantity += change;
@@ -125,7 +125,7 @@ namespace ASM_Nhom2_View.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return Json(new { success = true, message = "Product quantity updated successfully" });
+            return Json(new { success = true, message = "Đã cập nhật số lượng sản phẩm có trong giỏ hàng của bạn" });
         }
         [HttpPost]
         public async Task<IActionResult> UpdateTotalAmount(int billId, float lastTotalAmount)
@@ -133,14 +133,14 @@ namespace ASM_Nhom2_View.Controllers
             var billUpdateTotalAmount = await _context.Bills.FirstOrDefaultAsync(b => b.BillId == billId);
             if (billUpdateTotalAmount == null)
             {
-                return Json(new { success = false, message = "Bill Was Not Found" });
+                return Json(new { success = false, message = "Không tìm thấy hóa đơn" });
             }
 
             billUpdateTotalAmount.TotalAmount += lastTotalAmount - billUpdateTotalAmount.TotalAmount;
 
             if (billUpdateTotalAmount.TotalAmount < lastTotalAmount)
             {
-                return Json(new { success = false, message = "Fail To Update Last Total Amount On Bill" });
+                return Json(new { success = false, message = "Không thể cập nhật tổng giá tiền cuối hóa đơn của bạn" });
 
             }
             else
@@ -149,7 +149,7 @@ namespace ASM_Nhom2_View.Controllers
                 await _context.SaveChangesAsync();
 
             }
-            return Json(new { success = true, message = "Last Total Amount On Bill Was Update" });
+            return Json(new { success = true, message = "Đã cập nhật tổng giá tiền cuối" });
         }
     }
 }

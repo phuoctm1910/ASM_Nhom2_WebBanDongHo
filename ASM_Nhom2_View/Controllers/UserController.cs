@@ -10,8 +10,6 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -34,12 +32,6 @@ namespace ASM_Nhom2_View.Controllers
         }
 
         [HttpGet]
-
-        public UserController(AppDbContext context)
-        {
-            _context = context;
-        }
-
         public IActionResult Login()
         {
             if (HttpContext.Session.GetString("Email") == null)
@@ -86,6 +78,7 @@ namespace ASM_Nhom2_View.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             var genderSelectList = new SelectList(new List<SelectListItem>
@@ -99,6 +92,29 @@ namespace ASM_Nhom2_View.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register([Bind("FullName,Gender,PhoneNumber,UserName,Password,BirthDate")] User user)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                var newUser = new User()
+                {
+                    FullName = user.FullName,
+                    Gender = user.Gender,
+                    PhoneNumber = user.PhoneNumber,
+                    UserName = user.UserName,
+                    Password = user.Password,
+                    BirthDate = user.BirthDate,
+                    RoleId = 2
+                };
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Login));
+        }
+
 
         [HttpGet]
         public IActionResult GoogleLogin()
@@ -119,7 +135,6 @@ namespace ASM_Nhom2_View.Controllers
 
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GoogleResponse()
@@ -170,8 +185,6 @@ namespace ASM_Nhom2_View.Controllers
             return RedirectToAction("Login", "User");
         }
 
-        
-
 
         [HttpGet]
         public IActionResult ForgotPassword()
@@ -181,25 +194,7 @@ namespace ASM_Nhom2_View.Controllers
 
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        public async Task<IActionResult> Register([Bind("FullName,Gender,PhoneNumber,UserName,Password,BirthDate")] User user)
         {
-            if (!ModelState.IsValid)
-            {
-                var newUser = new User()
-                {
-                    FullName = user.FullName,
-                    Gender = user.Gender,
-                    PhoneNumber = user.PhoneNumber,
-                    UserName = user.UserName,
-                    Password = user.Password,
-                    BirthDate = user.BirthDate,
-                    RoleId = 2
-                };
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Login));
-                return View(model);
-            }
 
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
@@ -220,27 +215,11 @@ namespace ASM_Nhom2_View.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Changeinfo()
-        {
-            return View();
-        }
-
-
-
-        [HttpGet]
-        public IActionResult ForgetPassword()
-        {
-            return View();
-        }
-
-
-
-
-        [HttpGet]
         public IActionResult ChangePassword()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmNewPassword)
         {
@@ -263,24 +242,10 @@ namespace ASM_Nhom2_View.Controllers
             {
                 return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
             }
-
-
-            return View(user);
-
-
             user.Password = newPassword;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
-
             return Json(new { success = true, message = "Đổi mật khẩu thành công." });
         }
-
-        
-
-
-
-
-
-
     }
 }

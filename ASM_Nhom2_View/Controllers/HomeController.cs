@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using ASM_Nhom2_View.Data;
 
 namespace ASM_Nhom2_View.Controllers
 {
@@ -16,15 +17,17 @@ namespace ASM_Nhom2_View.Controllers
     {
         public IList<Product> Productfirst8 { get; set; }
         public IList<Product> Productsecond8 { get; set; }
-       
+        public IList<Product> ProductThird8 { get; set; }
+
     }
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppDbContext _context;
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
         [Route("/")]
         public async Task<IActionResult> Index()
@@ -40,11 +43,17 @@ namespace ASM_Nhom2_View.Controllers
            .Skip(AppDbContextProductfirst8.Count)
           .Take(8)
           .ToListAsync();
-            
+            var AppDbContextProductthird8 = await _context.Products
+          .Include(d => d.Category)
+          .Include(d => d.Brand)
+           .Skip(AppDbContextProductfirst8.Count + AppDbContextProductsecond8)
+          .Take(8)
+          .ToListAsync();
             var viewModel = new ViewModel
             {
                 Productfirst8 = AppDbContextProductfirst8,
                 Productsecond8 = AppDbContextProductsecond8,
+                ProductThird8 = AppDbContextProductthird8,
             };
             return View(viewModel);
         }
