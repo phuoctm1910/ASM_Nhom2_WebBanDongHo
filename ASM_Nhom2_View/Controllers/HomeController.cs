@@ -46,7 +46,7 @@ namespace ASM_Nhom2_View.Controllers
             var AppDbContextProductthird8 = await _context.Products
           .Include(d => d.Category)
           .Include(d => d.Brand)
-           .Skip(AppDbContextProductfirst8.Count + AppDbContextProductsecond8)
+           .Skip(AppDbContextProductfirst8.Count() +  AppDbContextProductsecond8.Count())
           .Take(8)
           .ToListAsync();
             var viewModel = new ViewModel

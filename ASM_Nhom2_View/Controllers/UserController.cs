@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ASM_Nhom2_View.Controllers
 {
@@ -24,11 +25,13 @@ namespace ASM_Nhom2_View.Controllers
     {
         private readonly AppDbContext _context;
         private readonly EmailService _emailService;
+        private readonly IWebHostEnvironment _web;
 
-        public UserController(AppDbContext context, EmailService emailService)
+        public UserController(AppDbContext context, EmailService emailService, IWebHostEnvironment web)
         {
             _context = context;
             _emailService = emailService;
+            _web = web;
         }
 
         [HttpGet]
@@ -82,11 +85,11 @@ namespace ASM_Nhom2_View.Controllers
         public IActionResult Register()
         {
             var genderSelectList = new SelectList(new List<SelectListItem>
-        {
-            new SelectListItem { Text = "Chọn giới tính", Value = "" },
-            new SelectListItem { Text = "Nam", Value = "true" },
-            new SelectListItem { Text = "Nữ", Value = "false" }
-        }, "Value", "Text");
+            {
+                new SelectListItem { Text = "Chọn giới tính", Value = "" },
+                new SelectListItem { Text = "Nam", Value = "true" },
+                new SelectListItem { Text = "Nữ", Value = "false" }
+            }, "Value", "Text");
 
             ViewBag.GenderSelectList = genderSelectList;
 
@@ -115,7 +118,6 @@ namespace ASM_Nhom2_View.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-
         [HttpGet]
         public IActionResult GoogleLogin()
         {
@@ -127,7 +129,6 @@ namespace ASM_Nhom2_View.Controllers
                 AllowRefresh = true
             };
 
-            // Log the properties items
             foreach (var item in properties.Items)
             {
                 Console.WriteLine($"Key: {item.Key}, Value: {item.Value}");
@@ -184,7 +185,6 @@ namespace ASM_Nhom2_View.Controllers
 
             return RedirectToAction("Login", "User");
         }
-
 
         [HttpGet]
         public IActionResult ForgotPassword()
