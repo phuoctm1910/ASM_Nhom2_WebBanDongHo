@@ -36,8 +36,8 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label asp-for="BrandName" class="control-label">Tên Thương Hiệu:</label>
-                                <input asp-for="BrandName" class="form-control" required pattern="[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂÊÔưăâêô\s]+" title="Chỉ được điền tên tiếng Việt và dấu cách" />
+                                <label for="BrandName">Tên thương hiệu:</label>
+                                <input asp-for="BrandName" id="BrandName" class="form-control" required pattern="^[A-Za-zÀ-ỹ][A-Za-zÀ-ỹ\s]*[A-Za-zÀ-ỹ]$" title="Chỉ được điền tên tiếng Việt và không kết thúc bằng dấu cách">
                                 <span asp-validation-for="BrandName" class="text-danger"></span>
                             </div>
                         </div>

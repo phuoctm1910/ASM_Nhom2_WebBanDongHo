@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authentication]
+    [AuthorizeRole(1)]
     public class ProductController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;

@@ -10,6 +10,7 @@ using ASM_Nhom2_View.Data;
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthorizeRole(1)]
     public class UserController : Controller
     {
         private readonly AppDbContext _context;

@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\ProductDetailServices\**" />
+    <Compile Remove="Service\UserServices\**" />
+    <Content Remove="Service\ProductDetailServices\**" />
+    <Content Remove="Service\UserServices\**" />
+    <EmbeddedResource Remove="Service\ProductDetailServices\**" />
+    <EmbeddedResource Remove="Service\UserServices\**" />
+    <None Remove="Service\ProductDetailServices\**" />
+    <None Remove="Service\UserServices\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
@@ -24,10 +35,8 @@
   <ItemGroup>
     <Folder Include="Service\BillServices\" />
     <Folder Include="Service\BrandServices\" />
-    <Folder Include="Service\ProductDetailServices\" />
     <Folder Include="Service\ProductServices\" />
     <Folder Include="Service\RoleServices\" />
-    <Folder Include="Service\UserServices\" />
   </ItemGroup>
 
 </Project>

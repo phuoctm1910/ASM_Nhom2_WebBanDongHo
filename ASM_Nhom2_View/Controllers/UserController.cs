@@ -56,28 +56,35 @@ namespace ASM_Nhom2_View.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(User user)
         {
-            if (HttpContext.Session.GetString("Email") == null || HttpContext.Session.GetString("UserName") == null)
+            // Clear any existing session to prevent conflicts with old login data
+            HttpContext.Session.Clear();
+
+            // Check if the user is trying to log in with valid credentials
+            var hashPassBeforeCheck = PasswordHelper.GetMd5Hash(user.Password);
+            var u = _context.Users.FirstOrDefault(x =>
+                (x.UserName.Equals(user.UserName) || x.Email.Equals(user.Email))
+                && x.Password.Equals(hashPassBeforeCheck));
+
+            if (u != null)
             {
-                var hashPassBeforeCheck = PasswordHelper.GetMd5Hash(user.Password);
-                var u = _context.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName) && x.Password.Equals(hashPassBeforeCheck) || x.Email.Equals(user.Email) && x.Password.Equals(hashPassBeforeCheck));
-                if (u != null)
+                // Set the session data for the new login
+                HttpContext.Session.SetString("UserName", u.UserName);
+                HttpContext.Session.SetString("Email", u.Email);
+                HttpContext.Session.SetString("FullName", u.FullName);
+                HttpContext.Session.SetInt32("RoleId", u.RoleId);
+
+                // Redirect based on the role of the user
+                if (u.RoleId == 2)
                 {
-                    HttpContext.Session.SetString("UserName", u.UserName);
-                    HttpContext.Session.SetString("Email", u.Email);
-                    HttpContext.Session.SetString("FullName", u.FullName);
-                    if (u.RoleId == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
-                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
                 }
             }
             return View();
         }
-
         [HttpGet]
         [ActionName("Logout")]
         public IActionResult Logout()
@@ -104,7 +111,7 @@ namespace ASM_Nhom2_View.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([Bind("FullName,Gender,PhoneNumber,UserName,Password,BirthDate")] User user)
         {
-
+            var hashpassword = PasswordHelper.GetMd5Hash(user.Password);
             if (!ModelState.IsValid)
             {
                 var newUser = new User()
@@ -113,7 +120,7 @@ namespace ASM_Nhom2_View.Controllers
                     Gender = user.Gender,
                     PhoneNumber = user.PhoneNumber,
                     UserName = user.UserName,
-                    Password = user.Password,
+                    Password = hashpassword,
                     BirthDate = user.BirthDate,
                     RoleId = 2
                 };
@@ -149,6 +156,9 @@ namespace ASM_Nhom2_View.Controllers
             if (!authenticateResult.Succeeded)
                 return BadRequest("Google authentication failed");
 
+            // Clear any existing session to prevent conflicts with old login data
+            HttpContext.Session.Clear();
+
             var state = Request.Query["state"];
             Console.WriteLine($"State parameter after redirect: {state}");
 
@@ -160,9 +170,11 @@ namespace ASM_Nhom2_View.Controllers
 
             var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var fullName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
             if (email != null)
             {
                 var user = _context.Users.FirstOrDefault(u => u.Email == email);
+                var getPassword = PasswordHelper.GeneratePassword(12);
                 if (user == null)
                 {
                     user = new User
@@ -170,13 +182,17 @@ namespace ASM_Nhom2_View.Controllers
                         Email = email,
                         UserName = email,
                         FullName = fullName,
-                        Password = email + "123456",  
+                        Password = PasswordHelper.GetMd5Hash(getPassword),
                         RoleId = 2
                     };
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
+                    await _emailService.SendEmailAsync(user.Email, "Quên mật khẩu", $"Mật khẩu mới của bạn là: {getPassword}");
+                    ViewBag.Message = "Mật khẩu của tài khoản đã được gửi qua email.";
+
                 }
 
+                // Set the session data for the new login
                 HttpContext.Session.SetString("UserName", user.UserName);
                 HttpContext.Session.SetString("Email", user.Email);
                 HttpContext.Session.SetString("FullName", user.FullName);
@@ -255,7 +271,7 @@ namespace ASM_Nhom2_View.Controllers
             {
                 return Json(new { success = false, message = "Mật khẩu hiện tại không đúng." });
             }
-            user.Password = newPassword;
+            user.Password = PasswordHelper.GetMd5Hash(newPassword);
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Đổi mật khẩu thành công." });

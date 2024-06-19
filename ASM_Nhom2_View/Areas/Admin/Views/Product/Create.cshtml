@@ -109,7 +109,7 @@
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="Origin" class="col-form-label">Xuất xứ:</label>
-                                            <input asp-for="Origin" type="text" class="form-control" id="Origin" required pattern="^[A-Za-z\s]+$" title="Chỉ được điền chữ cái và dấu cách" />
+                                            <input asp-for="Origin" type="text" class="form-control" id="Origin" required pattern="^[A-Za-zÀ-ỹ][A-Za-zÀ-ỹ\s]*[A-Za-zÀ-ỹ]$" title="Chỉ được điền tên tiếng Việt và không kết thúc bằng dấu cách" />
                                             <span asp-validation-for="Origin" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3">

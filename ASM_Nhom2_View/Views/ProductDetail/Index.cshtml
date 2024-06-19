@@ -75,7 +75,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-controller="User" asp-action="HistoryBill">Lịch sử thanh toán</a></li>
-                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Chnageinfo">Đổi thông tin</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Changeinfo">Đổi thông tin</a></li>
                                     <li><a class="dropdown-item" asp-controller="User" asp-action="Changepassword">Đổi mật khẩu</a></li>
                                     <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Đăng xuất</a></li>
                                 </ul>
@@ -106,62 +106,12 @@
             </div>
         </nav>
     </header>
-
     <main style="background-color: #f0efef;">
         <div class="text-center"><h1>CHI TIẾT SẢN PHẨM</h1></div> <hr /> <br />
         <div class="container" style="background-color: white;width: calc(100% - 300px) !important;">
             <div class="row">
                 <div class="col-md-9 py-5" style="background-color: white;">
                     <div class="row">
-
-                        @*    <div class="col-md-7">
-                                <div class="magnifier" style="text-align: center;">
-                                    <div class="big-img"></div>
-                                    <img id="main-image" src="@Url.Content("~/uploads/" + (Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "default.png"))" alt="@Model.ProductName" class="small-img" />
-                                </div>
-                                <div class="carousel-wrap my-5">
-                                    <div class="owl-carousel" style="margin: 0 auto;">
-                                        @foreach (var image in Model.ProductImageList)
-                                        {
-                                            <div class="item"><img src="@Url.Content("~/uploads/" + image)" alt="thumbnail image"></div>
-                                        }
-                                    </div>
-                                </div>
-                            </div> *@
-
-                        @*  <div class="col-md-7">
-
-                            <div class="magnifier" style="text-align: center;">
-                            <div class="big-img"></div>
-                            <img id="main-image" src="~/images/Product/@(Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "")" alt="@Model.ProductName" class="small-img" />
-                            </div>
-                            <div class="carousel-wrap my-5">
-                            <div class="owl-carousel" style="margin: 0 auto;">
-                            @foreach (var image in Model.ProductImageList)
-                            {
-                            <div class="item"><img src="~/uploads/@image" alt="thumbnail image"></div>
-                            }
-                            </div>
-                            </div>
-                            </div> *@
-
-
-                        @*     <div class="row">
-                            <div class="col-md-12 py-5" style="border-bottom: 6px solid #f0efef;">
-                            <h4>THÔNG SỐ SẢN PHẨM</h4>
-                            <table class="table table-striped">
-                            <tr>
-                            <td>Thương hiệu:</td>
-                            <td>@Model.Brand?.BrandName</td>
-                            </tr>
-                            <tr>
-                            <td>Mã sản phẩm:</td>
-                            <td>@Model.ProductCode</td>
-                            </tr>
-                            <!-- Các thông số khác của sản phẩm -->
-                            </table>
-                            </div>
-                            </div> *@
                         <div class="row">
 
                             <div class="col-md-7">
@@ -178,23 +128,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            @*  <div class="col-md-7">
-
-                                <div class="magnifier" style="text-align: center;">
-                                <div class="big-img"></div>
-                                <img id="main-image" src="~/images/Product/@(Model.ProductImageList != null && Model.ProductImageList.Count > 0 ? Model.ProductImageList[0] : "")" alt="@Model.ProductName" class="small-img" />
-                                </div>
-                                <div class="carousel-wrap my-5">
-                                <div class="owl-carousel" style="margin: 0 auto;">
-                                @foreach (var image in Model.ProductImageList)
-                                {
-                                <div class="item"><img src="~/uploads/@image" alt="thumbnail image"></div>
-                                }
-                                </div>
-                                </div>
-                                </div> *@
-
                             <div class="col-md-5">
                                 <div>
                                     <div class="name-prodct">
@@ -206,13 +139,6 @@
                                         <div id="productCode">
                                             Mã sản phẩm: @Model.ProductCode
                                         </div>
-                                        @*  <div id="forGender">
-                                            Giới tính: @Model.Gender
-                                            </div>
-                                            <div id="machinery">
-                                            Bộ máy: @Model.Machinery
-                                            </div> *@
-
                                         <div id="MachineType">
                                             Loại máy: @Model.MachineType
                                         </div>
@@ -224,9 +150,6 @@
                                         <span class="text-danger" id="price" style="font-size: 30px; font-weight: bold;">
                                             @(Model.ProductPrice.ToString("#,##0").Replace(",", ".") + " ₫")
                                         </span>
-
-
-                                        @*  <span id="quantity">(Chỉ còn <span class="text-danger">@Model.Quantity</span> sản phẩm)</span> *@
                                     </div>
                                     <div class="btnListProduct">
                                         <button style="width: 100%; height: 40px; font-weight: bold;"

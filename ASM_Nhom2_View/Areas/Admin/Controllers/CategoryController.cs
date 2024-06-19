@@ -12,7 +12,7 @@ using ASM_Nhom2_View.Models;
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authentication]
+    [AuthorizeRole(1)]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;

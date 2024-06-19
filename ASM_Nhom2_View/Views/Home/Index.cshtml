@@ -114,7 +114,7 @@
                                                 <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
                                                     @if (item.ProductImageList.Any())
                                                     {
-                                                        <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch">
+                                                        <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" width="280px;" height="300px;" alt="@item.ProductName" class="watch">
                                                     }
                                                     else
                                                     {
@@ -144,7 +144,7 @@
                                                 <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
                                                     @if (item.ProductImageList.Any())
                                                     {
-                                                        <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch">
+                                                        <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" width="280px;" height="300px;" alt="@item.ProductName" class="watch">
                                                     }
                                                     else
                                                     {
@@ -191,7 +191,7 @@
                                         <a class="card-link" asp-controller="ProductDetail" asp-action="Index" asp-route-id="@item.ProductId">
                                             @if (item.ProductImageList.Any())
                                             {
-                                                <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" alt="@item.ProductName" class="watch">
+                                                <img src="@Url.Content("~/uploads/" + item.ProductImageList.First())" width="280px;" height="300px;" alt="@item.ProductName" class="watch">
                                             }
                                             else
                                             {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ASM_Nhom2_View.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authentication]
+    [AuthorizeRole(1)]
     public class BrandController : Controller
     {
         private string url = "https://localhost:44309/api/Brand";
