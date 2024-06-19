@@ -1,0 +1,302 @@
+﻿@model List<ASM_Nhom2_View.Data.Bill>
+
+@using Microsoft.AspNetCore.Http
+@{
+    Layout = null; // or specify a layout if needed
+    string FullName = Context.Session.GetString("FullName");
+    string email = Context.Session.GetString("Email");
+    bool isLoggedIn = !string.IsNullOrEmpty(email);
+    var totalAllUnit = ViewBag.TotalAllUnit;
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Chi Tiết Sản Phẩm</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.3.2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://kit.fontawesome.com/b4d3d14cb1.js" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/productdetail.css">
+    <link rel="stylesheet" href="~/css/home.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white border" style="padding: 0!important;">
+            <div class="row container-fluid p-0">
+                <a class="navbar-brand col-2 text-center " asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="logo" width="100px">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse col-7" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link nav-home" asp-area="" asp-controller="Home" asp-action="About">Giới thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-home" asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-home" asp-area="" asp-controller="Product" asp-action="Index">Sản phẩm</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search" style="width: 400px;">
+                        <div class="input-group">
+                            <input type="search" class="form-control" placeholder="Tìm kiếm"
+                                   aria-describedby="button-addon2">
+                            <button class="btn btn-outline-dark" type="submit" id="button-addon2">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-3 position-relative text-dark">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 position-absolute text-black" style="left: 90px;top: -20px;">
+                        <li class="nav-item dropdown d-flex nav-home">
+                            @if (isLoggedIn)
+                            {
+                                <a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Hello, @FullName
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="HistoryBill">Lịch sử thanh toán</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Chnageinfo">Đổi thông tin</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Changepassword">Đổi mật khẩu</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Đăng xuất</a></li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <a class="nav-link dropdown-toggle text-start" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Tài khoản
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Register">Đăng ký</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Login">Đăng nhập</a></li>
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="ForgotPassword">Quên mật khẩu</a></li>
+                                </ul>
+                            }
+
+
+                            <hr />
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-end position-relative nav-home" role="button" asp-controller="Cart" asp-action="Index">
+                                Giỏ hàng
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div style="height: 700px;">
+        <main style="background-color: #f0efef;">
+            <div class="container" style="background-color: white;width: calc(100% - 300px) !important;">
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.Error
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="text-center align-middle">
+                            <tr>
+                                <th>Tên người nhận</th>
+                                <th>Số điện thoại người nhận</th>
+                                <th>Địa chỉ người nhận</th>
+                                <th>Tổng số lượng</th>
+                                <th>Tổng tiền thanh toán</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Trạng thái</th>
+                                <th>Kiểu vận chuyển</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var bill in Model)
+                            {
+                                <tr class="text-center align-middle">
+                                    <td>@bill.RecipientName</td>
+                                    <td>@bill.RecipientPhoneNumber</td>
+                                    <td>@bill.RecipientAddress</td>
+                                    <td>@bill.Quantity</td>
+                                    <td>@bill.TotalAmount.ToString("#,##0").Replace(",", ".") ₫</td>
+                                    <td>@bill.PaymentMethod</td>
+                                    <td>@bill.Status</td>
+                                    @if (bill.TotalAmount - totalAllUnit == 15000)
+                                    {
+                                        <td>
+                                            Vận chuyển chậm - 15.000 ₫
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            Vận chuyển nhanh - 25.000 ₫
+                                        </td>
+                                    }
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" data-bill-id="@bill.BillId">Xem chi tiết</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel">Chi tiết hóa đơn</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="accordion" id="accordionExample">
+                                        <!-- Bill details will be dynamically loaded here -->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </main>
+
+    </div>
+
+    <footer>
+        <div class="text-white" style="background-color: #393939;">
+            <div class="container lh-1 p-4">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <p class="fw-bold">NHỮNG THƯƠNG HIỆU</p>
+                        <p>CASIO</p>
+                        <p>LACOSTE</p>
+                        <p>BULOVA</p>
+                        <p>CALVIN KLEIN</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <p class="fw-bold">CÁC PHONG CÁCH ĐỒNG HỒ</p>
+                        <p>THỂ THAO</p>
+                        <p>SANG TRỌNG</p>
+                        <p>CỔ ĐIỂN</p>
+                        <p>THANH LỊCH</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <p class="fw-bold">THÔNG TIN CHUNG</p>
+                        <p>CHÍNH SÁCH BẢO MẬT</p>
+                        <p>ĐIỀU KHOẢN SỬ DỤNG</p>
+                        <p>TƯ VẤN</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <p class="fw-bold">THEO DÕI</p>
+                        <div class="d-flex" style="word-spacing: 10px;">
+                            <a><img src="https://i.ibb.co/fXnhkLZ/icons8-zalo-32.png"></a>
+                            <a class="mx-3"><img src="https://i.ibb.co/KGQpqKr/icons8-facebook-32.png"></a>
+                            <a><img src="https://i.ibb.co/h8M2n9W/icons8-youtube-32.png"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-white" style="font-size: 12px; background-color: #242323;">
+            <div class="container lh-1 p-4">
+                <span class="fs-6">
+                    Copyright © 2024 WatchFives Group. All right reserved. Designed by Sudo |
+                    nicedesign.works
+                </span>
+            </div>
+        </div>
+
+    </footer>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+
+    <script src="~/js/productdetail.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var detailsModal = document.getElementById('detailsModal');
+            detailsModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var billId = button.getAttribute('data-bill-id');
+
+                var modalTitle = detailsModal.querySelector('.modal-title');
+                var modalBody = detailsModal.querySelector('.modal-body .accordion');
+
+                modalTitle.textContent = 'Bill Details for Bill ID ' + billId;
+
+                // Fetch bill details via AJAX
+                fetch('/User/BillDetails/' + billId)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear previous content
+                        modalBody.innerHTML = '';
+
+                        // Generate accordion content
+                        data.forEach((detail, index) => {
+                            var unitPriceFormatted = formatCurrency(detail.unitPrice);
+                            var totalPriceFormatted = formatCurrency(detail.totalPrice);
+
+                            var accordionItem = `
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading${index}">
+                                                <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0}" aria-controls="collapse${index}">
+                                                    Product ID: ${detail.productId} - ${detail.productName}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <p>Số lượng mua: ${detail.quantity}</p>
+                                                    <p>Đơn giá: ${unitPriceFormatted}</p>
+                                                    <p>Tổng tiền sản phẩm: ${totalPriceFormatted}</p>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                            modalBody.insertAdjacentHTML('beforeend', accordionItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching bill details:', error);
+                        modalBody.innerHTML = '<p class="text-danger">Unable to load bill details. Please try again later.</p>';
+                    });
+            });
+
+            function formatCurrency(value) {
+                return value.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).replace(/,/g, '.') + " ₫";
+            }
+        });
+    </script>
+</body>
+
+</html>

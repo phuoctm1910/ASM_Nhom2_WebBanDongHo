@@ -1,0 +1,112 @@
+﻿@model IEnumerable<ASM_Nhom2_View.Data.User>
+
+@{ ViewData["Title"] = "Danh Sách Người Dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    table thead th {
+        vertical-align: middle !important;
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Người Dùng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Xem Người Dùng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Bảng Người Dùng</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>
+                                        Họ và Tên
+                                    </th>
+                                    <th>
+                                        Giới Tính
+                                    </th>
+                                    <th>
+                                        Ngày Sinh
+                                    </th>
+                                    <th>
+                                        Số Điện Thoại
+                                    </th>
+                                    <th>
+                                        Ảnh Người Dùng
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                        <tr class="text-center align-middle">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FullName)
+                                            </td>
+                                            <td>
+                                                @(item.Gender == true ? "Nam" : (item.Gender == false ? "Nữ" : "Người dùng chưa thêm"))
+                                            </td>
+
+                                            <td>
+                                                @String.Format("{0:dd/MM/yyyy}", item.BirthDate == null ? "Người dùng chưa thêm" : item.BirthDate)
+                                            </td>
+
+                                            <td>
+                                                @(item.PhoneNumber == null ? "Người dùng chưa thêm" : item.PhoneNumber)
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.Image))
+                                                {
+                                                    <img src="~/uploads/@item.Image" width="50" height="50" class="img-thumbnail" />
+                                                }
+                                                else
+                                                {
+                                                    <span>Người dùng chưa thêm</span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @(item.Email == null ? "Người dùng chưa thêm" : item.Email)
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" asp-route-id="@item.UserID">Chỉnh Sửa</a>
+                                            </td>
+                                        </tr>
+                                    
+                                 }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>

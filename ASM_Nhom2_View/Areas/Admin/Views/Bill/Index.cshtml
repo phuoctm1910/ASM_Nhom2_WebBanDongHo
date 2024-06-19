@@ -45,6 +45,7 @@
                                     <th>Số Lượng Trong Đơn Hàng</th>
                                     <th>Tổng Tiền Đơn Hàng</th>
                                     <th>Trạng Thái</th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,10 +55,10 @@
                                         <td>@item.BillId</td>
                                         <td>@item.User.FullName</td>
                                         <td>@item.Quantity</td>
-                                        <td>@item.TotalAmount</td>
+                                        <td>@item.TotalAmount.ToString("#,##0").Replace(",", ".") ₫</td>
                                         <td>@item.Status</td>
                                         <td>
-                                            <button type="button" class="btn btn-info d-inline p-2" data-toggle="modal" data-target="#billDetailsModal" onclick="loadBillDetails(@item.BillId)">Xem Chi Tiết</button>
+                                            <button type="button" class="btn btn-info d-inline p-2" data-toggle="modal" data-target="#billDetailsModal" onclick="loadBillDetails(@item.BillId, @item.UserID)">Xem Chi Tiết</button>
                                         </td>
                                     </tr>
                                 }
@@ -75,83 +76,78 @@
     <!-- /.container-fluid -->
 </section>
 
-<!-- Modal chi tiết sản phẩm -->
+<!-- Modal chi tiết hóa đơn  -->
 <div class="modal fade" id="billDetailsModal" tabindex="-1" role="dialog" aria-labelledby="billDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="productDetailsModalLabel">Chi tiết sản phẩm có trong hóa đơn</h5>
+                <h5 class="modal-title" id="billDetailsModalLabel">Chi tiết hóa đơn</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="accordion" id="accordionExample">
-                    <!-- Product details will be appended here by JavaScript -->
-                </div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="text-center align-middle">
+                        <tr>
+                            <th>Tên người nhận</th>
+                            <th>Số điện thoại người nhận</th>
+                            <th>Địa chỉ người nhận</th>
+                            <th>Tổng số lượng</th>
+                            <th>Tổng tiền thanh toán</th>
+                            <th>Phương thức thanh toán</th>
+                            <th>Trạng thái</th>
+                            <th>Kiểu vận chuyển</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center align-middle">
+                            <td id="RecipientName"></td>
+                            <td id="RecipientPhoneNumber"></td>
+                            <td id="RecipientAddress"></td>
+                            <td id="Quantity"></td>
+                            <td id="TotalAmount"></td>
+                            <td id="PaymentMethod"></td>
+                            <td id="Status"></td>
+                            <td id="DeliveryType"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>  
+</div>
 
 @section Scripts {
     <script>
-        function loadBillDetails(billId) {
+        function loadBillDetails(billId, userId) {
             $.ajax({
-                url: '@Url.Action("Details", "Bill")',
+                url: '@Url.Action("GetBillDetail", "Bill")',
                 type: 'GET',
-                data: { id: billId },
-                success: function (bill) {
-                    var totalProducts = bill.Products.length;
-                    var productsHtml = '';
+                data: { billId: billId, userId: userId },
+                success: function (response) {
+                    var data = response.billDetail;
+                    var totalAllUnit = response.totalAllUnit;
+                    var formatTotalAmount = formatCurrency(data.totalAmount)
+                    $('#RecipientName').text(data.recipientName);
+                    $('#RecipientPhoneNumber').text(data.recipientPhoneNumber);
+                    $('#RecipientAddress').text(data.recipientAddress);
+                    $('#Quantity').text(data.quantity);
+                    $('#TotalAmount').text(formatTotalAmount);
+                    $('#PaymentMethod').text(data.paymentMethod);
+                    $('#Status').text(data.status);
 
-                    bill.Products.forEach(function (product, index) {
-                        productsHtml += `
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading${index}">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
-                                        Sản Phẩm ${index + 1}
-                                    </button>
-                                </h2>
-                                <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <table class="table table-bordered" style="width:100%">
-                                            <tr><th>Tên:</th><td>${product.ProductName}</td></tr>
-                                            <tr><th>Mã:</th><td>${product.ProductCode}</td></tr>
-                                            <tr><th>Số lượng:</th><td>${product.ProductStock}</td></tr>
-                                            <tr><th>Giá:</th><td>${product.ProductPrice}</td></tr>
-                                            <tr><th>Xuất xứ:</th><td>${product.Origin}</td></tr>
-                                            <tr><th>Loại máy:</th><td>${product.MachineType}</td></tr>
-                                            <tr><th>Đường kính:</th><td>${product.Diameter}</td></tr>
-                                            <tr><th>Loại đồng hồ:</th><td>${product.ClockType}</td></tr>
-                                            <tr><th>Bảo hành:</th><td>${product.Insurrance}</td></tr>
-                                            <tr><th>Màu:</th><td>${product.Color}</td></tr>
-                                            <tr><th>Thương hiệu:</th><td>${product.BrandName}</td></tr>
-                                            <tr><th>Loại dành cho:</th><td>${product.CategoryName}</td></tr>
-                                            <tr>
-                                                <th>Ảnh sản phẩm:</th>
-                                                <td>
-                                                    <div class="row" id="productImagesRow${index}">
-                                                        ${product.ProductImageList.map(image => `<div class="col-md-3"><img src="@Url.Content("~/uploads/")${image}" width="50" height="50" class="img-thumbnail"></div>`).join('')}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>`;
-                    });
-
-                    $('#accordionExample').html(productsHtml);
-                    $('#billDetailsModal').modal('show');
+                    var deliveryType = (data.totalAmount - totalAllUnit) === 15000 ? "Vận chuyển chậm" : "Vận chuyển nhanh";
+                    $('#DeliveryType').text(deliveryType);
                 },
-                error: function () {
-                    alert('Error loading bill details');
+                error: function (xhr, status, error) {
+                    console.error("Error fetching bill details: ", error);
                 }
             });
         }
+        function formatCurrency(value) {
+            return value.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).replace(/,/g, '.') + " ₫";
+        }
+
     </script>
 }
-
-
-

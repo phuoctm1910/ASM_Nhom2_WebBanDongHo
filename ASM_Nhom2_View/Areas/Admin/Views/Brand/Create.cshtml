@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label asp-for="BrandName" class="control-label">Tên Thương Hiệu:</label>
-                                <input asp-for="BrandName" class="form-control" required pattern="[A-Za-z\s]+" title="Chỉ được điền tên và dấu cách" />
+                                <input asp-for="BrandName" class="form-control" required pattern="[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂÊÔưăâêô\s]+" title="Chỉ được điền tên tiếng Việt và dấu cách" />
                                 <span asp-validation-for="BrandName" class="text-danger"></span>
                             </div>
                         </div>

@@ -10,12 +10,12 @@ namespace ASM_Nhom2_View.Models
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.HttpContext.Session.GetString("Email") == null)
+            if (context.HttpContext.Session.GetString("Email") == null || context.HttpContext.Session.GetString("UserName") == null)
             {
                 context.Result = new RedirectToRouteResult(
                     new RouteValueDictionary
                     {
-                        {"Areas", "" },
+                        {"area", "" },
                         {"controller", "User" },
                         {"action", "Login" }
                     });

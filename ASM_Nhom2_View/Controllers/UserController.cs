@@ -22,6 +22,10 @@ namespace ASM_Nhom2_View.Controllers
     {
         public string Email { get; set; }
     }
+    public class BillOfUser
+    {
+        public List<Bill> BillComplete { get; set; }
+    }
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
@@ -38,7 +42,7 @@ namespace ASM_Nhom2_View.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            if (HttpContext.Session.GetString("Email") == null)
+            if (HttpContext.Session.GetString("Email") == null || HttpContext.Session.GetString("UserName") == null)
             {
                 return View();
             }
@@ -52,7 +56,7 @@ namespace ASM_Nhom2_View.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(User user)
         {
-            if (HttpContext.Session.GetString("Email") == null)
+            if (HttpContext.Session.GetString("Email") == null || HttpContext.Session.GetString("UserName") == null)
             {
                 var hashPassBeforeCheck = PasswordHelper.GetMd5Hash(user.Password);
                 var u = _context.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName) && x.Password.Equals(hashPassBeforeCheck) || x.Email.Equals(user.Email) && x.Password.Equals(hashPassBeforeCheck));
@@ -88,7 +92,7 @@ namespace ASM_Nhom2_View.Controllers
             var genderSelectList = new SelectList(new List<SelectListItem>
             {
                 new SelectListItem { Text = "Chọn giới tính", Value = "" },
-new SelectListItem { Text = "Nam", Value = "true" },
+                new SelectListItem { Text = "Nam", Value = "true" },
                 new SelectListItem { Text = "Nữ", Value = "false" }
             }, "Value", "Text");
 
@@ -166,7 +170,7 @@ new SelectListItem { Text = "Nam", Value = "true" },
                         Email = email,
                         UserName = email,
                         FullName = fullName,
-                        Password = email + "123456",
+                        Password = email + "123456",  
                         RoleId = 2
                     };
                     _context.Users.Add(user);
@@ -181,11 +185,19 @@ new SelectListItem { Text = "Nam", Value = "true" },
                 var authProperties = new AuthenticationProperties();
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return RedirectToAction("Index", "Home");
+                if (user.RoleId == 2)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
+                }
             }
 
             return RedirectToAction("Login", "User");
         }
+
 
         [HttpGet]
         public IActionResult ForgotPassword()
@@ -323,6 +335,64 @@ new SelectListItem { Text = "Nam", Value = "true" },
 
             return View(change);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> HistoryBill()
+        {
+            var userLogin = HttpContext.Session.GetString("UserName");
+
+            if (userLogin == null)
+            {
+                ViewBag.Error = "Người dùng chưa đăng nhập.";
+                return View("Error");
+            }
+
+            var findUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userLogin);
+            if (findUser == null)
+            {
+                ViewBag.Error = "Không tìm thấy người dùng.";
+                return View("Error"); 
+            }
+
+            var completedBills = await _context.Bills
+                    .Where(b => b.UserID == findUser.UserID && b.Status.ToLower() == "completed")
+                    .ToListAsync();
+
+            var totalAllUnit = await _context.BillDetails
+                .Where(bd => completedBills.Select(b => b.BillId).Contains(bd.BillId))
+                .SumAsync(bd => bd.TotalPrice);
+
+            ViewBag.TotalAllUnit = totalAllUnit;
+
+            return View(completedBills);
+        }
+        [HttpGet]
+        public async Task<IActionResult> BillDetails(int id)
+        {
+            var billDetails = await _context.BillDetails
+                .Where(bd => bd.BillId == id)
+                .Include(bd => bd.Product)
+                .GroupBy(bd => new { bd.ProductId, bd.Product.ProductName, bd.UnitPrice })
+                .Select(g => new
+                {
+                    g.Key.ProductId,
+                    g.Key.ProductName,
+                    g.Key.UnitPrice,
+                    Quantity = g.Sum(bd => bd.Quantity),
+                    TotalPrice = g.Sum(bd => bd.TotalPrice)
+                })
+                .ToListAsync();
+
+            if (!billDetails.Any())
+            {
+                ViewBag.Error = "Không tìm thấy thông tin chi tiết của bill này.";
+                return View("Error");
+            }
+
+            return Json(billDetails);
+        }
+
 
     }
 }

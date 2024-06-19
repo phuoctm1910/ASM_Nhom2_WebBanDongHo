@@ -24,51 +24,69 @@ namespace ASM_Nhom2_View.Areas.Admin.Controllers
         // GET: Admin/Bill
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Bills.Include(b => b.User);
-            return View(await appDbContext.ToListAsync());
+            var bill = await _context.Bills.Include(b => b.User).ToListAsync();
+
+            return View(bill);
+
+
         }
-
-        // GET: Admin/Bill/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet]
+        public async Task<IActionResult> GetBillDetail(int billId, int userId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bill = await _context.BillDetails
-                .Include(b => b.Product)
-                .Where(m => m.BillId == id)
-                .GroupBy(m => m.BillId)
-                .Select(g => new 
+            var billDetail = await _context.Bills
+                .Where(b => b.BillId == billId && b.UserID == userId)
+                .Select(b => new
                 {
-                    BillId = g.Key,
-                    Product = g.Select(bd => new ProductVM
-                    {
-                        ProductId = bd.Product.ProductId,
-                        ProductCode = bd.Product.ProductCode,
-                        ProductName = bd.Product.ProductName,
-                        ProductStock = bd.Product.ProductStock,
-                        ProductPrice = bd.Product.ProductPrice,
-                        Origin = bd.Product.Origin,
-                        MachineType = bd.Product.MachineType,
-                        Diameter = bd.Product.Diameter,
-                        ClockType = bd.Product.ClockType,
-                        Insurrance = bd.Product.Insurrance,
-                        Color = bd.Product.Color,
-                        BrandName = bd.Product.Brand.BrandName,
-                        CategoryName = bd.Product.Category.CategoryName,
-                        ProductImageList = bd.Product.ProductImageList
-                    }).ToList()
+                    b.BillId,
+                    b.UserID,
+                    UserName = b.User.FullName,
+                    b.Quantity,
+                    b.TotalAmount,
+                    b.Status,
+                    b.RecipientName,
+                    b.RecipientPhoneNumber,
+                    b.RecipientAddress,
+                    b.PaymentMethod
                 })
                 .FirstOrDefaultAsync();
 
-            if (bill == null)
+            if (billDetail == null)
             {
                 return NotFound();
             }
 
-            return Json(bill);
+            var totalAllUnit = await _context.BillDetails
+                .Where(bd => bd.BillId == billId)
+                .SumAsync(bd => bd.TotalPrice);
+
+            return Json(new { billDetail, totalAllUnit });
+        }
+
+        // GET: Admin/Bill/Details/5
+        [HttpGet]
+        public async Task<IActionResult> GetProductInBill(int id)
+        {
+            var billDetails = await _context.BillDetails
+                .Where(bd => bd.BillId == id)
+                .Include(bd => bd.Product)
+                .GroupBy(bd => new { bd.ProductId, bd.Product.ProductName, bd.UnitPrice })
+                .Select(g => new
+                {
+                    g.Key.ProductId,
+                    g.Key.ProductName,
+                    g.Key.UnitPrice,
+                    Quantity = g.Sum(bd => bd.Quantity),
+                    TotalPrice = g.Sum(bd => bd.TotalPrice)
+                })
+                .ToListAsync();
+
+            if (!billDetails.Any())
+            {
+                ViewBag.Error = "Không tìm thấy thông tin chi tiết của bill này.";
+                return View("Error");
+            }
+
+            return Json(billDetails);
         }
 
 
